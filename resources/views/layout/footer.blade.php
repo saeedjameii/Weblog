@@ -1,6 +1,7 @@
-    <footer class="footer">
+<footer class="footer">
       <div class="container footer-inner">
-        <strong>🔧 ToolShare</strong><span>بیشتر قرض بگیر. کمتر بخر.</span>
+        <strong>📰 پایگاه خبری خبرنامه</strong>
+        <span>دقیق، سریع، بی‌طرف</span>
       </div>
     </footer>
   </body>

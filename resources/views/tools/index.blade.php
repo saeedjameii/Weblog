@@ -4,11 +4,10 @@
     <main>
       <section class="browse-header">
         <div class="container">
-          <div class="kicker">بازار</div>
-          <h1 class="section-title">مرور ابزارها</h1>
+          <div class="kicker">آرشیو جامع</div>
+          <h1 class="section-title">آخرین اخبار و مقالات</h1>
           <p style="color: var(--muted); max-width: 650px; line-height: 1.7">
-            ابزارهای مفید را از افراد جامعه خود پیدا کنید و دقیقاً همان چیزی را
-            که نیاز دارید، امانت بگیرید.
+            در این بخش می‌توانید تمامی اخبار، گزارش‌ها و مقالات منتشر شده توسط تحریریه را جستجو و مطالعه کنید.
           </p>
           <form class="search-box" method="GET" action="{{ route('posts.index') }}">
             <input
@@ -16,7 +15,7 @@
               type="search"
               name="search"
               value="{{ request('search') }}"
-              placeholder="جستجو برای ابزارها..."/>
+              placeholder="جستجو در متن یا تیتر اخبار..."/>
             <select class="select" name="category_id" onchange="this.form.submit()">
               <option value="">همه دسته‌بندی‌ها</option>
                 @foreach($categories as $category)
@@ -30,34 +29,29 @@
         </div>
       </section>
       <section>
-        <div class="container browse-grid">
+        <div class="container news-grid">
         @forelse ($posts as $post)
-          <article class="tool-card">
-            @if ($post->images->isNotEmpty())
-                <img
-                 class="tool-image"
-                  src="{{ asset('storage/' . $post->images->first()->path) }}"
-                  alt="{{ $post->title }}"
-                />
-            
-            @else
-                <div class='tool-image'>
-                    <p>تصویر موجود نیست</p>
-                </div>
-            @endif
-            <div class="tool-body">
-              <span class="tag">امروز موجود</span>
-              <h3>{{ $post->title }}</h3>
-              <p>{{ $post->description }}</p>
-              <small>مالک: {{ $post->user->first_name }}</small>
+          <article class="news-card">
+            <div class="news-body">
+              <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
+                  @forelse ($post->categories as $category)
+                      <span class="tag">{{ $category->name }}</span>
+                  @empty
+                      <span class="tag">عمومی</span>
+                  @endforelse
+              </div>
+              <h3><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h3>
+              <p class="news-excerpt">{{ Str::limit($post->description, 120) }}</p>
               <div class="card-bottom">
-                <span class="price">{{ \Illuminate\Support\Number::format($post->first_day_price, 0, null, 'fa') }} تومان در روز</span>
-                <a href="{{ route('posts.show', $post) }}">جزئیات بیشتر</a>
+                <span class="author">✍️ {{ $post->user->first_name }} {{ $post->user->last_name }}</span>
+                <a class="read-more" href="{{ route('posts.show', $post) }}">ادامه مطلب ←</a>
               </div>
             </div>
           </article>
         @empty
-            <p>هیچ ابزاری برای نمایش وجود ندارد.</p>
+            <div class="users-empty" style="grid-column: 1 / -1;">
+                <p>هیچ خبری برای نمایش وجود ندارد.</p>
+            </div>
         @endforelse
         </div>
 

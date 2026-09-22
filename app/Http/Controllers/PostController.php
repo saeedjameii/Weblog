@@ -14,7 +14,7 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 class PostController extends Controller
 {
     public function home(){
-        $latestPosts = Post::with(['user'])->latest()->take(4)->get();
+        $latestPosts = Post::with(['user', 'categories'])->latest()->take(4)->get();
         return view('home', compact('latestPosts'));
     }
 
@@ -47,7 +47,7 @@ class PostController extends Controller
     }
     public function index(Request $request){
         
-        $query = Post::with(['category', 'user'])->latest();
+        $query = Post::with(['categories', 'user'])->latest();
 
         if($request->filled('search')){
             $search = $request->search;
@@ -56,8 +56,11 @@ class PostController extends Controller
                 $query->where('title', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%");
             });
         }
+
         if($request->filled('category_id')){
-            $query->where('category_id', $request->category_id);
+            $query->whereHas('categories', function($q) use ($request) {
+                $q->where('categories.id', $request->category_id);
+            });
         }
 
         $posts = $query->paginate(8)->withQueryString();
@@ -69,12 +72,12 @@ class PostController extends Controller
     }
 
     public function myPosts(){
-        $posts = auth('api')->user()->posts()->with(['category'])->latest()->get();
+        $posts = auth('api')->user()->posts()->with(['categories'])->latest()->get();
         return view('tools.my-posts', compact('posts'));
     }
 
     public function show(Post $post){
-        $post->load(['category', 'user']);
+        $post->load(['categories', 'user']);
 
         return view('tools.show', compact('post'));
     }
@@ -94,8 +97,14 @@ class PostController extends Controller
 
         $data = $request->validated();
 
-        $post->update($data);
+        DB::transaction(function() use ($post, $data) {
+        $post->update([
+            'title' => $data['title'],
+            'description' => $data['description'],
+        ]);
 
+        $post->categories()->sync($data['categories']);
+    });
         return redirect()->route('posts.show', $post)->with('success', 'پست با موفقیت ویرایش شد.');
     }
 
