@@ -18,22 +18,17 @@ class UserRoleController extends Controller
     
     public function update(UserRoleRequest $request, User $user){
         $data = $request->validated();
-        $creatorRole = Role::where('name', 'creator')->first();
 
-        if($user->hasRole('creator')){
+        if($user->isCreator()){
             abort(403, 'نقش creator قابل تغییر نمی‌باشد');
         }
 
-        if($creatorRole && in_array($creatorRole->id, $data['role_ids'])){
-            abort(403, 'نقش creator قابل تخصیص نمی‌باشد');
-        }
-
-        $user->roles()->sync($data['role_ids']);
+        $user->roles()->sync($data['role_ids'] ?? []);
         return back()->with('success', 'نقش کاربر با موفقیت بروزرسانی شد');
     }
 
     public function destroy(User $user){
-        if($user->hasRole('creator')){
+        if($user->isCreator()){
             abort(403, 'creator را نمی‌توانید حذف کنید');
         }
 
@@ -55,7 +50,7 @@ class UserRoleController extends Controller
             ]);
         }
 
-        if($user->hasRole('creator')){
+        if($user->isCreator()){
             abort(403, 'نقش creator قابل بازگشت نمی‌باشد');
         }
         

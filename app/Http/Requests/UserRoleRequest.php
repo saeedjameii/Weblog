@@ -23,7 +23,7 @@ class UserRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_ids' => 'required|array',
+            'role_ids' => 'nullable|array',
             'role_ids.*' => 'exists:roles,id'
         ];
     }

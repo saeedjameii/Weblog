@@ -76,26 +76,6 @@
                                 </select>
                                 <span class="validation-message" id="condition-error"></span>
                             </div>
-
-                            <div class="field">
-                                <label for="province-id">استان</label>
-                                <select class="form-control" id="province-id" name="province_id" data-province-select data-city-select="city-id"
-                                    data-cities-url="{{ route('provinces.cities', ['province' => '__province__'], false) }}" required>
-                                    <option value="">استان را انتخاب کنید</option>
-                                    @foreach ($provinces as $province)
-                                        <option value="{{ $province->id }}" @selected(old('province_id') == $province->id)>{{ $province->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('province_id')<span class="validation-message" style="display:block;">{{ $message }}</span>@enderror
-                            </div>
-                            <div class="field">
-                                <label for="city-id">شهر</label>
-                                <select class="form-control" id="city-id" name="city_id" data-selected-city="{{ old('city_id') }}" disabled required>
-                                    <option value="">ابتدا استان را انتخاب کنید</option>
-                                </select>
-                                @error('city_id')<span class="validation-message" style="display:block;">{{ $message }}</span>@enderror
-                            </div>
-                        </div>
                     </section>
 
                     <section class="form-section">

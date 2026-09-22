@@ -22,15 +22,12 @@ class RoleController extends Controller
             'name' => $request->name,
         ]);
 
-        $role->permissions()->sync($request->permissions);
+        $role->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('roles.create')->with('success', 'نقش با موفقیت ساخته شد');
     }
 
     public function edit(Role $role){
-        if($role->name === 'creator'){
-            abort(403, 'شما نمیتوانید نقش سازنده را ویرایش کنید');
-        }
         $permissions = Permission::where('name', '!=', 'create-role')->get();
 
         $rolePermissions = $role->permissions->pluck('id')->toArray();
@@ -41,23 +38,17 @@ class RoleController extends Controller
     }
 
     public function update(RoleRequest $request, Role $role){
-        if($role->name === 'creator'){
-            abort(403, 'شما نمیتوانید نقش سازنده را ویرایش کنید');
-        }
 
         $role->update([
             'name' => $request->name,
         ]);
 
-        $role->permissions()->sync($request->permissions);
+        $role->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('roles.index')->with('success', 'نقش مورد نظر با موفقیت ویرایش گردید');
     }
 
     public function destroy(Role $role){
-        if($role->name === 'creator'){
-            abort(403, 'شما نمیتوانید نقش سازنده را از بین ببرید');
-        }
 
         $role->delete();
         

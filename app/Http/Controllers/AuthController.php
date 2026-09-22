@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserLevel;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +34,7 @@ class AuthController extends Controller
             return redirect()->back()->withInput()->withErrors(['birth_date' => 'تاریخ تولد وارد شده معتبر نیست. لطفاً از فرمت YYYY/MM/DD استفاده کنید (مثلاً 1405/06/12).']);
         }
 
-        $user = User::create([
+        User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -42,17 +42,8 @@ class AuthController extends Controller
             'birth_date' => $birthDate,
             'national_code' => $request->national_code,
             'password' => Hash::make($request->password),
+            'level' => UserLevel::User,
         ]);
-
-        $role = Role::where('name', 'user')->firstOrFail();
-
-        $user->roles()->attach($role->id);
-
-        // Auth::login($user);
-
-        if (! $user) {
-            return redirect()->back()->with('error', 'ثبت نام با مشکل مواجه شد. لطفاً دوباره تلاش کنید.');
-        }
 
         return redirect()->route('home')->with('success', 'ثبت نام موفقیت‌آمیز بود. لطفاً وارد شوید.');
     }

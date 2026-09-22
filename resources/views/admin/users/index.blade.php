@@ -42,16 +42,20 @@
                                 </div>
                                 <p>{{ $user->email }}</p>
                                 <div class="role-tags" aria-label="نقش‌های کاربر">
-                                    @forelse ($user->roles as $role)
-                                        <span class="tag">{{ $role->name }}</span>
-                                    @empty
-                                        <span class="no-role">بدون نقش</span>
-                                    @endforelse
+                                    @if ($user->isCreator())
+                                        <span class="tag">creator</span>
+                                    @else
+                                        @forelse ($user->roles as $role)
+                                            <span class="tag">{{ $role->name }}</span>
+                                        @empty
+                                            <span class="no-role">بدون نقش</span>
+                                        @endforelse
+                                    @endif
                                 </div>
                             </div>
                         </div>
 
-                        @if ($user->hasRole('creator'))
+                        @if ($user->isCreator())
                             <div class="creator-notice">حساب سازنده قابل تغییر نیست</div>
                         @else
                             <div class="user-actions">
@@ -62,9 +66,7 @@
                                     @if(!$user->trashed())
                                     <select id="roles-{{ $user->id }}" class="form-control role-select" name="role_ids[]" multiple>
                                         @foreach ($roles as $role)
-                                            @if ($role->name !== 'creator')
-                                                <option value="{{ $role->id }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
-                                            @endif
+                                            <option value="{{ $role->id }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                     <button type="submit" class="button button-secondary">ذخیره نقش‌ها</button>

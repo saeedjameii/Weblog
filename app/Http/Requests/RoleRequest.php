@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserLevel;
 use App\Models\Permission;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,25 +23,24 @@ class RoleRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-public function rules(): array
+    public function rules(): array
     {
-        $rules = [
-            'name' => 'required|string|max:255|unique:roles,name',
-            'permissions' => 'required|array',
-            'permissions.*' => 'exists:permissions,id',
-        ];
+        $role = $this->route('role');
+        $createRolePermissionId = Permission::where('name', 'create-role')->value('id');
 
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $role = $this->route('role');
-            $createRolePermissionId = Permission::where('name', 'create-role')->value('id');
-
-            $rules['name'] = 'required|string|max:250|unique:roles,name,' . $role->id;
-            $rules['permissions.*'] = [
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:250',
+                Rule::unique('roles', 'name')->ignore($role?->id),
+                Rule::notIn(array_column(UserLevel::cases(), 'value')),
+            ],
+            'permissions' => 'nullable|array',
+            'permissions.*' => [
                 'exists:permissions,id',
-                Rule::notIn([$createRolePermissionId]),
-            ];
-        }
-
-        return $rules;
+                Rule::notIn(array_filter([$createRolePermissionId])),
+            ],
+        ];
     }
 }

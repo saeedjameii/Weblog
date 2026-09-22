@@ -16,9 +16,15 @@
             <h1 class="display-font">سلام {{ $user->first_name }} 👋</h1>
             <p class="intro-copy">
                 نقش فعلی شما:
-                @foreach ($user->roles as $role)
-                    <span class="tag">{{ $role->name }}</span>
-                @endforeach
+                @if ($user->isCreator())
+                    <span class="tag">creator</span>
+                @else
+                    @forelse ($user->roles as $role)
+                        <span class="tag">{{ $role->name }}</span>
+                    @empty
+                        <span class="tag">کاربر عادی</span>
+                    @endforelse
+                @endif
                 — فقط بخش‌هایی که به آن‌ها دسترسی دارید در پایین نمایش داده می‌شود.
             </p>
         </section>

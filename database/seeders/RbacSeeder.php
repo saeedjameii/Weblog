@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\Permission;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -37,12 +36,6 @@ class RbacSeeder extends Seeder
         foreach($permissions as $permission){
             Permission::firstOrCreate(['name' => $permission]);
         }
-
-        $admin = Role::firstOrCreate(['name' => 'admin']);
-
-
-        $admin->permissions()->sync(Permission::all());
-        
 
     }
 }
