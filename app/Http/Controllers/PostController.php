@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
-use App\Models\IranProvince;
 use App\Models\Post;
+use App\Services\PostService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class PostController extends Controller
 {
+
+    public function __construct(
+        private PostService $postService
+    ){
+
+    }
+
     public function home(){
         $latestPosts = Post::with(['user', 'categories'])->latest()->take(4)->get();
         return view('home', compact('latestPosts'));
@@ -25,26 +31,15 @@ class PostController extends Controller
         return view('tools.create', compact('categories'));
     }
 
-    public function createPost(PostRequest $request){
+    public function createPost(PostRequest $request)
+    {
         $data = $request->validated();
 
-        $token = $request->cookie('token');
+        $this->postService->create($data, auth('api')->user());
 
-        $user = JWTAuth::setToken($token)->authenticate();
-        
-        DB::transaction(function() use ($data, $user){
-        $post = Post::create([
-            'user_id' => $user->id,
-            'title' => $data['title'],
-            'description' => $data['description'],
-        ]);
-
-        $post->categories()->sync($data['categories']);
-
-        });
-        
         return redirect()->route('home')->with('success', 'پست با موفقیت ایجاد شد.');
     }
+
     public function index(Request $request){
         
         $query = Post::with(['categories', 'user'])->latest();
@@ -87,24 +82,19 @@ class PostController extends Controller
 
         Gate::authorize('update', $post);
         
-        $categories = Category::WhereDoesntHave('children')->with('parent')->get();
+        $categories = Category::all();
 
         return view('tools.edit', compact('post', 'categories'));
     }
 
-    public function update(PostRequest $request, Post $post){
+    public function update(PostRequest $request, Post $post)
+    {
         Gate::authorize('update', $post);
 
         $data = $request->validated();
 
-        DB::transaction(function() use ($post, $data) {
-        $post->update([
-            'title' => $data['title'],
-            'description' => $data['description'],
-        ]);
+        $this->postService->update($post, $data);
 
-        $post->categories()->sync($data['categories']);
-    });
         return redirect()->route('posts.show', $post)->with('success', 'پست با موفقیت ویرایش شد.');
     }
 
