@@ -22,6 +22,18 @@
             @endcan
         </section>
 
+        <!-- نمایش ارورهای احتمالی (مثلا خطای عدم امکان بازیابی) -->
+        @if ($errors->any())
+            <div class="alert alert-danger mt-20">
+                <ul style="margin: 0; padding-inline-start: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- نمایش پیام موفقیت -->
         @if (session('success'))
             <div class="alert alert-success mt-20">{{ session('success') }}</div>
         @endif
@@ -30,7 +42,7 @@
 
             @forelse ($posts as $post)
 
-                <article class="news-card">
+                <article class="news-card {{ $post->trashed() ? 'is-trashed' : '' }}">
                     <div class="news-body">
 
                         <div class="category-tags">
@@ -39,23 +51,44 @@
                             @empty
                                 <span class="tag">عمومی</span>
                             @endforelse
+                            
+                            @if($post->trashed())
+                                <span class="tag tag-danger">حذف شده</span>
+                            @endif
                         </div>
 
-                        <h3><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h3>
+                        <h3>
+                            @if(!$post->trashed())
+                                <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
+                            @else
+                                <span class="trashed-title">{{ $post->title }}</span>
+                            @endif
+                        </h3>
+                        
                         <p class="news-excerpt">{{ Str::limit($post->description, 100) }}</p>
 
-                        <div class="card-bottom">
-                            <a class="read-more" href="{{ route('posts.show', $post) }}">مشاهده خبر ←</a>
-                        </div>
+                        @if(!$post->trashed())
+                            <div class="card-bottom">
+                                <a class="read-more" href="{{ route('posts.show', $post) }}">مشاهده خبر ←</a>
+                            </div>
+                        @endif
 
                         <div class="card-actions">
-                            <a href="{{ route('posts.edit', $post) }}" class="btn btn-secondary action-btn">ویرایش</a>
+                            @if($post->trashed())
+                                <form action="{{ route('posts.restore', $post->id) }}" method="POST" class="action-form">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-outline-success action-btn">بازیابی خبر</button>
+                                </form>
+                            @else
+                                <a href="{{ route('posts.edit', $post) }}" class="btn btn-secondary action-btn">ویرایش</a>
 
-                            <form action="{{ route('posts.destroy', $post) }}" method="POST" class="action-form" onsubmit="return confirm('آیا از حذف این خبر مطمئن هستید؟');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger action-btn">حذف</button>
-                            </form>
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST" class="action-form" onsubmit="return confirm('آیا از حذف این خبر مطمئن هستید؟');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger action-btn">حذف</button>
+                                </form>
+                            @endif
                         </div>
 
                     </div>

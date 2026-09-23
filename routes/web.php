@@ -34,6 +34,7 @@ Route::prefix('posts')->group(function (){
     Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
 
     Route::delete('/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::patch('/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
     
     Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
 });

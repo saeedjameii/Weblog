@@ -65,7 +65,12 @@ class PostPolicy
      */
     public function restore(User $user, Post $post): bool
     {
-        return false;
+        if($user->hasPermission('delete-any-post')){
+            return true;
+        }
+
+        return $user->hasPermission('delete-own-post')
+            && $post->user_id === $user->id;
     }
 
     /**

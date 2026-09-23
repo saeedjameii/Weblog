@@ -6,6 +6,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Services\PostService;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -67,7 +68,7 @@ class PostController extends Controller
     }
 
     public function myPosts(){
-        $posts = auth('api')->user()->posts()->with(['categories'])->latest()->get();
+        $posts = Post::withoutGlobalScope(SoftDeletingScope::class)->where('user_id', auth('api')->id())->with(['categories'])->latest()->get();
         return view('posts.my-posts', compact('posts'));
     }
 
@@ -107,5 +108,20 @@ class PostController extends Controller
         } catch(\Throwable $e){
             return redirect()->back()->with('error', 'پست شما حذف نشد لطفا دوباره تلاش کنید');
         }
+    }
+
+    public function restore($id){
+        $post = Post::withoutGlobalScope(SoftDeletingScope::class)->findOrFail($id);
+
+        Gate::authorize('restore', $post);
+        
+        if(!$post->trashed()){
+            return back()->withErrors([
+                'post' => 'این پست حذف نشده است'
+            ]);
+        }
+
+        $post->restore();
+        return back()->with('success', 'پست موردنظر با موفقیت بازیابی شد');
     }
 }
