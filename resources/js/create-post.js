@@ -1,6 +1,6 @@
 const form = document.getElementById("listing-form");
 if (form) {
-const title = document.getElementById("tool-title");
+const title = document.getElementById("post-title");
 const description = document.getElementById("description");
 const category = document.getElementById("category");
 const condition = document.getElementById("condition");
@@ -15,7 +15,7 @@ const endDate = document.getElementById("available-end");
 const startDateValue = document.getElementById("available-start-value");
 const endDateValue = document.getElementById("available-end-value");
 const jalaliCalendar = document.getElementById("jalali-calendar");
-const photoInput = document.getElementById("tool-photos");
+const photoInput = document.getElementById("post-photos");
 const thumbnailStrip = document.getElementById("thumbnail-strip");
 const photoStatus = document.getElementById("photo-status");
 const characterCount = document.getElementById("character-count");
@@ -27,7 +27,7 @@ const previewCategory = document.getElementById("preview-category");
 const previewMeta = document.getElementById("preview-meta");
 const previewPrice = document.getElementById("preview-price");
 const previewImage = document.getElementById("preview-image");
-const toolIllustration = document.querySelector(".tool-illustration");
+const toolIllustration = document.querySelector(".post-illustration");
 
 const tomanFormatter = new Intl.NumberFormat("fa-IR", { maximumFractionDigits: 0 });
 

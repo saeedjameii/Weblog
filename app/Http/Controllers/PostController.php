@@ -28,7 +28,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         //$categories = Category::where('type', 'post')
-        return view('tools.create', compact('categories'));
+        return view('posts.create', compact('categories'));
     }
 
     public function createPost(PostRequest $request)
@@ -63,18 +63,18 @@ class PostController extends Controller
         $categories = Category::all();
         //$categories = Category::where('type', 'post')
 
-        return view('tools.index', compact('posts', 'categories'));
+        return view('posts.index', compact('posts', 'categories'));
     }
 
     public function myPosts(){
         $posts = auth('api')->user()->posts()->with(['categories'])->latest()->get();
-        return view('tools.my-posts', compact('posts'));
+        return view('posts.my-posts', compact('posts'));
     }
 
     public function show(Post $post){
         $post->load(['categories', 'user']);
 
-        return view('tools.show', compact('post'));
+        return view('posts.show', compact('post'));
     }
 
     public function edit(Post $post)
@@ -84,7 +84,7 @@ class PostController extends Controller
         
         $categories = Category::all();
 
-        return view('tools.edit', compact('post', 'categories'));
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, Post $post)

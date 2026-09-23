@@ -36,8 +36,8 @@
                         <div class="field-grid">
 
                             <div class="field full-field">
-                                <label for="tool-title">تیتر خبر</label>
-                                <input class="form-control" id="tool-title" name="title" type="text" maxlength="255" value="{{ old('title') }}"
+                                <label for="post-title">تیتر خبر</label>
+                                <input class="form-control" id="post-title" name="title" type="text" maxlength="255" value="{{ old('title') }}"
                                     placeholder="مثلاً: تکنولوژی‌های جدید در سال ۲۰۲۶..." required>
                             </div>
 

@@ -1,5 +1,5 @@
 @extends('layout.master')
-@section('title', 'مدیریت کاربران — ToolShare')
+@section('title', 'مدیریت کاربران — خبرنامه')
 
 @section('header-actions')
     <a class="browse-link" href="{{ route('panel') }}">← بازگشت به صفحه قبل</a>

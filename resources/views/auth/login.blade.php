@@ -1,5 +1,5 @@
 @extends('layout.master')
-@section('title', 'Login — ToolShare')
+@section('title', 'ورود — خبرنامه')
 
 @section('header-actions')
     <a class="btn btn-secondary" href="{{ route('home') }}">خانه</a>
@@ -10,7 +10,7 @@
     <main class="auth-page">
       <div class="auth-card">
         <a class="logo auth-logo" href="{{ route('home') }}"
-          ><span class="logo-icon">🔧</span>ToolShare</a
+          ><span class="logo-icon">📰</span>خبرنامه</a
         >
         <h1>خوش آمدید</h1>
         <p class="auth-subtitle">

@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'Sign Up — ToolShare')
+@section('title', 'ثبت‌نام — خبرنامه')
 
 @section('header-actions')
     <a class="btn btn-secondary" href="{{ route('home') }}">خانه</a>
@@ -15,7 +15,7 @@
             </div>
         @endif
         <div class="auth-card">
-            <a class="logo auth-logo" href="#"><span class="logo-icon">🔧</span>ToolShare</a>
+            <a class="logo auth-logo" href="#"><span class="logo-icon">📰</span>خبرنامه</a>
             <h1>حساب کاربری خود را ایجاد کنید</h1>
             <p class="auth-subtitle">
                 به جامعه بپیوندید و شروع به قرض گرفتن یا به اشتراک گذاشتن ابزارها کنید.

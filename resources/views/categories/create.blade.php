@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'Create Category ToolShare')
+@section('title', 'ساخت دسته‌بندی — خبرنامه')
 
 
 @section('header-actions')

@@ -9,75 +9,64 @@
 <main class="page-area">
     <div class="main-content">
 
-        <section class="intro" style="max-width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
+        <section class="panel-header">
             <div>
                 <p class="kicker">پنل من</p>
-                <h1 class="display-font" style="font-size:clamp(2rem, 3.4vw, 3rem); margin:8px 0 0;">پست‌های من</h1>
-                <p class="intro-copy">ابزارهایی که خودتان ثبت کرده‌اید.</p>
+                <h1 class="display-font panel-title">اخبار و مقالات من</h1>
+                <p class="intro-copy">لیست تمامی اخباری که شما در سایت منتشر کرده‌اید.</p>
             </div>
             @can('permission', 'create-post')
             <a href="{{ route('create_post') }}" class="button button-primary">
-                + ثبت ابزار جدید
+                + انتشار خبر جدید
             </a>
             @endcan
         </section>
 
         @if (session('success'))
-            <div class="alert alert-success" style="margin-top:20px;">{{ session('success') }}</div>
+            <div class="alert alert-success mt-20">{{ session('success') }}</div>
         @endif
 
-        <div class="container browse-grid" style="margin-top:24px; padding:0;">
+        <div class="news-grid mt-24">
 
             @forelse ($posts as $post)
 
-                <article class="tool-card">
+                <article class="news-card">
+                    <div class="news-body">
 
-                    @if ($post->images->isNotEmpty())
-                        <img
-                            class="tool-image"
-                            src="{{ asset('storage/' . $post->images->first()->path) }}"
-                            alt="{{ $post->title }}"
-                        />
-                    @else
-                        <div class="tool-image">
-                            <p>تصویر موجود نیست</p>
+                        <div class="category-tags">
+                            @forelse ($post->categories as $category)
+                                <span class="tag">{{ $category->name }}</span>
+                            @empty
+                                <span class="tag">عمومی</span>
+                            @endforelse
                         </div>
-                    @endif
 
-                    <div class="tool-body">
-
-                        @if ($post->category)
-                            <span class="tag">{{ $post->category->name }}</span>
-                        @endif
-
-                        <h3>{{ $post->title }}</h3>
-                        <p>{{ $post->description }}</p>
+                        <h3><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h3>
+                        <p class="news-excerpt">{{ Str::limit($post->description, 100) }}</p>
 
                         <div class="card-bottom">
-                            <span class="price">{{ \Illuminate\Support\Number::format($post->first_day_price, 0, null, 'fa') }} تومان در روز</span>
-                            <a href="{{ route('posts.show', $post) }}">جزئیات</a>
+                            <a class="read-more" href="{{ route('posts.show', $post) }}">مشاهده خبر ←</a>
                         </div>
 
-                        <div style="display:flex; gap:8px; margin-top:12px;">
-                            <a href="{{ route('posts.edit', $post) }}" class="btn btn-secondary" style="flex:1; text-align:center;">ویرایش</a>
+                        <div class="card-actions">
+                            <a href="{{ route('posts.edit', $post) }}" class="btn btn-secondary action-btn">ویرایش</a>
 
-                            <form action="{{ route('posts.destroy', $post) }}" method="POST" style="flex:1;" onsubmit="return confirm('حذف شود؟');">
+                            <form action="{{ route('posts.destroy', $post) }}" method="POST" class="action-form" onsubmit="return confirm('آیا از حذف این خبر مطمئن هستید؟');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn text-danger" style="width:100%; border:1px solid var(--line); background:none;">حذف</button>
+                                <button type="submit" class="btn btn-outline-danger action-btn">حذف</button>
                             </form>
                         </div>
 
                     </div>
-
                 </article>
 
             @empty
 
-                <div class="alert alert-info" style="grid-column:1/-1;">
-                    هنوز هیچ ابزاری ثبت نکرده‌اید. 
+                <div class="alert alert-info full-width">
+                    هنوز هیچ خبری منتشر نکرده‌اید. 
                     @can('permission', 'create-post')
-                    <a href="{{ route('create_post') }}">همین الان اولین ابزارت رو ثبت کن</a>.
+                    <a href="{{ route('create_post') }}" class="fw-bold">همین الان اولین خبر خود را منتشر کنید</a>.
                     @endcan
                 </div>
 

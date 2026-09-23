@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'Categories — ToolShare')
+@section('title', 'دسته‌بندی‌ها — خبرنامه')
 
 @section('content')
 

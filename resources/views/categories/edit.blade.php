@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'Edit Category ToolShare')
+@section('title', 'ویرایش دسته‌بندی — خبرنامه')
 
 @section('header-actions')
     <a class="browse-link" href="{{ route('categories.index') }}">← بازگشت به صفحه قبل</a>
