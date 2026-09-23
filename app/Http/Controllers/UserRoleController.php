@@ -51,7 +51,7 @@ class UserRoleController extends Controller
         }
 
         if($user->isCreator()){
-            abort(403, 'نقش creator قابل بازگشت نمی‌باشد');
+            abort(403, 'creator قابل بازگشت نمی‌باشد');
         }
         
         $user->restore();
