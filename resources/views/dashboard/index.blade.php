@@ -32,23 +32,23 @@
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px; margin-top:24px;">
 
             <div class="form-card">
-                <h3 style="margin-top:0;">📦 ابزارهای من</h3>
-                <p style="color:var(--muted);">ابزارهایی که خودتان ثبت کرده‌اید را ببینید، ویرایش یا حذف کنید.</p>
+                <h3 style="margin-top:0;">📦 اخبار من</h3>
+                <p style="color:var(--muted);">اخباری که خودتان ثبت کرده‌اید را ببینید، ویرایش یا حذف کنید.</p>
                 <a href="{{ route('posts.mine') }}" class="button button-primary" style="width:100%; text-align:center;">مشاهده‌ی پست‌های من</a>
             </div>
 
             @can('permission', 'create-post')
                 <div class="form-card">
-                    <h3 style="margin-top:0;">➕ ثبت ابزار جدید</h3>
-                    <p style="color:var(--muted);">یک ابزار تازه برای اجاره در سایت ثبت کنید.</p>
-                    <a href="{{ route('create_post') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت ابزار</a>
+                    <h3 style="margin-top:0;">➕ ثبت خبر جدید</h3>
+                    <p style="color:var(--muted);">یک خبر تازه برای اجاره در سایت ثبت کنید.</p>
+                    <a href="{{ route('create_post') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت خبر</a>
                 </div>
             @endcan
 
             @canany(['create-category', 'update-category', 'delete-category'])
                 <div class="form-card">
                     <h3 style="margin-top:0;">📁 مدیریت دسته‌بندی‌ها</h3>
-                    <p style="color:var(--muted);">دسته‌بندی و زیردسته‌بندی ابزارها را بسازید یا ویرایش کنید.</p>
+                    <p style="color:var(--muted);">دسته‌بندی و زیردسته‌بندی اخبار را بسازید یا ویرایش کنید.</p>
 
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
                         <a href="{{ route('categories.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست دسته‌بندی‌ها</a>
