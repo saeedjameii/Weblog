@@ -83,6 +83,14 @@
                 </div>
             @endcanany
 
+            @can('permission', 'delete-any-post')
+                <div class="form-card">
+                    <h3 style="margin-top:0;">پست های حذف شده</h3>
+                    <p style="color:var(--muted);">پست های درون سطل زباله را ببینید و در صورت نیاز آن ها را بازیابی کنید</p>
+                    <a href="{{ route('posts.trashed') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت پست های حذف شده</a>
+                </div>
+            @endcan
+
         </div>
 
     </div>

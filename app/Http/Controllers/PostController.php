@@ -124,4 +124,9 @@ class PostController extends Controller
         $post->restore();
         return back()->with('success', 'پست موردنظر با موفقیت بازیابی شد');
     }
+
+    public function trashed(){
+        $posts = Post::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->with('categories', 'user')->latest()->get();
+        return view('posts.trashed', compact('posts'));
+    }
 }

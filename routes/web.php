@@ -30,6 +30,7 @@ Route::prefix('posts')->group(function (){
         Route::post('/create', [PostController::class, 'createPost'])->name('create_post.post');
     });
 
+    Route::get('/trashed', [PostController::class, 'trashed'])->middleware('permission:delete-any-post')->name('posts.trashed');
     Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
 
