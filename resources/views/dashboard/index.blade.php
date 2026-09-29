@@ -22,7 +22,7 @@
                     @forelse ($user->roles as $role)
                         <span class="tag">{{ $role->name }}</span>
                     @empty
-                        <span class="tag">کاربر عادی</span>
+                        <span class="tag">ادمین</span>
                     @endforelse
                 @endif
                 — فقط بخش‌هایی که به آن‌ها دسترسی دارید در پایین نمایش داده می‌شود.

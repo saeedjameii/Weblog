@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserLevel;
 use App\Http\Requests\UserRoleRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -9,13 +10,13 @@ use App\Models\User;
 class UserRoleController extends Controller
 {
     public function index(){
-        
+
         $users = User::withTrashed()->with('roles')->orderBy('first_name')->get();
         $roles = Role::all();
 
         return view('admin.users.index', compact('users', 'roles'));
     }
-    
+
     public function update(UserRoleRequest $request, User $user){
         $data = $request->validated();
 
@@ -23,8 +24,30 @@ class UserRoleController extends Controller
             abort(403, 'نقش creator قابل تغییر نمی‌باشد');
         }
 
+        if(! $user->isAdmin()){
+            abort(403, 'ابتدا این کاربر را به سطح ادمین ارتقا دهید');
+        }
+
         $user->roles()->sync($data['role_ids'] ?? []);
         return back()->with('success', 'نقش کاربر با موفقیت بروزرسانی شد');
+    }
+
+    public function promote(User $user){
+        if(! auth('api')->user()->isCreator()){
+            abort(403, 'فقط سازنده می‌تواند سطح دسترسی کاربران را تغییر دهد');
+        }
+
+        if($user->isCreator()){
+            abort(403, 'سطح دسترسی creator قابل تغییر نیست');
+        }
+
+        if($user->isAdmin()){
+            return back()->with('success', 'این کاربر از قبل ادمین است');
+        }
+
+        $user->update(['level' => UserLevel::Admin]);
+
+        return back()->with('success', 'کاربر با موفقیت به سطح ادمین ارتقا یافت');
     }
 
     public function destroy(User $user){
@@ -53,7 +76,7 @@ class UserRoleController extends Controller
         if($user->isCreator()){
             abort(403, 'creator قابل بازگشت نمی‌باشد');
         }
-        
+
         $user->restore();
         return back()->with('success', 'کاربر با موفقیت بازیابی شد');
     }

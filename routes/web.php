@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
 
-Route::get('/panel', [DashboardController::class, 'index'])->middleware(JwtCookieMiddleware::class)->name('panel');
+Route::get('/panel', [DashboardController::class, 'index'])->middleware([JwtCookieMiddleware::class, 'can:access-panel'])->name('panel');
 
 Route::get('sign-up', [AuthController::class, 'signUp'])->name('signUp');
 Route::post('sign-up', [AuthController::class, 'signUpPost'])->name('signUp.post');
@@ -57,6 +57,7 @@ Route::get('/users', [UserRoleController::class, 'index'])->middleware('permissi
 Route::put('/users/{user}/role', [UserRoleController::class, 'update'])->middleware('permission:assign-role')->name('users.role.update');
 Route::delete('/users/{user}', [UserRoleController::class, 'destroy'])->middleware('permission:manage-users,assign-role')->name('users.destroy');
 Route::patch('/users/{id}/restore', [UserRoleController::class, 'restore'])->middleware('permission:manage-users')->name('users.restore');
+Route::patch('/users/{user}/promote', [UserRoleController::class, 'promote'])->middleware(JwtCookieMiddleware::class)->name('users.promote');
 
 Route::get('/roles', [RoleController::class, 'index'])->middleware('permission:create-role,update-role')->name('roles.index');
 Route::get('/roles/create', [RoleController::class, 'create'])->middleware('permission:create-role')->name('roles.create');

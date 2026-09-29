@@ -17,12 +17,6 @@ class User extends Authenticatable implements JWTSubject
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    public const DEFAULT_PERMISSIONS =[
-        'create-post',
-        'update-own-post',
-        'delete-own-post',
-    ];
-
     /** @var list<string>|null */
     protected ?array $permissionNamesCache = null;
 
@@ -86,12 +80,26 @@ class User extends Authenticatable implements JWTSubject
         return $this->level === UserLevel::Creator;
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->level === UserLevel::Admin;
+    }
+
+    public function canAccessPanel(): bool
+    {
+        return $this->isCreator() || $this->isAdmin();
+    }
+
     public function hasPermission(string $permission): bool{
         if($this->isCreator()){
             return true;
         }
 
-        return in_array($permission, $this->permissionNames(), true);        
+        if(! $this->isAdmin()){
+            return false;
+        }
+
+        return in_array($permission, $this->permissionNames(), true);  
     }
 
     /**
@@ -101,11 +109,9 @@ class User extends Authenticatable implements JWTSubject
         if($this->permissionNamesCache !== null){
             return $this->permissionNamesCache;
         }
-        $roles = $this->roles()->with('permissions')->get();
 
-        if($roles->isEmpty()){
-            return $this->permissionNamesCache = self::DEFAULT_PERMISSIONS;
-        }
-        return $this->permissionNamesCache = $roles->flatMap(fn($role) => $role->permissions->pluck('name'))->unique()->values()->all();
+        return $this->permissionNamesCache = $this->roles()->with('permissions')->get()->flatMap(
+            fn($role) => $role->permissions->pluck('name'))
+            ->unique()->values()->all();
     }
 }

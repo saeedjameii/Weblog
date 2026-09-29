@@ -41,15 +41,17 @@
                                     <span class="account-status {{ $user->trashed() ? 'status-deleted' : 'status-active' }}">{{ $user->trashed() ? 'غیرفعال' : 'فعال' }}</span>
                                 </div>
                                 <p>{{ $user->email }}</p>
-                                <div class="role-tags" aria-label="نقش‌های کاربر">
+                                <div class="role-tags" aria-label="سطح و نقش‌های کاربر">
                                     @if ($user->isCreator())
                                         <span class="tag">creator</span>
-                                    @else
+                                    @elseif ($user->isAdmin())
                                         @forelse ($user->roles as $role)
                                             <span class="tag">{{ $role->name }}</span>
                                         @empty
-                                            <span class="no-role">بدون نقش</span>
+                                            <span class="no-role">ادمین بدون نقش</span>
                                         @endforelse
+                                    @else
+                                        <span class="no-role">کاربر عادی</span>
                                     @endif
                                 </div>
                             </div>
@@ -59,19 +61,27 @@
                             <div class="creator-notice">حساب سازنده قابل تغییر نیست</div>
                         @else
                             <div class="user-actions">
-                                <form action="{{ route('users.role.update', $user) }}" method="POST" class="role-form">
-                                    @csrf
-                                    @method('PUT')
-                                    <label class="sr-only" for="roles-{{ $user->id }}">نقش‌های {{ $user->first_name }}</label>
-                                    @if(!$user->trashed())
-                                    <select id="roles-{{ $user->id }}" class="form-control role-select" name="role_ids[]" multiple>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="button button-secondary">ذخیره نقش‌ها</button>
-                                    @endif
-                                </form>
+                                @if ($user->isAdmin())
+                                    <form action="{{ route('users.role.update', $user) }}" method="POST" class="role-form">
+                                        @csrf
+                                        @method('PUT')
+                                        <label class="sr-only" for="roles-{{ $user->id }}">نقش‌های {{ $user->first_name }}</label>
+                                        @if(!$user->trashed())
+                                        <select id="roles-{{ $user->id }}" class="form-control role-select" name="role_ids[]" multiple>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <button type="submit" class="button button-secondary">ذخیره نقش‌ها</button>
+                                        @endif
+                                    </form>
+                                @elseif (auth('api')->user()->isCreator() && ! $user->trashed())
+                                    <form action="{{ route('users.promote', $user) }}" method="POST" onsubmit="return confirm('این کاربر به سطح ادمین ارتقا یابد؟');">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="button button-primary">ارتقا به ادمین</button>
+                                    </form>
+                                @endif
 
                                 @can('permission', 'manage-users')
                                     @if ($user->trashed())

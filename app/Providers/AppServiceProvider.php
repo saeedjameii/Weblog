@@ -29,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasPermission($permission);
         });
 
+        Gate::define('access-panel', function($user){
+            return $user->canAccessPanel();
+        });
+
         // $permissions = Cache::remember('permissions.all', 3600, function () {
         //     return Permission::all();
         // });

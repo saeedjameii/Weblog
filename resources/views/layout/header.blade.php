@@ -32,7 +32,7 @@
                     @csrf
                     <button class="btn btn-secondary" type="submit">خروج</button>
                 </form>
-                <a class="btn btn-secondary" href="{{ route('panel') }}">پنل کاربری</a>
+                @can('access-panel') <a class="btn btn-secondary" href="{{ route('panel') }}">پنل کاربری</a> @endcan
                 <p>
                     👤 {{ auth('api')->user()->first_name }}
                 </p>
