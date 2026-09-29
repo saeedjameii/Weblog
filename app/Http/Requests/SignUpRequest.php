@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\ValidJalaliDate;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Morilog\Jalali\Jalalian;
 

@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\Permission;
 use App\Models\Post;
 use App\Policies\PostPolicy;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,9 +32,6 @@ class AppServiceProvider extends ServiceProvider
             return $user->canAccessPanel();
         });
 
-        // $permissions = Cache::remember('permissions.all', 3600, function () {
-        //     return Permission::all();
-        // });
         $permissions = Permission::all();
         foreach ($permissions as $permission) {
             Gate::define($permission->name, function($user) use ($permission){
