@@ -3,6 +3,9 @@
     <div class="category-node-name">
         <span> {{ $category->name }} </span>
         <div class="category-actions">
+            <a href="{{ route('posts.index', ['category_id' => $category->id]) }}" class="btn btn-primary">
+                پست‌های این دسته
+            </a>
             @can('permission', 'update-category')
                 <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-secondary">ویرایش</a>
             @endcan
