@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Morilog\Jalali\Jalalian;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -21,27 +20,17 @@ class AuthController extends Controller
 
     public function signUpPost(SignUpRequest $request) 
     {
-
-        try {
-            $jalaliDate = Jalalian::fromFormat('Y/m/d', $request->birth_date);
-
-            if ($jalaliDate->format('Y/m/d') !== $request->birth_date) {
-                throw new \InvalidArgumentException('Invalid Jalali date after normalization.');
-            }
-
-            $birthDate = $jalaliDate->toCarbon()->format('Y-m-d');
-        } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->withErrors(['birth_date' => 'تاریخ تولد وارد شده معتبر نیست. لطفاً از فرمت YYYY/MM/DD استفاده کنید (مثلاً 1405/06/12).']);
-        }
+        $data = $request->validated();
+        $data['birth_date'] = $request->birth_date;
 
         User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'birth_date' => $birthDate,
-            'national_code' => $request->national_code,
-            'password' => Hash::make($request->password),
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
+            'birth_date' => $data['birth_date'],
+            'national_code' => $data['national_code'],
+            'password' => Hash::make($data['password']),
             'level' => UserLevel::User,
         ]);
 

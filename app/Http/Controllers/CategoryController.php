@@ -43,13 +43,6 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, Category $category){
         $data = $request->validated();
 
-        if(!empty($data['parent_id'])){
-            $parent = Category::findOrFail($data['parent_id']);
-            if(!$category->isValidParent($parent)){
-                abort(422, 'این دسته بندی نمی‌تواند والد انتخاب شده باشد');
-            }
-        }
-
         $category->update($data);
 
         return redirect()->route('categories.index')->with('success', 'دسته‌بندی مورد نظر با موفقیت ویرایش شد');

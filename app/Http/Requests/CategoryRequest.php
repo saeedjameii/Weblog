@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidCategoryParent;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CategoryRequest extends FormRequest
@@ -25,7 +26,7 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|max:250|string',
             'type' => 'required|string|in:post',
-            'parent_id' => 'nullable|exists:categories,id',
+            'parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent($this->route('category'))],
         ];
     }
 }
