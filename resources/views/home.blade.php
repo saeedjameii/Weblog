@@ -29,7 +29,7 @@
         <div class="hero-buttons">
           <a class="btn btn-primary" href="{{ route('posts.index') }}">مرور آخرین اخبار</a>
           @can('permission', 'create-post')
-              <a class="btn btn-secondary" href="{{ route('create_post') }}">ارسال خبر جدید</a>
+              <a class="btn btn-secondary" href="{{ route('posts.create') }}">ارسال خبر جدید</a>
           @endcan
         </div>
       </div>

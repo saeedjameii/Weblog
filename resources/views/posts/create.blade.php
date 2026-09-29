@@ -14,7 +14,7 @@
             </section>
 
             <div class="workspace" style="grid-template-columns: 1fr; max-width: 800px;">
-                <form action="{{ route('create_post.post') }}" method="POST" enctype="multipart/form-data" id="listing-form" class="form-card">
+                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" id="listing-form" class="form-card">
                     @csrf
                     @if ($errors->any())
                         <div class="validation-message" style="display:block;margin-bottom:16px;">

@@ -21,58 +21,68 @@ Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::prefix('posts')->group(function (){
-    Route::get('/', [PostController::class, 'index'])->name('posts.index');
-    Route::get('/my-posts', [PostController::class, 'myPosts'])->middleware(JwtCookieMiddleware::class)->name('posts.mine');
+Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('index');
 
-    Route::middleware(['permission:create-post'])->group(function () {
-        Route::get('/create', [PostController::class, 'create'])->name('create_post');
-        Route::post('/create', [PostController::class, 'createPost'])->name('create_post.post');
+    Route::get('/my-posts', [PostController::class, 'myPosts'])->middleware(JwtCookieMiddleware::class)->name('mine');
+
+    Route::middleware('permission:create-post')->group(function () {
+        Route::get('/create', [PostController::class, 'create'])->name('create');
+        Route::post('/create', [PostController::class, 'createPost'])->name('store');
     });
 
-    Route::get('/trashed', [PostController::class, 'trashed'])->middleware('permission:delete-any-post')->name('posts.trashed');
-    Route::get('/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-    Route::put('/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::get('/trashed', [PostController::class, 'trashed'])->middleware('permission:delete-any-post')->name('trashed');
 
-    Route::delete('/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-    Route::patch('/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
-    
-    Route::get('/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/{post}/edit', [PostController::class, 'edit'])->name('edit');
+    Route::put('/{post}', [PostController::class, 'update'])->name('update');
+    Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+    Route::patch('/{id}/restore', [PostController::class, 'restore'])->name('restore');
+
+    Route::get('/{post}', [PostController::class, 'show'])->name('show');
 });
 
-Route::prefix('categories')->group(function(){
-    Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
-    Route::middleware(['permission:create-category'])->group(function () {
-        Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
-        Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
+Route::prefix('categories')->name('categories.')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('index');
+
+    Route::middleware('permission:create-category')->group(function () {
+        Route::get('/create', [CategoryController::class, 'create'])->name('create');
+        Route::post('/', [CategoryController::class, 'store'])->name('store');
     });
-    Route::middleware(['permission:update-category'])->group(function () {
-        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-        Route::post('/{category}', [CategoryController::class, 'update'])->name('categories.update');
+
+    Route::middleware('permission:update-category')->group(function () {
+        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
+        Route::post('/{category}', [CategoryController::class, 'update'])->name('update');
     });
-    Route::delete('/{category}', [CategoryController::class, 'destroy'])->middleware('permission:delete-category')->name('categories.destroy');
+
+    Route::delete('/{category}', [CategoryController::class, 'destroy'])->middleware('permission:delete-category')->name('destroy');
 });
 
-Route::prefix('users')->group(function(){
-    Route::middleware(['permission:assign-role'])->group(function(){
-        Route::get('/', [UserRoleController::class, 'index'])->name('users.index');
-        Route::put('/{user}/role', [UserRoleController::class, 'update'])->name('users.role.update');
+Route::prefix('users')->name('users.')->group(function () {
+    Route::middleware('permission:assign-role')->group(function () {
+        Route::get('/', [UserRoleController::class, 'index'])->name('index');
+        Route::put('/{user}/role', [UserRoleController::class, 'update'])->name('role.update');
     });
-    Route::delete('/{user}', [UserRoleController::class, 'destroy'])->middleware('permission:assign-role,manage-users')->name('users.destroy');
-    Route::patch('/{id}/restore', [UserRoleController::class, 'restore'])->middleware('permission:manage-users')->name('users.restore');
-    Route::patch('/{user}/promote', [UserRoleController::class, 'promote'])->middleware(JwtCookieMiddleware::class)->name('users.promote');
+
+    Route::delete('/{user}', [UserRoleController::class, 'destroy'])->middleware('permission:assign-role,manage-users')->name('destroy');
+
+    Route::patch('/{id}/restore', [UserRoleController::class, 'restore'])->middleware('permission:manage-users')->name('restore');
+
+    Route::patch('/{user}/promote', [UserRoleController::class, 'promote'])->middleware(JwtCookieMiddleware::class)->name('promote');
 });
 
-Route::prefix('roles')->group(function(){
-    Route::get('/', [RoleController::class, 'index'])->middleware('permission:create-role,update-role')->name('roles.index');
-    Route::middleware(['permission:create-role'])->group(function(){
-        Route::get('/create', [RoleController::class, 'create'])->name('roles.create');
-        Route::post('/', [RoleController::class, 'store'])->name('roles.store');
+Route::prefix('roles')->name('roles.')->group(function () {
+    Route::get('/', [RoleController::class, 'index'])->middleware('permission:create-role,update-role')->name('index');
+
+    Route::middleware('permission:create-role')->group(function () {
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
     });
-    Route::middleware(['permission:update-role'])->group(function(){
-        Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-        Route::put('/{role}', [RoleController::class, 'update'])->name('roles.update');
+
+    Route::middleware('permission:update-role')->group(function () {
+        Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
     });
-    Route::delete('/{role}', [RoleController::class, 'destroy'])->middleware('permission:delete-role')->name('roles.destroy');
+
+    Route::delete('/{role}', [RoleController::class, 'destroy'])->middleware('permission:delete-role')->name('destroy');
 });
 

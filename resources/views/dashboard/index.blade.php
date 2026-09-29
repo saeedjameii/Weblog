@@ -41,7 +41,7 @@
                 <div class="form-card">
                     <h3 style="margin-top:0;">➕ ثبت خبر جدید</h3>
                     <p style="color:var(--muted);">یک خبر تازه برای اجاره در سایت ثبت کنید.</p>
-                    <a href="{{ route('create_post') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت خبر</a>
+                    <a href="{{ route('posts.create') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت خبر</a>
                 </div>
             @endcan
 

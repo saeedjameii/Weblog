@@ -16,7 +16,7 @@
                 <p class="intro-copy">لیست تمامی اخباری که شما در سایت منتشر کرده‌اید.</p>
             </div>
             @can('permission', 'create-post')
-            <a href="{{ route('create_post') }}" class="button button-primary">
+            <a href="{{ route('posts.create') }}" class="button button-primary">
                 + انتشار خبر جدید
             </a>
             @endcan
@@ -99,7 +99,7 @@
                 <div class="alert alert-info full-width">
                     هنوز هیچ خبری منتشر نکرده‌اید. 
                     @can('permission', 'create-post')
-                    <a href="{{ route('create_post') }}" class="fw-bold">همین الان اولین خبر خود را منتشر کنید</a>.
+                    <a href="{{ route('posts.create') }}" class="fw-bold">همین الان اولین خبر خود را منتشر کنید</a>.
                     @endcan
                 </div>
 
