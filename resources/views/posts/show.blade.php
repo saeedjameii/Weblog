@@ -26,7 +26,7 @@
 
         <!-- Article Content -->
         <div style="max-width: 800px; margin: 0 auto;">
-            <div style="line-height: 2; font-size: 1.15rem; color: var(--ink); text-align: justify;">
+            <div style="line-height: 2; font-size: 1.15rem; color: var(--ink); text-align: justify; overflow-wrap: anywhere;">
                 {!! nl2br(e($post->description)) !!}
             </div>
 

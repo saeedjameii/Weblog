@@ -23,17 +23,6 @@ class CheckPermission
             return redirect()->route('login')->withCookie(cookie()->forget('token'))->withErrors('email', 'حساب کاربری شما حذف شده است');
         }
 
-        // try{
-        //     $user = JWTAuth::setToken($token)->authenticate();
-        //     if(!$user || $user->trashed()){
-        //         JWTAuth::invalidate($token);
-        //         return redirect()->route('login')->withCookie(cookie()->forget('token'))->withErrors('email', 'حساب کاربری شما حذف شده است');
-        //     }
-        // }
-        // catch(\Throwable $e){
-        //     return redirect()->route('login')->withCookie(cookie()->forget('token'))->withErrors(['email' => 'لطفا ابتدا وارد حساب خود شوید.']);
-        // }
-
         foreach ($permissions as $permission) {
             if ($user->hasPermission($permission)) {
                 return $next($request);
@@ -42,6 +31,5 @@ class CheckPermission
 
         abort(403);
 
-        // return $next($request);
     }
 }
