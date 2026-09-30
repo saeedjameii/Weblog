@@ -1,33 +1,42 @@
-# Weblog
+<h1 align="center">
+  Laravel Advanced Weblog ✍️
+</h1>
 
-A Laravel-powered blog and content management platform for publishing posts, organizing categories, managing users, and controlling access with role-based permissions.
+<p align="center">
+  <strong>A fully-featured, robust, and scalable weblog platform built with Laravel.</strong>
+</p>
 
-## Project Overview
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
+  <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+</p>
 
-Weblog is a modern blog application built with Laravel 12 and PHP 8.2. It includes a full admin workflow for managing posts, categories, authentication, and user roles. The project is designed for a content-driven website where authors can publish content while administrators control permissions and platform access.
+<hr>
 
-## Features
+## 📖 About The Project
 
-- User registration and login
-- JWT-based authentication with cookie support
-- Role and permission management
-- User promotion and role assignment
-- Blog post creation, editing, deletion, and restore support
-- Category management
-- Dashboard access for authorized users
-- Soft deletes for safer data handling
-- Jalali date support for Persian/IR date formatting
+This is a comprehensive Weblog application designed to provide a seamless experience for both readers and content creators. Under the hood, it leverages the power of Laravel with an advanced architecture including **JWT-based authentication (stored securely in cookies)**, a dynamic **Role-Based Access Control (RBAC)** system, and **hierarchical categorization**. 
 
-## Tech Stack
+Specially tailored for localization, it includes built-in support for **Jalali dates**, making it a perfect fit for Persian/Iranian users.
 
-- PHP 8.2
-- Laravel 12
-- MySQL / database-driven app
-- JWT Auth
-- Composer
-- NPM / Vite
-- Jalali date library (`morilog/jalali`)
+## ✨ Key Features
 
+- **🔐 Secure Authentication:** Custom JWT integration handled via HTTP-only cookies for enhanced security against XSS.
+- **🛡️ Advanced RBAC:** Granular control over user roles and permissions (Dynamic DB-driven access control).
+- **📝 Post Management:** Create, edit, publish, and delete articles with rich text and media. Includes Soft Deletes (Trash functionality).
+- **📂 Nested Categories:** Infinite depth category trees for organizing posts efficiently.
+- **📅 Jalali Date Validation:** Native support and validation for the Persian calendar (`ValidJalaliDate` rule).
+- **👥 User Dashboard:** Dedicated panel for users to manage their own posts and profile.
+- **🛠️ Admin Panel:** Centralized dashboard for administrators to oversee users, roles, categories, and site content.
+
+## 🧰 Tech Stack
+
+- **Backend:** Laravel (PHP)
+- **Database:** MySQL / SQLite (Configurable)
+- **Frontend:** Blade Templates, HTML5/CSS3, Vite for asset bundling
+- **Auth:** JWT (JSON Web Tokens) Custom implementation
+- **Design Pattern:** Service/Repository Patterns (Extracted logic into `app/Services`)
 ## Main Modules
 
 - `posts` — create, view, edit, restore, and delete blog posts
