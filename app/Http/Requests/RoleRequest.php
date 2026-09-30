@@ -26,7 +26,6 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         $role = $this->route('role');
-        $createRolePermissionId = Permission::where('name', 'create-role')->value('id');
 
         return [
             'name' => [
@@ -39,7 +38,6 @@ class RoleRequest extends FormRequest
             'permissions' => 'nullable|array',
             'permissions.*' => [
                 'exists:permissions,id',
-                Rule::notIn(array_filter([$createRolePermissionId])),
             ],
         ];
     }
