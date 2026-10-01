@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Enums\UserLevel;
-use App\Models\Permission;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
