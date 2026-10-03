@@ -51,7 +51,7 @@ Route::prefix('categories')->name('categories.')->group(function () {
 
     Route::middleware('permission:update-category')->group(function () {
         Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
-        Route::post('/{category}', [CategoryController::class, 'update'])->name('update');
+        Route::put('/{category}', [CategoryController::class, 'update'])->name('update');
     });
 
     Route::delete('/{category}', [CategoryController::class, 'destroy'])->middleware('permission:delete-category')->name('destroy');
