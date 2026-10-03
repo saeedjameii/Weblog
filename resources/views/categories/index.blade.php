@@ -24,7 +24,7 @@
                 <h1 class="display-font" style="font-size:clamp(2rem, 3.4vw, 3rem); margin:8px 0 0;">دسته‌بندی‌ها</h1>
            </div>
             @can('permission', 'create-category')
-                <a href="{{ route('categories.create') }}" class="button button-primary">
+                <a href="{{ route('panel.categories.create') }}" class="button button-primary">
                     + ساخت دسته‌بندی جدید
                 </a>
             @endcan
@@ -74,7 +74,7 @@
 
                     <p style="color:var(--muted);">شما هنوز هیچ دسته‌بندی‌ای ایجاد نکرده‌اید.</p>
 
-                    <a href="{{ route('categories.create') }}" class="button button-primary" style="margin-top:14px;">
+                    <a href="{{ route('panel.categories.create') }}" class="button button-primary" style="margin-top:14px;">
                         + ساخت دسته‌بندی جدید
                     </a>
 

@@ -34,14 +34,14 @@
             <div class="form-card">
                 <h3 style="margin-top:0;">📦 اخبار من</h3>
                 <p style="color:var(--muted);">اخباری که خودتان ثبت کرده‌اید را ببینید، ویرایش یا حذف کنید.</p>
-                <a href="{{ route('posts.mine') }}" class="button button-primary" style="width:100%; text-align:center;">مشاهده‌ی پست‌های من</a>
+                <a href="{{ route('panel.posts.mine') }}" class="button button-primary" style="width:100%; text-align:center;">مشاهده‌ی پست‌های من</a>
             </div>
 
             @can('permission', 'create-post')
                 <div class="form-card">
                     <h3 style="margin-top:0;">➕ ثبت خبر جدید</h3>
                     <p style="color:var(--muted);">یک خبر تازه برای اجاره در سایت ثبت کنید.</p>
-                    <a href="{{ route('posts.create') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت خبر</a>
+                    <a href="{{ route('panel.posts.create') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت خبر</a>
                 </div>
             @endcan
 
@@ -54,7 +54,7 @@
                         <a href="{{ route('categories.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست دسته‌بندی‌ها</a>
 
                         @can('permission', 'create-category')
-                            <a href="{{ route('categories.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ جدید</a>
+                            <a href="{{ route('panel.categories.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ جدید</a>
                         @endcan
                     </div>
                 </div>
@@ -66,10 +66,10 @@
                     <p style="color:var(--muted);">نقش‌ها و اختیارات (permission) هر نقش را تعریف کنید.</p>
 
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <a href="{{ route('roles.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست نقش‌ها</a>
+                        <a href="{{ route('panel.roles.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست نقش‌ها</a>
 
                         @can('permission', 'create-role')
-                            <a href="{{ route('roles.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ نقش جدید</a>
+                            <a href="{{ route('panel.roles.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ نقش جدید</a>
                         @endcan
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                 <div class="form-card">
                     <h3 style="margin-top:0;">👥 مدیریت کاربران</h3>
                     <p style="color:var(--muted);">به کاربران نقش بدهید یا حساب‌های کاربری را مدیریت کنید.</p>
-                    <a href="{{ route('users.index') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت کاربران</a>
+                    <a href="{{ route('panel.users.index') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت کاربران</a>
                 </div>
             @endcanany
 
@@ -87,7 +87,7 @@
                 <div class="form-card">
                     <h3 style="margin-top:0;">پست های حذف شده</h3>
                     <p style="color:var(--muted);">پست های درون سطل زباله را ببینید و در صورت نیاز آن ها را بازیابی کنید</p>
-                    <a href="{{ route('posts.trashed') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت پست های حذف شده</a>
+                    <a href="{{ route('panel.posts.trashed') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت پست های حذف شده</a>
                 </div>
             @endcan
 

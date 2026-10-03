@@ -19,7 +19,7 @@
         </section>
 
         <div class="workspace">
-            <form action="{{ route('categories.store') }}" method="POST" class="form-card">
+            <form action="{{ route('panel.categories.store') }}" method="POST" class="form-card">
                 @csrf
                 <input type="hidden" name="type" value="post">
                 <div class="field-grid">

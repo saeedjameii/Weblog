@@ -18,7 +18,7 @@
         </section>
 
         <div class="workspace">
-            <form action="{{ route('categories.update', $category) }}" method="POST" class="form-card">
+            <form action="{{ route('panel.categories.update', $category) }}" method="POST" class="form-card">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="type" value="{{ $category->type }}">

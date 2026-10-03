@@ -3,7 +3,7 @@
 @section('title', 'ویرایش نقش - خبرنامه')
 
 @section('header-actions')
-    <a class="browse-link" href="{{ route('roles.index') }}">← بازگشت به صفحه قبل</a>
+    <a class="browse-link" href="{{ route('panel.roles.index') }}">← بازگشت به صفحه قبل</a>
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
         </section>
 
         <div class="workspace">
-            <form action="{{ route('roles.update', $role) }}" method="POST" class="form-card">
+            <form action="{{ route('panel.roles.update', $role) }}" method="POST" class="form-card">
 
                 @csrf
                 @method('PUT')

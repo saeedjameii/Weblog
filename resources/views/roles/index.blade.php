@@ -14,7 +14,7 @@
             <h1 class="display-font" style="font-size:clamp(2rem, 3.4vw, 3rem); margin:0;">نقش ها</h1>
 
             @can('permission', 'create-role')
-                <a href="{{ route('roles.create') }}" class="button button-primary">
+                <a href="{{ route('panel.roles.create') }}" class="button button-primary">
                     ساخت نقش
                 </a>
             @endcan
@@ -56,7 +56,7 @@
                         @can('permission', 'update-role')
                             @if ($role->name !== 'creator')
                                 <a
-                                    href="{{ route('roles.edit', $role) }}"
+                                    href="{{ route('panel.roles.edit', $role) }}"
                                     class="btn btn-secondary"
                                 >
                                     ویرایش
@@ -71,7 +71,7 @@
                             @if ($role->name !== 'creator')
 
                                 <form
-                                    action="{{ route('roles.destroy', $role) }}"
+                                    action="{{ route('panel.roles.destroy', $role) }}"
                                     method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this role?');"
                                     style="display:inline;"

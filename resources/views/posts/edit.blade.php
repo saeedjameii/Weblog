@@ -15,7 +15,7 @@
         </section>
 
         <div class="workspace" style="grid-template-columns: 1fr; max-width: 800px;">
-            <form action="{{ route('posts.update', $post) }}" method="POST" class="form-card">
+            <form action="{{ route('panel.posts.update', $post) }}" method="POST" class="form-card">
 
                 @csrf
                 @method('PUT')

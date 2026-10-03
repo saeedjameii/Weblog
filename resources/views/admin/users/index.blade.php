@@ -62,7 +62,7 @@
                         @else
                             <div class="user-actions">
                                 @if ($user->isAdmin())
-                                    <form action="{{ route('users.role.update', $user) }}" method="POST" class="role-form">
+                                    <form action="{{ route('panel.users.role.update', $user) }}" method="POST" class="role-form">
                                         @csrf
                                         @method('PUT')
                                         <label class="sr-only" for="roles-{{ $user->id }}">نقش‌های {{ $user->first_name }}</label>
@@ -76,7 +76,7 @@
                                         @endif
                                     </form>
                                 @elseif (auth('api')->user()->isCreator() && ! $user->trashed())
-                                    <form action="{{ route('users.promote', $user) }}" method="POST" onsubmit="return confirm('این کاربر به سطح ادمین ارتقا یابد؟');">
+                                    <form action="{{ route('panel.users.promote', $user) }}" method="POST" onsubmit="return confirm('این کاربر به سطح ادمین ارتقا یابد؟');">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="button button-primary">ارتقا به ادمین</button>
@@ -85,13 +85,13 @@
 
                                 @can('permission', 'manage-users')
                                     @if ($user->trashed())
-                                        <form action="{{ route('users.restore', $user->id) }}" method="POST" onsubmit="return confirm('آیا می‌خواهید این کاربر را بازیابی کنید؟');">
+                                        <form action="{{ route('panel.users.restore', $user->id) }}" method="POST" onsubmit="return confirm('آیا می‌خواهید این کاربر را بازیابی کنید؟');">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="button button-secondary">بازیابی کاربر</button>
                                         </form>
                                     @else
-                                        <form action="{{ route('users.destroy', $user) }}" method="POST" onsubmit="return confirm('آیا از حذف این کاربر مطمئن هستید؟');">
+                                        <form action="{{ route('panel.users.destroy', $user) }}" method="POST" onsubmit="return confirm('آیا از حذف این کاربر مطمئن هستید؟');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="button button-danger">حذف</button>

@@ -47,7 +47,7 @@
                         </div>
 
                         <form
-                            action="{{ route('posts.restore', $post->id) }}"
+                            action="{{ route('panel.posts.restore', $post->id) }}"
                             method="POST"
                             style="margin-top:12px;"
                             onsubmit="return confirm('این پست بازیابی شود؟');"

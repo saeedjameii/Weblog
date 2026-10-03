@@ -16,7 +16,7 @@
                 <p class="intro-copy">لیست تمامی اخباری که شما در سایت منتشر کرده‌اید.</p>
             </div>
             @can('permission', 'create-post')
-            <a href="{{ route('posts.create') }}" class="button button-primary">
+            <a href="{{ route('panel.posts.create') }}" class="button button-primary">
                 + انتشار خبر جدید
             </a>
             @endcan
@@ -75,15 +75,15 @@
 
                         <div class="card-actions">
                             @if($post->trashed())
-                                <form action="{{ route('posts.restore', $post->id) }}" method="POST" class="action-form">
+                                <form action="{{ route('panel.posts.restore', $post->id) }}" method="POST" class="action-form">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-outline-success action-btn">بازیابی خبر</button>
                                 </form>
                             @else
-                                <a href="{{ route('posts.edit', $post) }}" class="btn btn-secondary action-btn">ویرایش</a>
+                                <a href="{{ route('panel.posts.edit', $post) }}" class="btn btn-secondary action-btn">ویرایش</a>
 
-                                <form action="{{ route('posts.destroy', $post) }}" method="POST" class="action-form" onsubmit="return confirm('آیا از حذف این خبر مطمئن هستید؟');">
+                                <form action="{{ route('panel.posts.destroy', $post) }}" method="POST" class="action-form" onsubmit="return confirm('آیا از حذف این خبر مطمئن هستید؟');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger action-btn">حذف</button>
@@ -99,7 +99,7 @@
                 <div class="alert alert-info full-width">
                     هنوز هیچ خبری منتشر نکرده‌اید. 
                     @can('permission', 'create-post')
-                    <a href="{{ route('posts.create') }}" class="fw-bold">همین الان اولین خبر خود را منتشر کنید</a>.
+                    <a href="{{ route('panel.posts.create') }}" class="fw-bold">همین الان اولین خبر خود را منتشر کنید</a>.
                     @endcan
                 </div>
 

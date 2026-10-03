@@ -41,10 +41,10 @@
                 
                 <div style="display: flex; gap: 10px;">
                     @can('update', $post)
-                        <a href="{{ route('posts.edit', $post) }}" class="btn btn-primary">ویرایش خبر</a>
+                        <a href="{{ route('panel.posts.edit', $post) }}" class="btn btn-primary">ویرایش خبر</a>
                     @endcan
                     @can('delete', $post)
-                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                    <form action="{{ route('panel.posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-secondary text-danger">حذف</button>
