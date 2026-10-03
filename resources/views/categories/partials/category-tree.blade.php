@@ -6,16 +6,6 @@
             <a href="{{ route('posts.index', ['category_id' => $category->id]) }}" class="btn btn-primary">
                 پست‌های این دسته
             </a>
-            @can('permission', 'update-category')
-                <a href="{{ route('panel.categories.edit', $category->id) }}" class="btn btn-secondary">ویرایش</a>
-            @endcan
-            @can('permission', 'delete-category')
-                <form action="{{ route('panel.categories.destroy', $category->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn text-danger">حذف</button>
-                </form>
-            @endcan
         </div>
     </div>
 

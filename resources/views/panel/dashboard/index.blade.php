@@ -51,7 +51,7 @@
                     <p style="color:var(--muted);">دسته‌بندی و زیردسته‌بندی اخبار را بسازید یا ویرایش کنید.</p>
 
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <a href="{{ route('categories.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست دسته‌بندی‌ها</a>
+                        <a href="{{ route('panel.categories.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست دسته‌بندی‌ها</a>
 
                         @can('permission', 'create-category')
                             <a href="{{ route('panel.categories.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ جدید</a>

@@ -14,11 +14,16 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
+    public function panelIndex(){
+        $categories = Category::whereNull('parent_id')->with('children')->get();
+        return view('panel.categories.index', compact('categories'));
+    }
+
     public function create(){
 
         $categories = Category::all();
 
-        return view('categories.create', compact('categories'));
+        return view('panel.categories.create', compact('categories'));
     }
 
     public function store(CategoryRequest $request){
@@ -27,7 +32,7 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        return redirect()->route('categories.index')->with('success', 'دسته‌بندی با موفقیت ایچاد شد');
+        return redirect()->route('panel.categories.index')->with('success', 'دسته‌بندی با موفقیت ایچاد شد');
     }
 
     public function edit(Category $category){
@@ -36,7 +41,7 @@ class CategoryController extends Controller
         $categories = Category::whereNotIn('id', $excludeId)->get();
 
 
-        return view('categories.edit',compact('category', 'categories'));
+        return view('panel.categories.edit',compact('category', 'categories'));
     }
 
     public function update(CategoryRequest $request, Category $category){
@@ -44,17 +49,17 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('categories.index')->with('success', 'دسته‌بندی مورد نظر با موفقیت ویرایش شد');
+        return redirect()->route('panel.categories.index')->with('success', 'دسته‌بندی مورد نظر با موفقیت ویرایش شد');
     }
 
     public function destroy(Category $category){
 
         try{
             $category->delete();
-            return redirect()->route('categories.index')->with('success', 'دسته‌بندی مورد نظر با موفقیت حذف شد');
+            return redirect()->route('panel.categories.index')->with('success', 'دسته‌بندی مورد نظر با موفقیت حذف شد');
         }
         catch(QueryException $e){
-            return redirect()->route('categories.index')->with('error', 'این دسته‌بندی قابل حذف نیست؛ ابتدا پست‌های مربوط به آن را مدیریت کنید.');
+            return redirect()->route('panel.categories.index')->with('error', 'این دسته‌بندی قابل حذف نیست؛ ابتدا پست‌های مربوط به آن را مدیریت کنید.');
         }
     }
 

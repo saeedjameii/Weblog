@@ -14,7 +14,7 @@ class UserRoleController extends Controller
         $users = User::withTrashed()->with('roles')->orderBy('first_name')->get();
         $roles = Role::all();
 
-        return view('admin.users.index', compact('users', 'roles'));
+        return view('panel.users.index', compact('users', 'roles'));
     }
 
     public function update(UserRoleRequest $request, User $user){

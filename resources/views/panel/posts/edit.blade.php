@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('layout.panel')
 
 @section('header-actions')
     <a class="browse-link" href="{{ route('posts.show', $post) }}">← انصراف و بازگشت</a>

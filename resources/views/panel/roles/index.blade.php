@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('layout.panel')
 
 @section('header-actions')
     <a class="browse-link" href="{{ route('panel') }}">← بازگشت به صفحه قبل</a>

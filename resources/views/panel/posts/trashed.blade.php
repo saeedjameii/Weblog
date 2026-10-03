@@ -1,4 +1,5 @@
-@extends('layout.master')
+@extends('layout.panel')
+
 @section('title', 'پست‌های حذف‌شده — خبرنامه')
 
 @section('header-actions')

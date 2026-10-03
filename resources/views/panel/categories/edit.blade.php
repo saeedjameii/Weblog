@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('layout.panel')
 
 @section('title', 'ویرایش دسته‌بندی — خبرنامه')
 

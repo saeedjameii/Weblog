@@ -40,6 +40,7 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
         });
 
         Route::prefix('categories')->name('categories.')->group(function () {
+            Route::get('/', [CategoryController::class, 'panelIndex'])->middleware('permission:create-category,update-category,delete-category')->name('index');
             Route::middleware('permission:create-category')->group(function () {
                 Route::get('/create', [CategoryController::class, 'create'])->name('create');
                 Route::post('/', [CategoryController::class, 'store'])->name('store');

@@ -29,7 +29,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         //$categories = Category::where('type', 'post')
-        return view('posts.create', compact('categories'));
+        return view('panel.posts.create', compact('categories'));
     }
 
     public function createPost(PostRequest $request)
@@ -69,7 +69,7 @@ class PostController extends Controller
 
     public function myPosts(){
         $posts = Post::withoutGlobalScope(SoftDeletingScope::class)->where('user_id', auth('api')->id())->with(['categories'])->latest()->get();
-        return view('posts.my-posts', compact('posts'));
+        return view('panel.posts.my-posts', compact('posts'));
     }
 
     public function show(Post $post){
@@ -85,7 +85,7 @@ class PostController extends Controller
         
         $categories = Category::all();
 
-        return view('posts.edit', compact('post', 'categories'));
+        return view('panel.posts.edit', compact('post', 'categories'));
     }
 
     public function update(PostRequest $request, Post $post)
@@ -127,6 +127,6 @@ class PostController extends Controller
 
     public function trashed(){
         $posts = Post::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->with('categories', 'user')->latest()->get();
-        return view('posts.trashed', compact('posts'));
+        return view('panel.posts.trashed', compact('posts'));
     }
 }
