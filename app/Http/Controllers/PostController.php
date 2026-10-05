@@ -104,7 +104,7 @@ class PostController extends Controller
 
         try{
             $post->delete();
-            return redirect()->route('posts.index')->with('success', 'پست مورد نظر با موفقیت حذف شد.');
+            return redirect()->route('panel.posts.mine')->with('success', 'پست مورد نظر با موفقیت حذف شد.');
         } catch(\Throwable $e){
             return redirect()->back()->with('error', 'پست شما حذف نشد لطفا دوباره تلاش کنید');
         }

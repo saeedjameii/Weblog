@@ -4,7 +4,7 @@
 
 
 @section('header-actions')
-    <a class="browse-link" href="{{ route('categories.index') }}">← بازگشت به صفحه قبل</a>
+    <a class="browse-link" href="{{ route('panel.categories.index') }}">← بازگشت به صفحه قبل</a>
 @endsection
 
 @section('content')

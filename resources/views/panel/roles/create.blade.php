@@ -48,7 +48,7 @@
                 </div>
 
                 <button type="submit" class="button button-primary" style="margin-top:8px;">
-                    ساخت نفش
+                   ساخت نقش
                 </button>
             </form>
         </div>
