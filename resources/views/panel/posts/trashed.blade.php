@@ -28,7 +28,14 @@
 
             @forelse ($posts as $post)
 
-                <article class="news-card">
+                <article class="news-card" style="opacity: 0.7;">
+
+                    @if($post->images->isNotEmpty())
+                        <div style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius);">
+                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="تصویر خبر" style="width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--line);">
+                        </div>
+                    @endif
+
                     <div class="news-body">
 
                         <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px;">

@@ -43,6 +43,13 @@
             @forelse ($posts as $post)
 
                 <article class="news-card {{ $post->trashed() ? 'is-trashed' : '' }}">
+
+                    @if($post->images->isNotEmpty())
+                        <div style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius); opacity: {{ $post->trashed() ? '0.5' : '1' }};">
+                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="تصویر خبر" style="width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--line);">
+                        </div>
+                    @endif
+
                     <div class="news-body">
 
                         <div class="category-tags">

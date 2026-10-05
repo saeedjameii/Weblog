@@ -59,6 +59,25 @@
                                 <textarea class="form-control" id="description" name="description" style="min-height: 300px;" 
                                     placeholder="محتوای مقاله یا خبر را اینجا بنویسید..." required>{{ old('description') }}</textarea>
                             </div>
+
+                            <div class="field full-field">
+                                <label for="images">تصاویر خبر <span style="color:var(--muted); font-weight:400;">(اختیاری — حداکثر ۵ تصویر، هر کدام تا ۵ مگابایت)</span></label>
+                                <input
+                                    class="form-control"
+                                    type="file"
+                                    id="images"
+                                    name="images[]"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    multiple
+                                >
+                                @error('images')
+                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                @enderror
+                                @error('images.*')
+                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                         </div>
                     </section>
                     <div class="actions">

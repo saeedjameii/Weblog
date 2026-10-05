@@ -1086,3 +1086,31 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
   font-weight: 700;
   color: var(--forest);
 }
+.thumbs {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+.thumb {
+    width: 90px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    opacity: 0.7;
+}
+.thumb:hover {
+    opacity: 1;
+}
+.thumb.active {
+    border-color: #007bff; /* می‌تونی از var(--primary) استفاده کنی */
+    opacity: 1;
+}
+.detail-image {
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #f8f9fa;
+}

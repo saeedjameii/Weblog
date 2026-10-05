@@ -32,6 +32,13 @@
         <div class="container news-grid">
         @forelse ($posts as $post)
           <article class="news-card">
+
+            @if($post->images->isNotEmpty())
+                <a href="{{ route('posts.show', $post) }}" style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius);">
+                    <img src="{{ Storage::url($post->images->first()->path) }}" alt="{{ $post->title }}" style="width: 100%; height: 200px; object-fit: cover; display: block; border-bottom: 1px solid var(--line);">
+                </a>
+            @endif
+
             <div class="news-body">
               <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
                   @forelse ($post->categories as $category)

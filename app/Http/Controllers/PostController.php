@@ -9,26 +9,22 @@ use App\Services\PostService;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class PostController extends Controller
 {
 
     public function __construct(
         private PostService $postService
-    ){
-
-    }
+    ){}
 
     public function home(){
-        $latestPosts = Post::with(['user', 'categories'])->latest()->take(4)->get();
+        $latestPosts = Post::with(['user', 'images', 'categories'])->latest()->take(4)->get();
         return view('home', compact('latestPosts'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        //$categories = Category::where('type', 'post')
         return view('panel.posts.create', compact('categories'));
     }
 
@@ -43,7 +39,7 @@ class PostController extends Controller
 
     public function index(Request $request){
         
-        $query = Post::with(['categories', 'user'])->latest();
+        $query = Post::with(['categories', 'images', 'user'])->latest();
 
         if($request->filled('search')){
             $search = $request->search;
@@ -62,28 +58,32 @@ class PostController extends Controller
         $posts = $query->paginate(8)->withQueryString();
 
         $categories = Category::all();
-        //$categories = Category::where('type', 'post')
 
         return view('posts.index', compact('posts', 'categories'));
     }
 
     public function myPosts(){
-        $posts = Post::withoutGlobalScope(SoftDeletingScope::class)->where('user_id', auth('api')->id())->with(['categories'])->latest()->get();
+        $posts = Post::withoutGlobalScope(SoftDeletingScope::class)
+            ->where('user_id', auth('api')->id())
+            ->with(['categories', 'images'])
+            ->latest()
+            ->get();
         return view('panel.posts.my-posts', compact('posts'));
     }
 
     public function show(Post $post){
-        $post->load(['categories', 'user']);
+        $post->load(['categories', 'images', 'user']);
 
         return view('posts.show', compact('post'));
     }
 
     public function edit(Post $post)
     {
-
         Gate::authorize('update', $post);
-        
+
         $categories = Category::all();
+
+        $post->load('images');
 
         return view('panel.posts.edit', compact('post', 'categories'));
     }
@@ -126,7 +126,11 @@ class PostController extends Controller
     }
 
     public function trashed(){
-        $posts = Post::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->with('categories', 'user')->latest()->get();
+        $posts = Post::withoutGlobalScope(SoftDeletingScope::class)
+            ->whereNotNull('deleted_at')
+            ->with(['categories', 'user'])
+            ->latest()
+            ->get();
         return view('panel.posts.trashed', compact('posts'));
     }
 }

@@ -24,6 +24,37 @@
             </div>
         </div>
 
+        <div style="max-width: 800px; margin: 0 auto 30px;">
+            @if($post->images->isNotEmpty())
+                
+                <img
+                    id="mainImage"
+                    class="detail-image"
+                    style="width: 100%; height: auto; max-height: 500px; object-fit: contain;"
+                    src="{{ Storage::url($post->images->first()->path) }}"
+                    alt="{{ $post->title }}"
+                >
+
+                @if (count($post->images) > 1)
+                    <div class="thumbs">
+                        @foreach($post->images as $image)
+                            <img
+                                class="thumb {{ $loop->first ? 'active' : '' }}"
+                                src="{{ Storage::url($image->path) }}"
+                                alt="تصویر شاخص خبر"
+                                onclick="document.getElementById('mainImage').src = this.src; document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active')); this.classList.add('active');"
+                            >
+                        @endforeach
+                    </div>
+                @endif
+
+            @else
+                <div class="detail-image" style="width:100%; height:250px; display:flex; align-items:center; justify-content:center; color:var(--muted);">
+                    این پست تصویری ندارد.
+                </div>
+            @endif
+        </div>
+
         <!-- Article Content -->
         <div style="max-width: 800px; margin: 0 auto;">
             <div style="line-height: 2; font-size: 1.15rem; color: var(--ink); text-align: justify; overflow-wrap: anywhere;">
