@@ -5,7 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\JwtCookieMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -55,23 +55,23 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
         });
         Route::prefix('users')->name('users.')->group(function () {
             Route::middleware('permission:assign-role')->group(function () {
-                Route::get('/', [UserRoleController::class, 'index'])->name('index');
-                Route::put('/{user}/role', [UserRoleController::class, 'update'])->name('role.update');
+                Route::get('/', [UserController::class, 'index'])->name('index');
+                Route::put('/{user}/role', [UserController::class, 'update'])->name('role.update');
             });
 
             Route::middleware('permission:manage-users')->group(function () {
-                Route::get('/', [UserRoleController::class, 'index'])->name('index');
-                Route::get('/create', [UserRoleController::class, 'create'])->name('create');
-                Route::post('/', [UserRoleController::class, 'store'])->name('store');
-                Route::delete('/{user}', [UserRoleController::class, 'destroy'])->name('destroy');
-                Route::patch('/{id}/restore', [UserRoleController::class, 'restore'])->name('restore');
-                Route::get('/{user}/edit', [UserRoleController::class, 'edit'])->name('edit');
-                Route::put('/{user}', [UserRoleController::class, 'updateUser'])->name('update');
+                Route::get('/', [UserController::class, 'index'])->name('index');
+                Route::get('/create', [UserController::class, 'create'])->name('create');
+                Route::post('/', [UserController::class, 'store'])->name('store');
+                Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+                Route::patch('/{id}/restore', [UserController::class, 'restore'])->name('restore');
+                Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+                Route::put('/{user}', [UserController::class, 'updateUser'])->name('update');
             });
 
             Route::middleware(JwtCookieMiddleware::class)->group(function () {
-                Route::patch('/{user}/promote', [UserRoleController::class, 'promote'])->name('promote');
-                Route::patch('/{user}/demote', [UserRoleController::class, 'demote'])->name('demote');
+                Route::patch('/{user}/promote', [UserController::class, 'promote'])->name('promote');
+                Route::patch('/{user}/demote', [UserController::class, 'demote'])->name('demote');
             });
         });
         Route::prefix('roles')->name('roles.')->group(function () {

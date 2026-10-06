@@ -10,7 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class UserRoleController extends Controller
+class UserController extends Controller
 {
     public function index(){
 
