@@ -34,7 +34,7 @@ class PostController extends Controller
 
         $this->postService->create($data, auth('api')->user());
 
-        return redirect()->route('home')->with('success', 'پست با موفقیت ایجاد شد.');
+        return redirect()->route('panel.posts.mine')->with('success', 'پست با موفقیت ایجاد شد.');
     }
 
     public function index(Request $request){
