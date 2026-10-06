@@ -6,81 +6,104 @@
 @endsection
 
 @section('content')
-<main class="page-area admin-users-page">
+<main class="page-area">
     <div class="main-content">
-        <section class="intro admin-users-intro">
+        <section class="intro">
             <p class="kicker">مدیریت سیستم</p>
             <h1 class="display-font">کاربران و نقش‌ها</h1>
-            <p class="intro-copy">نقش هر کاربر را تعیین کنید و حساب‌های غیرفعال را از همین بخش مدیریت کنید.</p>
+            <p class="intro-copy">حساب‌های کاربری سایت را مدیریت کنید، ادمین‌های جدید بسازید و نقش‌ها را مشخص کنید.</p>
         </section>
 
-        <div class="users-summary" aria-label="خلاصه کاربران">
-            <div class="summary-item"><span class="summary-label">همه کاربران</span><strong>{{ $users->count() }}</strong></div>
-            <div class="summary-item"><span class="summary-label">حساب‌های فعال</span><strong>{{ $users->whereNull('deleted_at')->count() }}</strong></div>
-            <div class="summary-item"><span class="summary-label">حساب‌های غیرفعال</span><strong>{{ $users->whereNotNull('deleted_at')->count() }}</strong></div>
+        <div class="users-summary">
+            <div class="summary-item">
+                <span class="summary-label">کل کاربران</span>
+                <strong>{{ $users->count() }}</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">کاربران فعال</span>
+                <strong>{{ $users->whereNull('deleted_at')->count() }}</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">حساب‌های تعلیق‌شده</span>
+                <strong>{{ $users->whereNotNull('deleted_at')->count() }}</strong>
+            </div>
         </div>
 
         @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success" style="margin-bottom: 24px;">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger" style="margin-bottom: 24px;">{{ session('error') }}</div>
         @endif
 
-        <section class="users-card" aria-label="فهرست کاربران">
-            <div class="users-card-heading">
-                <div><h2>فهرست کاربران</h2><p>نقش‌ها را انتخاب کنید و تغییرات را برای هر کاربر ذخیره کنید.</p></div>
-                <span class="users-count">{{ $users->count() }} کاربر</span>
-            </div>
-
-            <div class="users-list">
-                @forelse ($users as $user)
-                    <article class="user-row {{ $user->trashed() ? 'is-deleted' : '' }}">
-                        <div class="user-profile">
-                            <span class="user-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr($user->first_name, 0, 1)) }}</span>
-                            <div class="user-details">
-                                <div class="user-name-line">
-                                    <h3>{{ $user->first_name }} {{ $user->last_name }}</h3>
-                                    <span class="account-status {{ $user->trashed() ? 'status-deleted' : 'status-active' }}">{{ $user->trashed() ? 'غیرفعال' : 'فعال' }}</span>
-                                </div>
-                                <p>{{ $user->email }}</p>
-                                <div class="role-tags" aria-label="سطح و نقش‌های کاربر">
-                                    @if ($user->isCreator())
-                                        <span class="tag">creator</span>
-                                    @elseif ($user->isAdmin())
-                                        @forelse ($user->roles as $role)
-                                            <span class="tag">{{ $role->name }}</span>
-                                        @empty
-                                            <span class="no-role">ادمین بدون نقش</span>
-                                        @endforelse
-                                    @else
-                                        <span class="no-role">کاربر عادی</span>
-                                    @endif
-                                </div>
+        <section aria-label="فهرست کاربران">
+            
+            @forelse ($users as $user)
+                <article class="user-card {{ $user->trashed() ? 'is-deleted' : '' }}">
+                    
+                    <div class="user-profile-section">
+                        <span class="user-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr($user->first_name, 0, 1)) }}</span>
+                        <div class="user-info">
+                            <h3>
+                                {{ $user->first_name }} {{ $user->last_name }}
+                                <span class="status-badge {{ $user->trashed() ? 'deleted' : 'active' }}">
+                                    {{ $user->trashed() ? 'تعلیق شده' : 'فعال' }}
+                                </span>
+                            </h3>
+                            <p>{{ $user->email }}</p>
+                            
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                @if ($user->isCreator())
+                                    <span class="tag" style="background:#e9ecef;">🌟 Creator (سازنده)</span>
+                                @elseif ($user->isAdmin())
+                                    <span class="tag" style="background:#e9ecef;">🛡️ Admin</span>
+                                    @foreach ($user->roles as $role)
+                                        <span class="tag">{{ $role->name }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="tag" style="background:#f8f9fa; border:1px solid var(--line);">👤 کاربر عادی</span>
+                                @endif
                             </div>
                         </div>
+                    </div>
 
+                    <div class="user-actions-section">
                         @if ($user->isCreator())
-                            <div class="creator-notice">حساب سازنده قابل تغییر نیست</div>
+                            <span style="color:var(--muted); font-size:0.9rem; font-style:italic;">حساب سازنده قابل تغییر نیست</span>
                         @else
-                            <div class="user-actions">
-                                @if ($user->isAdmin())
-                                    <form action="{{ route('panel.users.role.update', $user) }}" method="POST" class="role-form">
-                                        @csrf
-                                        @method('PUT')
-                                        <label class="sr-only" for="roles-{{ $user->id }}">نقش‌های {{ $user->first_name }}</label>
-                                        @if(!$user->trashed())
-                                        <select id="roles-{{ $user->id }}" class="form-control role-select" name="role_ids[]" multiple>
-                                            @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="submit" class="button button-secondary">ذخیره نقش‌ها</button>
-                                        @endif
-                                    </form>
-                                @elseif (auth('api')->user()->isCreator() && ! $user->trashed())
-                                    <form action="{{ route('panel.users.promote', $user) }}" method="POST" onsubmit="return confirm('این کاربر به سطح ادمین ارتقا یابد؟');">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="button button-primary">ارتقا به ادمین</button>
-                                    </form>
+
+                            @if ($user->isAdmin() && !$user->trashed())
+                                <form action="{{ route('panel.users.role.update', $user) }}" method="POST" class="role-form-group">
+                                    @csrf
+                                    @method('PUT')
+                                    <label class="sr-only" for="roles-{{ $user->id }}">نقش‌های کاربر</label>
+                                    <select id="roles-{{ $user->id }}" class="form-control role-select" name="role_ids[]" multiple>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}" {{ $user->roles->contains($role->id) ? 'selected' : '' }}>
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="button button-secondary" style="padding: 0 16px; white-space: nowrap;">ثبت نقش</button>
+                                </form>
+                            @endif
+
+                            <div class="action-buttons-group">
+                                
+                                @if (auth('api')->user()->isCreator() && !$user->trashed())
+                                    @if ($user->isAdmin())
+                                        <form action="{{ route('panel.users.demote', $user) }}" method="POST" onsubmit="return confirm('آیا از تنزل این شخص به سطح کاربر عادی مطمئن هستید؟');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="button btn-outline">عزل از ادمین</button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('panel.users.promote', $user) }}" method="POST" onsubmit="return confirm('آیا این کاربر به سطح ادمین ارتقا یابد؟');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="button button-primary">ارتقا به ادمین</button>
+                                        </form>
+                                    @endif
                                 @endif
 
                                 @can('permission', 'manage-users')
@@ -88,23 +111,30 @@
                                         <form action="{{ route('panel.users.restore', $user->id) }}" method="POST" onsubmit="return confirm('آیا می‌خواهید این کاربر را بازیابی کنید؟');">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="button button-secondary">بازیابی کاربر</button>
+                                            <button type="submit" class="button button-secondary">فعال‌سازی مجدد</button>
                                         </form>
                                     @else
-                                        <form action="{{ route('panel.users.destroy', $user) }}" method="POST" onsubmit="return confirm('آیا از حذف این کاربر مطمئن هستید؟');">
+                                        <form action="{{ route('panel.users.destroy', $user) }}" method="POST" onsubmit="return confirm('آیا از تعلیق این کاربر مطمئن هستید؟');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="button button-danger">حذف</button>
+                                            <button type="submit" class="button btn-outline-danger">تعلیق حساب</button>
                                         </form>
                                     @endif
                                 @endcan
+                                
                             </div>
+
                         @endif
-                    </article>
-                @empty
-                    <div class="users-empty"><span aria-hidden="true">👥</span><p>هنوز کاربری ثبت‌نام نکرده است.</p></div>
-                @endforelse
-            </div>
+                    </div>
+
+                </article>
+            @empty
+                <div class="alert alert-info text-center" style="padding: 40px;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 10px;">👥</span>
+                    هنوز هیچ کاربری در سیستم ثبت نشده است.
+                </div>
+            @endforelse
+
         </section>
     </div>
 </main>

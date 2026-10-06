@@ -63,7 +63,10 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
 
             Route::patch('/{id}/restore', [UserRoleController::class, 'restore'])->middleware('permission:manage-users')->name('restore');
 
-            Route::patch('/{user}/promote', [UserRoleController::class, 'promote'])->middleware(JwtCookieMiddleware::class)->name('promote');
+            Route::middleware(JwtCookieMiddleware::class)->group(function () {
+                Route::patch('/{user}/promote', [UserRoleController::class, 'promote'])->name('promote');
+                Route::patch('/{user}/demote', [UserRoleController::class, 'demote'])->name('demote');
+            });
         });
         Route::prefix('roles')->name('roles.')->group(function () {
             Route::get('/', [RoleController::class, 'index'])->middleware('permission:create-role,update-role')->name('index');

@@ -50,6 +50,26 @@ class UserRoleController extends Controller
         return back()->with('success', 'کاربر با موفقیت به سطح ادمین ارتقا یافت');
     }
 
+    public function demote(User $user)
+    {
+        if (! auth('api')->user()->isCreator()) {
+            abort(403, 'فقط سازنده می‌تواند دسترسی کاربران را تغییر دهد');
+        }
+
+        if ($user->isCreator()) {
+            abort(403, 'سطح دسترسی creator قابل تغییر نیست');
+        }
+
+        if (! $user->isAdmin()) {
+            return back()->with('success', 'این کاربر از قبل یوزر است');
+        }
+
+        $user->update(['level' => UserLevel::User]);
+        $user->roles()->sync([]);
+
+        return back()->with('success', 'ادمین با موفقیت به سطح کاربر تنزل یافت');
+    }
+    
     public function destroy(User $user){
         if($user->isCreator()){
             abort(403, 'creator را نمی‌توانید حذف کنید');
