@@ -114,6 +114,7 @@
                                             <button type="submit" class="button button-secondary">فعال‌سازی مجدد</button>
                                         </form>
                                     @else
+                                        <a href="{{ route('panel.users.edit', $user) }}" class="button button-secondary">ویرایش کاربر</a>
                                         <form action="{{ route('panel.users.destroy', $user) }}" method="POST" onsubmit="return confirm('آیا از تعلیق این کاربر مطمئن هستید؟');">
                                             @csrf
                                             @method('DELETE')

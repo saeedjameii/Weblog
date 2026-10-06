@@ -14,10 +14,17 @@ class ValidJalaliDate implements ValidationRule
             $jalaliDate = Jalalian::fromFormat('Y/m/d', $value);
 
             if ($jalaliDate->format('Y/m/d') !== $value) {
-                throw new \InvalidArgumentException('Invalid Jalali date after normalization.');
+                $fail('تاریخ تولد وارد شده معتبر نیست. لطفاً از فرمت YYYY/MM/DD استفاده کنید.');
+                return;
             }
+
+            if ($jalaliDate->toCarbon()->isFuture()) {
+                $fail('تاریخ وارد شده نمی‌تواند مربوط به آینده باشد.');
+                return;
+            }
+
         } catch (\Throwable $e) {
-            $fail('تاریخ تولد وارد شده معتبر نیست. لطفاً از فرمت YYYY/MM/DD استفاده کنید (مثلاً ۱۴۰۵/۰۶/۱۲).');
+            $fail('تاریخ تولد وارد شده معتبر نیست. لطفاً از فرمت YYYY/MM/DD استفاده کنید (مثلاً ۱۳۷۰/۰۶/۱۲).');
         }
     }
 }

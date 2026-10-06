@@ -59,9 +59,12 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
                 Route::put('/{user}/role', [UserRoleController::class, 'update'])->name('role.update');
             });
 
-            Route::delete('/{user}', [UserRoleController::class, 'destroy'])->middleware('permission:assign-role,manage-users')->name('destroy');
-
-            Route::patch('/{id}/restore', [UserRoleController::class, 'restore'])->middleware('permission:manage-users')->name('restore');
+            Route::middleware('permission:manage-users')->group(function () {
+                Route::delete('/{user}', [UserRoleController::class, 'destroy'])->name('destroy');
+                Route::patch('/{id}/restore', [UserRoleController::class, 'restore'])->name('restore');
+                Route::get('/{user}/edit', [UserRoleController::class, 'edit'])->name('edit');
+                Route::put('/{user}', [UserRoleController::class, 'updateUser'])->name('update');
+            });
 
             Route::middleware(JwtCookieMiddleware::class)->group(function () {
                 Route::patch('/{user}/promote', [UserRoleController::class, 'promote'])->name('promote');

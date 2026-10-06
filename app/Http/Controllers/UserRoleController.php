@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserLevel;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRoleRequest;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserRoleController extends Controller
 {
@@ -15,6 +17,29 @@ class UserRoleController extends Controller
         $roles = Role::all();
 
         return view('panel.users.index', compact('users', 'roles'));
+    }
+
+    public function edit(User $user){
+        return view('panel.users.edit', compact('user'));
+    }
+
+    public function updateUser(UpdateUserRequest $request, User $user){
+        if($user->isCreator()){
+            abort(403, 'نقش creator قابل تغییر نمی‌باشد');
+        }
+
+        $data = $request->validated();
+        
+        $data['birth_date'] = $request->birth_date;
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+        return back()->with('success', 'اطلاعات کاربر با موفقیت بروزرسانی شد');
     }
 
     public function update(UserRoleRequest $request, User $user){
@@ -69,7 +94,7 @@ class UserRoleController extends Controller
 
         return back()->with('success', 'ادمین با موفقیت به سطح کاربر تنزل یافت');
     }
-    
+
     public function destroy(User $user){
         if($user->isCreator()){
             abort(403, 'creator را نمی‌توانید حذف کنید');
