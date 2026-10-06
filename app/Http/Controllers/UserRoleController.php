@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserLevel;
+use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRoleRequest;
 use App\Models\Role;
@@ -17,6 +18,28 @@ class UserRoleController extends Controller
         $roles = Role::all();
 
         return view('panel.users.index', compact('users', 'roles'));
+    }
+
+    public function create(){
+        return view('panel.users.create');
+    }
+
+    public function store(SignUpRequest $request){
+        $data = $request->validated();
+        $data['birth_date'] = $request->birth_date;
+
+        User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'phone_number' => $data['phone_number'],
+            'birth_date' => $data['birth_date'],
+            'national_code' => $data['national_code'],
+            'password' => Hash::make($data['password']),
+            'level' => UserLevel::User,
+        ]);
+
+        return redirect()->route('panel.users.index')->with('success', 'کاربر با موفقیت ایجاد شد');
     }
 
     public function edit(User $user){

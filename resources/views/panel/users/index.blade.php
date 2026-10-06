@@ -12,6 +12,11 @@
             <p class="kicker">مدیریت سیستم</p>
             <h1 class="display-font">کاربران و نقش‌ها</h1>
             <p class="intro-copy">حساب‌های کاربری سایت را مدیریت کنید، ادمین‌های جدید بسازید و نقش‌ها را مشخص کنید.</p>
+            @can('permission', 'manage-users')
+                <div style="margin-top: 20px;">
+                    <a href="{{ route('panel.users.create') }}" class="button button-primary">+ ایجاد کاربر جدید</a>
+                </div>
+            @endcan
         </section>
 
         <div class="users-summary">
