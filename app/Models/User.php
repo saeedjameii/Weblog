@@ -111,7 +111,7 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return $this->permissionNamesCache = $this->roles()->with('permissions')->get()->flatMap(
-            fn($role) => $role->permissions->pluck('name'))
-            ->unique()->values()->all();
+            fn($role) => $role->permissionNames()
+        )->unique()->values()->all();
     }
 }
