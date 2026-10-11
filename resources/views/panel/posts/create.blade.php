@@ -78,6 +78,50 @@
                                 @enderror
                             </div>
 
+                            <div class="field">
+                                <label for="publish-date-display">
+                                    تاریخ انتشار (شمسی)
+                                    <span style="color:var(--muted); font-weight:400;">(اختیاری)</span>
+                                </label>
+                                <div class="jalali-date-wrap">
+                                    <input class="form-control jalali-date-input @error('published_date') is-invalid @enderror"
+                                        id="publish-date-display" type="text"
+                                        value="{{ old('published_date') }}"
+                                        placeholder="مثال: ۱۴۰۵/۰۷/۲۱" readonly aria-haspopup="dialog" aria-expanded="false"/>
+                                    <button class="jalali-calendar-button" type="button" aria-label="انتخاب تاریخ انتشار" data-publish-date-picker>📅</button>
+                                </div>
+                                <input id="published_date" name="published_date" type="hidden" value="{{ old('published_date') }}"/>
+                                <div id="post-jalali-calendar" class="jalali-calendar" role="dialog" aria-label="تقویم شمسی تاریخ انتشار" hidden></div>
+                                @error('published_date')
+                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="field">
+                                <label for="published_time">
+                                    ساعت انتشار
+                                    <span style="color:var(--muted); font-weight:400;">(اختیاری)</span>
+                                </label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input class="form-control @error('published_time') is-invalid @enderror"
+                                        type="time" id="published_time" name="published_time"
+                                        value="{{ old('published_time') }}"
+                                        dir="ltr">
+                                    <button type="button" data-clear-publish-date class="button button-secondary" style="padding: 0 12px; height: 42px; font-size: 0.82rem; white-space: nowrap;" title="پاک کردن تاریخ و زمان">
+                                        انتشار فوری
+                                    </button>
+                                </div>
+                                @error('published_time')
+                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="field full-field" style="margin-top: -10px;">
+                                <span class="field-hint">
+                                    💡 در صورت تعیین تاریخ و ساعت در آینده، خبر در حالت زمان‌بندی قرار گرفته و تا فرارسیدن زمان مشخص‌شده منتشر نخواهد شد. در صورت خالی گذاشتن، خبر بلافاصله پس از انتشار نمایش داده می‌شود.
+                                </span>
+                            </div>
+
                         </div>
                     </section>
 

@@ -18,7 +18,7 @@ class PostController extends Controller
     ){}
 
     public function home(){
-        $latestPosts = Post::where('status', 'published')->with(['user', 'images', 'categories'])->latest()->take(4)->get();
+        $latestPosts = Post::published()->with(['user', 'images', 'categories'])->latest('published_at')->latest()->take(4)->get();
         return view('home', compact('latestPosts'));
     }
 
@@ -31,23 +31,27 @@ class PostController extends Controller
     public function createPost(PostRequest $request)
     {
         $data = $request->validated();
+        $data['published_at'] = $request->published_at;
 
         $status = $data['action'];
-
         unset($data['action']);
 
-        $this->postService->create($data, auth('api')->user(), $status);
+        $post = $this->postService->create($data, auth('api')->user(), $status);
 
-        $message = ($status === 'draft')
-            ? 'پیش‌نویس با موفقیت ذخیره شد'
-            : 'پست با موفقیت منتشر شد';
+        if ($status === 'draft') {
+            $message = 'پیش‌نویس با موفقیت ذخیره شد';
+        } elseif ($post->isScheduled()) {
+            $message = 'خبر با موفقیت زمان‌بندی شد و در تاریخ مشخص‌شده منتشر خواهد شد.';
+        } else {
+            $message = 'پست با موفقیت منتشر شد';
+        }
 
         return redirect()->route('panel.posts.mine')->with('success', $message);
     }
 
     public function index(Request $request){
         
-        $query = Post::where('status', 'published')->with(['categories', 'images', 'user'])->latest();
+        $query = Post::published()->with(['categories', 'images', 'user'])->latest('published_at')->latest();
 
         if($request->filled('search')){
             $search = $request->search;
@@ -80,7 +84,9 @@ class PostController extends Controller
     }
 
     public function show(Post $post){
-        abort_unless($post->status === 'published', 404, 'پست مورد نظر یافت نشد');
+        $isAuthor = auth('api')->check() && auth('api')->id() === $post->user_id;
+
+        abort_unless($post->isPublished() || $isAuthor, 404, 'پست مورد نظر یافت نشد');
 
         $post->load(['categories', 'images', 'user']);
 
@@ -103,16 +109,22 @@ class PostController extends Controller
         Gate::authorize('update', $post);
 
         $data = $request->validated();
+        $data['published_at'] = $request->published_at;
 
         $status = $data['action'];
         unset($data['action']);
 
         $wasDraft = $post->status === 'draft';
         
-        $this->postService->update($post, $data, $status);
+        $post = $this->postService->update($post, $data, $status);
 
         if ($status === 'draft') {
             $message = $wasDraft ? 'پیش‌نویس با موفقیت ذخیره شد' : 'پست با موفقیت به پیش‌نویس منتقل شد';
+            return redirect()->route('panel.posts.mine')->with('success', $message);
+        }
+
+        if ($post->isScheduled()) {
+            $message = 'خبر با موفقیت زمان‌بندی شد و در تاریخ مشخص‌شده منتشر خواهد شد.';
             return redirect()->route('panel.posts.mine')->with('success', $message);
         }
 

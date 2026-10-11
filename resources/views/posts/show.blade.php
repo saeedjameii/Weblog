@@ -20,7 +20,7 @@
             <h1 class="detail-title" style="font-size: 2.5rem; margin-bottom: 20px;">{{ $post->title }}</h1>
             <div class="detail-meta" style="display: flex; justify-content: center; gap: 20px; font-size: 0.95rem;">
                 <span>✍️ خبرنگار: {{ $post->user->first_name }} {{ $post->user->last_name }}</span>
-                <span>📅 تاریخ انتشار: {{ \Morilog\Jalali\Jalalian::fromCarbon($post->created_at ?? now())->format('d F Y') }}</span>
+                <span>📅 تاریخ انتشار: {{ \Morilog\Jalali\Jalalian::fromCarbon($post->published_at ?? $post->created_at ?? now())->format('d F Y') }}</span>
             </div>
         </div>
 

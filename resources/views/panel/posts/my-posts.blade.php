@@ -61,6 +61,12 @@
                             
                             @if($post->trashed())
                                 <span class="tag tag-danger">حذف شده</span>
+                            @elseif($post->isDraft())
+                                <span class="tag" style="background:#fef3c7; color:#92400e;">پیش‌نویس</span>
+                            @elseif($post->isScheduled())
+                                <span class="tag" style="background:#e0f2fe; color:#0369a1;">زمان‌بندی شده ({{ \Morilog\Jalali\Jalalian::fromCarbon($post->published_at)->format('Y/m/d H:i') }})</span>
+                            @else
+                                <span class="tag" style="background:#dcfce7; color:#15803d;">منتشر شده</span>
                             @endif
                         </div>
 
@@ -74,9 +80,11 @@
                         
                         <p class="news-excerpt">{{ Str::limit($post->description, 100) }}</p>
 
-                        @if(!$post->trashed() && $post->status !== 'draft')
+                        @if(!$post->trashed() && !$post->isDraft())
                             <div class="card-bottom">
-                                <a class="read-more" href="{{ route('posts.show', $post) }}">مشاهده خبر ←</a>
+                                <a class="read-more" href="{{ route('posts.show', $post) }}">
+                                    {{ $post->isScheduled() ? 'پیش‌نمایش خبر ←' : 'مشاهده خبر ←' }}
+                                </a>
                             </div>
                         @endif
 

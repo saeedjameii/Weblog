@@ -12,11 +12,14 @@ class PostService
     public function create(array $data, User $author, string $status = 'published'): Post
     {
         return DB::transaction(function () use ($data, $author, $status) {
+            $publishedAt = $data['published_at'] ?? ($status === 'published' ? now() : null);
+
             $post = Post::create([
-                'user_id'     => $author->id,
-                'title'       => $data['title'],
-                'description' => $data['description'],
-                'status' => $status,
+                'user_id'      => $author->id,
+                'title'        => $data['title'],
+                'description'  => $data['description'],
+                'status'       => $status,
+                'published_at' => $publishedAt,
             ]);
 
             $post->categories()->sync($data['categories']);
@@ -35,8 +38,14 @@ class PostService
                 'description' => $data['description'],
             ];
 
-            if($status !== null){
+            if ($status !== null) {
                 $updateData['status'] = $status;
+            }
+
+            if (array_key_exists('published_at', $data)) {
+                $updateData['published_at'] = $data['published_at'] ?? ($status === 'published' ? now() : null);
+            } elseif ($status === 'published' && $post->published_at === null) {
+                $updateData['published_at'] = now();
             }
 
             $post->update($updateData);
