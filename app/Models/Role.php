@@ -16,15 +16,23 @@ class Role extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function permissionIds(){
-        return $this->permissions->pluck('id')->toArray();
-    }
-    
-    public function permissionNames(){
-        return $this->permissions->pluck('name')->toArray();
+    public function pluckPermissions(string $column = 'name'): array
+    {
+        return $this->permissions->pluck($column)->toArray();
     }
 
-    public function hasPermission(string $permissionName): bool{
-        return in_array($permissionNames(), true);
+    public function permissionIds(): array
+    {
+        return $this->pluckPermissions('id');
+    }
+    
+    public function permissionNames(): array
+    {
+        return $this->pluckPermissions('name');
+    }
+
+    public function hasPermission(string $permissionName): bool
+    {
+        return in_array($permissionName, $this->permissionNames(), true);
     }
 }
