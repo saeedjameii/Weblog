@@ -18,7 +18,7 @@ class PostController extends Controller
     ){}
 
     public function home(){
-        $latestPosts = Post::with(['user', 'images', 'categories'])->latest()->take(4)->get();
+        $latestPosts = Post::where('status', 'published')->with(['user', 'images', 'categories'])->latest()->take(4)->get();
         return view('home', compact('latestPosts'));
     }
 
@@ -32,14 +32,22 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $this->postService->create($data, auth('api')->user());
+        $status = $data['action'];
 
-        return redirect()->route('panel.posts.mine')->with('success', 'پست با موفقیت ایجاد شد.');
+        unset($data['action']);
+
+        $this->postService->create($data, auth('api')->user(), $status);
+
+        $message = ($status === 'draft')
+            ? 'پیش‌نویس با موفقیت ذخیره شد'
+            : 'پست با موفقیت منتشر شد';
+
+        return redirect()->route('panel.posts.mine')->with('success', $message);
     }
 
     public function index(Request $request){
         
-        $query = Post::with(['categories', 'images', 'user'])->latest();
+        $query = Post::where('status', 'published')->with(['categories', 'images', 'user'])->latest();
 
         if($request->filled('search')){
             $search = $request->search;
@@ -72,6 +80,8 @@ class PostController extends Controller
     }
 
     public function show(Post $post){
+        abort_unless($post->status === 'published', 404, 'پست مورد نظر یافت نشد');
+
         $post->load(['categories', 'images', 'user']);
 
         return view('posts.show', compact('post'));
@@ -94,9 +104,20 @@ class PostController extends Controller
 
         $data = $request->validated();
 
-        $this->postService->update($post, $data);
+        $status = $data['action'];
+        unset($data['action']);
 
-        return redirect()->route('posts.show', $post)->with('success', 'پست با موفقیت ویرایش شد.');
+        $wasDraft = $post->status === 'draft';
+        
+        $this->postService->update($post, $data, $status);
+
+        if ($status === 'draft') {
+            $message = $wasDraft ? 'پیش‌نویس با موفقیت ذخیره شد' : 'پست با موفقیت به پیش‌نویس منتقل شد';
+            return redirect()->route('panel.posts.mine')->with('success', $message);
+        }
+
+        $message = $wasDraft ? 'پست با موفقیت منتشر شد' : 'پست با موفقیت به‌روزرسانی شد';
+        return redirect()->route('posts.show', $post)->with('success', $message);
     }
 
     public function destroy(Post $post){

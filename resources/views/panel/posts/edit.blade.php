@@ -1,7 +1,7 @@
 @extends('layout.panel')
 
 @section('header-actions')
-    <a class="browse-link" href="{{ route('posts.show', $post) }}">← انصراف و بازگشت</a>
+    <a class="browse-link" href="{{ route('panel.posts.mine') }}">← انصراف و بازگشت</a>
 @endsection
 
 @section('content')
@@ -96,9 +96,21 @@
 
                     <div
                         style="display:flex; align-items:center; gap:14px; margin-top:30px; padding-top:20px; border-top: 1px solid var(--line);">
-                        <button type="submit" class="button button-primary">
-                            به‌روزرسانی خبر
-                        </button>
+                        @if ($post->status === 'draft')
+                            <button type="submit" name="action" value="draft" class="button button-secondary">
+                                ذخیره پیش‌نویس
+                            </button>
+                            <button type="submit" name="action" value="published" class="button button-primary">
+                                انتشار خبر
+                            </button>
+                        @else
+                            <button type="submit" name="action" value="published" class="button button-primary">
+                                به‌روزرسانی خبر
+                            </button>
+                            <button type="submit" name="action" value="draft" class="button button-secondary">
+                                تغییر به پیش‌نویس
+                            </button>
+                        @endif
                     </div>
 
                 </form>

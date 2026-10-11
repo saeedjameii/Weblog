@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class PostService
 {
-    public function create(array $data, User $author): Post
+    public function create(array $data, User $author, string $status = 'published'): Post
     {
-        return DB::transaction(function () use ($data, $author) {
+        return DB::transaction(function () use ($data, $author, $status) {
             $post = Post::create([
                 'user_id'     => $author->id,
                 'title'       => $data['title'],
                 'description' => $data['description'],
+                'status' => $status,
             ]);
 
             $post->categories()->sync($data['categories']);
@@ -26,19 +27,23 @@ class PostService
         });
     }
 
-    public function update(Post $post, array $data): Post
+    public function update(Post $post, array $data, ?string $status = null): Post
     {
-        return DB::transaction(function () use ($post, $data) {
-            $post->update([
+        return DB::transaction(function () use ($post, $data, $status) {
+            $updateData = [
                 'title'       => $data['title'],
                 'description' => $data['description'],
-            ]);
+            ];
+
+            if($status !== null){
+                $updateData['status'] = $status;
+            }
+
+            $post->update($updateData);
 
             $post->categories()->sync($data['categories']);
 
-            // فقط اگر فایل جدیدی آپلود شد، تصاویر را به‌روز می‌کنیم
             if (!empty($data['images'])) {
-                // تصاویر قدیمی را از storage حذف می‌کنیم
                 foreach ($post->images as $image) {
                     Storage::disk('public')->delete($image->path);
                 }
@@ -52,8 +57,6 @@ class PostService
     }
 
     /**
-     * ذخیره‌ی فایل‌های آپلود شده و ثبت در دیتابیس
-     *
      * @param  Post  $post
      * @param  array<\Illuminate\Http\UploadedFile>  $images
      */

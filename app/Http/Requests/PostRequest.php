@@ -24,6 +24,7 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'action' => ['required', Rule::in(['draft', 'published'])],
             'title'        => 'required|string|max:255',
             'description'  => 'required|string',
             'categories'   => 'required|array',

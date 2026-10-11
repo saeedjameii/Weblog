@@ -80,9 +80,17 @@
 
                         </div>
                     </section>
+
                     <div class="actions">
-                        <button class="button button-primary" type="submit">منتشر کردن خبر</button>
+                        <button class="button button-secondary" type="submit" name="action" value="draft">
+                            ذخیره پیش‌نویس
+                        </button>
+
+                        <button class="button button-primary" type="submit" name="action" value="published">
+                            منتشر کردن خبر
+                        </button>
                     </div>
+
                 </form>
             </div>
         </div>

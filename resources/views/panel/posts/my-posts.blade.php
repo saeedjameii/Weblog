@@ -74,7 +74,7 @@
                         
                         <p class="news-excerpt">{{ Str::limit($post->description, 100) }}</p>
 
-                        @if(!$post->trashed())
+                        @if(!$post->trashed() && $post->status !== 'draft')
                             <div class="card-bottom">
                                 <a class="read-more" href="{{ route('posts.show', $post) }}">مشاهده خبر ←</a>
                             </div>
