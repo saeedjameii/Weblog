@@ -1,7 +1,7 @@
 <div class="category-node">
 
     <div class="category-node-name">
-        <span> {{ $category->name }} </span>
+        <span> {{ $category->full_name }} </span>
         <div class="category-actions">
             <a href="{{ route('posts.index', ['category_id' => $category->id]) }}" class="btn btn-primary">
                 پست‌های این دسته

@@ -53,7 +53,7 @@
                                     value="{{ $parent->id }}"
                                     {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}
                                 >
-                                    {{ $parent->name }}
+                                    {{ $parent->full_name }}
                                 </option>
                             @endforeach
 

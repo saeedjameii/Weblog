@@ -56,7 +56,7 @@
                             <div class="news-body">
                                 <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
                                     @forelse ($post->categories as $category)
-                                        <span class="tag">{{ $category->name }}</span>
+                                        <span class="tag">{{ $category->full_name }}</span>
                                     @empty
                                         <span class="tag">عمومی</span>
                                     @endforelse

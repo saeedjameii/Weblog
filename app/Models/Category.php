@@ -12,6 +12,19 @@ class Category extends Model
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
+    public function getFullNameAttribute(): string
+    {
+        $names = [$this->name];
+        $parent = $this->parent;
+
+        while ($parent) {
+            array_unshift($names, $parent->name);
+            $parent = $parent->parent;
+        }
+
+        return implode(' › ', $names);
+    }
+
     public function children(){
         return $this->hasMany(Category::class, 'parent_id');
     }

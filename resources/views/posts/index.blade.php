@@ -19,7 +19,7 @@
             <select class="select" name="category_id" onchange="this.form.submit()">
               <option value="">همه دسته‌بندی‌ها</option>
                 @foreach($categories as $category)
-                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->full_name }}</option>
                 @endforeach
             </select>
             <button class="button button-primary search-submit" type="submit">
@@ -42,7 +42,7 @@
             <div class="news-body">
               <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
                   @forelse ($post->categories as $category)
-                      <span class="tag">{{ $category->name }}</span>
+                      <span class="tag">{{ $category->full_name }}</span>
                   @empty
                       <span class="tag">عمومی</span>
                   @endforelse

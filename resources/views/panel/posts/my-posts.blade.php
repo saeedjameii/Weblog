@@ -54,7 +54,7 @@
 
                         <div class="category-tags">
                             @forelse ($post->categories as $category)
-                                <span class="tag">{{ $category->name }}</span>
+                                <span class="tag">{{ $category->full_name }}</span>
                             @empty
                                 <span class="tag">عمومی</span>
                             @endforelse

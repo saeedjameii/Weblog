@@ -47,7 +47,7 @@
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" 
                                             {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
-                                            {{ $category->name }}
+                                            {{ $category->full_name }}
                                         </option>
                                     @endforeach
                                 </select>
