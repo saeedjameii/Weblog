@@ -72,7 +72,7 @@
 
                         <h3>
                             @if(!$post->trashed())
-                                <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
+                                <a href="{{ route('panel.posts.show', $post) }}">{{ $post->title }}</a>
                             @else
                                 <span class="trashed-title">{{ $post->title }}</span>
                             @endif
@@ -80,10 +80,14 @@
                         
                         <p class="news-excerpt">{{ Str::limit($post->description, 100) }}</p>
 
-                        @if(!$post->trashed() && !$post->isDraft())
+                        @if(!$post->trashed())
                             <div class="card-bottom">
-                                <a class="read-more" href="{{ route('posts.show', $post) }}">
+                                <a class="read-more" href="{{ route('panel.posts.show', $post) }}">
+                                    @if($post->isDraft())
+                                        پیش‌نمایش خبر ←
+                                    @else
                                     {{ $post->isScheduled() ? 'پیش‌نمایش خبر ←' : 'مشاهده خبر ←' }}
+                                    @endif
                                 </a>
                             </div>
                         @endif

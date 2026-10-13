@@ -1,0 +1,103 @@
+@extends('layout.master')
+
+@section('content')
+
+<main class="page-area">
+    <div class="container" style="padding-top: 40px; padding-bottom: 80px;">
+
+        <!-- Article Header -->
+        <div style="max-width: 800px; margin: 0 auto 30px; text-align: center;">
+            <div class="spec-row">
+                <strong>سرویس‌های خبری:</strong>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                    @forelse($post->categories as $category)
+                        <span class="tag">{{ $category->name }}</span>
+                    @empty
+                        <span class="tag">عمومی</span>
+                    @endforelse
+                </div>
+            </div>
+            <h1 class="detail-title" style="font-size: 2.5rem; margin-bottom: 20px;">{{ $post->title }}</h1>
+            <div class="detail-meta" style="display: flex; justify-content: center; gap: 20px; font-size: 0.95rem;">
+                <span>✍️ خبرنگار: {{ $post->user->first_name }} {{ $post->user->last_name }}</span>
+                <span>📅 تاریخ انتشار: {{ \Morilog\Jalali\Jalalian::fromCarbon($post->published_at ?? $post->created_at ?? now())->format('d F Y') }}</span>
+            </div>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto 30px;">
+            @if($post->images->isNotEmpty())
+                
+                <img
+                    id="mainImage"
+                    class="detail-image"
+                    style="width: 100%; height: auto; max-height: 500px; object-fit: contain;"
+                    src="{{ Storage::url($post->images->first()->path) }}"
+                    alt="{{ $post->title }}"
+                >
+
+                @if (count($post->images) > 1)
+                    <div class="thumbs">
+                        @foreach($post->images as $image)
+                            <img
+                                class="thumb {{ $loop->first ? 'active' : '' }}"
+                                src="{{ Storage::url($image->path) }}"
+                                alt="تصویر شاخص خبر"
+                                onclick="document.getElementById('mainImage').src = this.src; document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active')); this.classList.add('active');"
+                            >
+                        @endforeach
+                    </div>
+                @endif
+
+            @else
+                <div class="detail-image" style="width:100%; height:250px; display:flex; align-items:center; justify-content:center; color:var(--muted);">
+                    این پست تصویری ندارد.
+                </div>
+            @endif
+        </div>
+
+        <!-- Article Content -->
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="line-height: 2; font-size: 1.15rem; color: var(--ink); text-align: justify; overflow-wrap: anywhere;">
+                {!! nl2br(e($post->description)) !!}
+            </div>
+
+            <!-- Actions -->
+            <div class="owner" style="margin-top:60px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div>
+                    <strong>درباره نویسنده:</strong>
+                    <p style="margin:6px 0 0;">
+                        {{ $post->user->first_name }} {{ $post->user->last_name }}
+                    </p>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    @can('update', $post)
+                        <a href="{{ route('panel.posts.edit', $post) }}" class="btn btn-primary">ویرایش خبر</a>
+                    @endcan
+                    @can('delete', $post)
+                    <form action="{{ route('panel.posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-secondary text-danger">حذف</button>
+                    </form>
+                    @endcan
+                    @if ($post->isDraft())
+                        <form action="{{ route('panel.posts.update', $post) }}" method="POST" onsubmit="return confirm('این پیش‌نویس منتشر شود؟');">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="title" value="{{ $post->title }}">
+                            <input type="hidden" name="description" value="{{ $post->description }}">
+                            @foreach ($post->categories as $category)
+                                <input type="hidden" name="categories[]" value="{{ $category->id }}">
+                            @endforeach
+                            <button type="submit" name="action" value="published" class="button button-secondary">انتشار فوری</button>
+                        </form>
+                @endif
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+@endsection

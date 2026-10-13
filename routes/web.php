@@ -37,6 +37,8 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
             Route::put('/{post}', [PostController::class, 'update'])->name('update');
             Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
             Route::patch('/{id}/restore', [PostController::class, 'restore'])->name('restore');
+            
+            Route::get('/{post}', [PostController::class, 'PanelShow'])->name('show');
         });
 
         Route::prefix('categories')->name('categories.')->group(function () {
@@ -54,13 +56,15 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
             Route::delete('/{category}', [CategoryController::class, 'destroy'])->middleware('permission:delete-category')->name('destroy');
         });
         Route::prefix('users')->name('users.')->group(function () {
-            Route::middleware('permission:assign-role')->group(function () {
-                Route::get('/', [UserController::class, 'index'])->name('index');
-                Route::put('/{user}/role', [UserController::class, 'update'])->name('role.update');
-            });
+            Route::get('/', [UserController::class, 'index'])
+                ->middleware('permission:assign-role,manage-users')
+                ->name('index');
 
+            Route::put('/{user}/role', [UserController::class, 'update'])
+                ->middleware('permission:assign-role')
+                ->name('role.update');
+            
             Route::middleware('permission:manage-users')->group(function () {
-                Route::get('/', [UserController::class, 'index'])->name('index');
                 Route::get('/create', [UserController::class, 'create'])->name('create');
                 Route::post('/', [UserController::class, 'store'])->name('store');
                 Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');

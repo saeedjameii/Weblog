@@ -93,6 +93,14 @@ class PostController extends Controller
         return view('posts.show', compact('post'));
     }
 
+    public function PanelShow(Post $post){
+        Gate::authorize('update', $post);
+
+        $post->load(['categories', 'images', 'user']);
+
+        return view('panel.posts.show', compact('post'));
+    }
+
     public function edit(Post $post)
     {
         Gate::authorize('update', $post);
@@ -129,7 +137,7 @@ class PostController extends Controller
         }
 
         $message = $wasDraft ? 'پست با موفقیت منتشر شد' : 'پست با موفقیت به‌روزرسانی شد';
-        return redirect()->route('posts.show', $post)->with('success', $message);
+        return redirect()->route('panel.posts.show', $post)->with('success', $message);
     }
 
     public function destroy(Post $post){
