@@ -37,6 +37,17 @@
                 <a href="{{ route('panel.posts.mine') }}" class="button button-primary" style="width:100%; text-align:center;">مشاهده‌ی پست‌های من</a>
             </div>
 
+            @canany(['update-any-post', 'delete-any-post'])
+                <div class="form-card">
+                    <h3 style="margin-top:0;">📦 مدیریت اخبارها</h3>
+                    <p style="color:var(--muted);">اخبار را ببینید، ویرایش یا حذف کنید.</p>
+
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <a href="{{ route('panel.posts.all') }}" class="button button-primary" style="width:100%; text-align:center;">لیست اخبار</a>
+                    </div>
+                </div>
+            @endcanany
+
             @can('permission', 'create-post')
                 <div class="form-card">
                     <h3 style="margin-top:0;">➕ ثبت خبر جدید</h3>

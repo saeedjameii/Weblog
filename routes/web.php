@@ -28,6 +28,9 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
     Route::name('panel.')->group(function(){
         Route::prefix('/posts')->name('posts.')->group(function(){
             Route::get('/my-posts', [PostController::class, 'myPosts'])->middleware(JwtCookieMiddleware::class)->name('mine');
+            Route::get('/all-posts', [PostController::class, 'allPosts'])
+                ->middleware('permission:update-any-post,delete-any-post')
+                ->name('all');
             Route::middleware('permission:create-post')->group(function(){
                 Route::get('/create', [PostController::class, 'create'])->name('create');
                 Route::post('/create', [PostController::class, 'createPost'])->name('store');

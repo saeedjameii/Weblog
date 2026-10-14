@@ -19,6 +19,10 @@
             <a href="{{ route('panel') }}">داشبورد</a>
             <a href="{{ route('panel.posts.mine') }}">اخبار من</a>
 
+            @canany(['update-any-post', 'delete-any-post'])
+                <a href="{{ route('panel.posts.all') }}">مدیریت همه پست‌ها</a>
+            @endcanany
+
             @canany(['create-category', 'update-category', 'delete-category'])
                 <a href="{{ route('panel.categories.index') }}">دسته‌بندی‌ها</a>
             @endcanany

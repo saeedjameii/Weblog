@@ -77,10 +77,18 @@ class PostController extends Controller
     public function myPosts(){
         $posts = Post::withoutGlobalScope(SoftDeletingScope::class)
             ->where('user_id', auth('api')->id())
-            ->with(['categories', 'images'])
+            ->with(['categories', 'images', 'user'])
             ->latest()
             ->get();
         return view('panel.posts.my-posts', compact('posts'));
+    }
+
+    public function allPosts()
+    {
+        $posts = Post::with(['categories', 'images', 'user'])
+            ->latest()->get();
+
+        return view('panel.posts.all-posts', compact('posts'));
     }
 
     public function show(Post $post){
