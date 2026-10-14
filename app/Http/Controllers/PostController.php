@@ -24,7 +24,7 @@ class PostController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::forSelection();
         return view('panel.posts.create', compact('categories'));
     }
 
@@ -69,7 +69,7 @@ class PostController extends Controller
 
         $posts = $query->paginate(8)->withQueryString();
 
-        $categories = Category::all();
+        $categories = Category::forSelection();
 
         return view('posts.index', compact('posts', 'categories'));
     }
@@ -105,7 +105,7 @@ class PostController extends Controller
     {
         Gate::authorize('update', $post);
 
-        $categories = Category::all();
+        $categories = Category::forSelection();
 
         $post->load('images');
 

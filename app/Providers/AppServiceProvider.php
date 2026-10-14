@@ -32,10 +32,9 @@ class AppServiceProvider extends ServiceProvider
             return $user->canAccessPanel();
         });
 
-        $permissions = Permission::all();
-        foreach ($permissions as $permission) {
-            Gate::define($permission->name, function($user) use ($permission){
-                return $user->hasPermission($permission->name);
+        foreach (Permission::query()->pluck('name') as $permissionName) {
+            Gate::define($permissionName, function($user) use ($permissionName){
+                return $user->hasPermission($permissionName);
             });
         }
     }

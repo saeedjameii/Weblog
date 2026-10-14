@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function create(){
 
-        $categories = Category::all();
+        $categories = Category::forSelection();
 
         return view('panel.categories.create', compact('categories'));
     }
@@ -36,9 +36,7 @@ class CategoryController extends Controller
     }
 
     public function edit(Category $category){
-            // $categories = Category::where('id', '!=', $category->id)->get();
-        $excludeId = $category->descendants()->pluck('id')->push($category->id);
-        $categories = Category::whereNotIn('id', $excludeId)->get();
+        $categories = Category::forSelectionExceptSubtree($category);
 
 
         return view('panel.categories.edit',compact('category', 'categories'));

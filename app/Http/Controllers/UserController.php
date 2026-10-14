@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index(){
 
         $users = User::withTrashed()->with('roles')->orderBy('first_name')->get();
-        $roles = Role::all();
+        $roles = Role::query()->select(['id', 'name'])->orderBy('name')->get();
 
         return view('panel.users.index', compact('users', 'roles'));
     }
