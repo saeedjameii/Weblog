@@ -28,7 +28,7 @@ class RoleController extends Controller
 
         $this->roleService->create($data);
 
-        return redirect()->route('panel.roles.create')->with('success', 'نقش با موفقیت ساخته شد');
+        return redirect()->route('panel.roles.index')->with('success', 'نقش با موفقیت ساخته شد');
     }
 
     public function edit(Role $role){

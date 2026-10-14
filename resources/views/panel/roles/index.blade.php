@@ -8,6 +8,12 @@
 
 <main class="page-area">
     <div class="main-content">
+        @if (session()->has('error'))
+            <div class="text-danger">{{ session('error') }}</div>
+        @endif
+        @if (session()->has('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
         {{-- Header --}}
         <section class="intro" style="max-width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
@@ -19,14 +25,6 @@
                 </a>
             @endcan
         </section>
-
-
-        {{-- Success Message --}}
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
 
 
         {{-- Roles --}}

@@ -4,6 +4,12 @@
 
 <main class="page-area">
     <div class="container" style="padding-top: 40px; padding-bottom: 80px;">
+        @if (session()->has('error'))
+            <div class="text-danger">{{ session('error') }}</div>
+        @endif
+        @if (session()->has('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
         <!-- Article Header -->
         <div style="max-width: 800px; margin: 0 auto 30px; text-align: center;">
