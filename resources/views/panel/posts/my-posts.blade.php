@@ -25,7 +25,7 @@
         <!-- نمایش ارورهای احتمالی (مثلا خطای عدم امکان بازیابی) -->
         @if ($errors->any())
             <div class="alert alert-danger mt-20">
-                <ul style="margin: 0; padding-inline-start: 20px;">
+                <ul class="errors-list">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -45,8 +45,8 @@
                 <article class="news-card {{ $post->trashed() ? 'is-trashed' : '' }}">
 
                     @if($post->images->isNotEmpty())
-                        <div style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius); opacity: {{ $post->trashed() ? '0.5' : '1' }};">
-                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="تصویر خبر" style="width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--line);">
+                        <div class="news-image-link {{ $post->trashed() ? 'news-image-link--faded' : '' }}">
+                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="تصویر خبر" class="news-image-cover news-image-cover--sm">
                         </div>
                     @endif
 
@@ -62,11 +62,11 @@
                             @if($post->trashed())
                                 <span class="tag tag-danger">حذف شده</span>
                             @elseif($post->isDraft())
-                                <span class="tag" style="background:#fef3c7; color:#92400e;">پیش‌نویس</span>
+                                <span class="tag tag--draft">پیش‌نویس</span>
                             @elseif($post->isScheduled())
-                                <span class="tag" style="background:#e0f2fe; color:#0369a1;">زمان‌بندی شده ({{ \Morilog\Jalali\Jalalian::fromCarbon($post->published_at)->format('Y/m/d H:i') }})</span>
+                                <span class="tag tag--scheduled">زمان‌بندی شده ({{ \Morilog\Jalali\Jalalian::fromCarbon($post->published_at)->format('Y/m/d H:i') }})</span>
                             @else
-                                <span class="tag" style="background:#dcfce7; color:#15803d;">منتشر شده</span>
+                                <span class="tag tag--published">منتشر شده</span>
                             @endif
                         </div>
 

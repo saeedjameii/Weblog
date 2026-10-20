@@ -38,7 +38,7 @@
                                     value="{{ $permission->id }}"
                                 >
 
-                                <label style="margin:0;">
+                                <label class="permission-label">
                                     {{ $permission->name }}
                                 </label>
                             </div>
@@ -47,7 +47,7 @@
 
                 </div>
 
-                <button type="submit" class="button button-primary" style="margin-top:8px;">
+                <button type="submit" class="button button-primary mt-8">
                    ساخت نقش
                 </button>
             </form>

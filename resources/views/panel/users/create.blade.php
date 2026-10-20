@@ -13,13 +13,13 @@
             <h1 class="display-font">ایجاد کاربر جدید</h1>
         </section>
 
-        <div class="workspace" style="grid-template-columns: 1fr; max-width: 800px;">
+        <div class="workspace workspace--single">
             <form action="{{ route('panel.users.store') }}" method="POST" class="form-card">
                 @csrf
 
                 @if ($errors->any())
-                    <div class="validation-message" style="display:block;margin-bottom:16px;">
-                        <ul style="margin:0;padding-inline-start:20px;">
+                    <div class="validation-message validation-errors">
+                        <ul class="errors-list">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach

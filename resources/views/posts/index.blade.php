@@ -6,7 +6,7 @@
         <div class="container">
           <div class="kicker">آرشیو جامع</div>
           <h1 class="section-title">آخرین اخبار و مقالات</h1>
-          <p style="color: var(--muted); max-width: 650px; line-height: 1.7">
+          <p class="browse-description">
             در این بخش می‌توانید تمامی اخبار، گزارش‌ها و مقالات منتشر شده توسط تحریریه را جستجو و مطالعه کنید.
           </p>
           <form class="search-box" method="GET" action="{{ route('posts.index') }}">
@@ -34,13 +34,13 @@
           <article class="news-card">
 
             @if($post->images->isNotEmpty())
-                <a href="{{ route('posts.show', $post) }}" style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius);">
-                    <img src="{{ Storage::url($post->images->first()->path) }}" alt="{{ $post->title }}" style="width: 100%; height: 200px; object-fit: cover; display: block; border-bottom: 1px solid var(--line);">
+                <a href="{{ route('posts.show', $post) }}" class="news-image-link">
+                    <img src="{{ Storage::url($post->images->first()->path) }}" alt="{{ $post->title }}" class="news-image-cover">
                 </a>
             @endif
 
             <div class="news-body">
-              <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
+              <div class="tags-row">
                   @forelse ($post->categories as $category)
                       <span class="tag">{{ $category->full_name }}</span>
                   @empty
@@ -56,7 +56,7 @@
             </div>
           </article>
         @empty
-            <div class="users-empty" style="grid-column: 1 / -1;">
+            <div class="users-empty full-width">
                 <p>هیچ خبری برای نمایش وجود ندارد.</p>
             </div>
         @endforelse

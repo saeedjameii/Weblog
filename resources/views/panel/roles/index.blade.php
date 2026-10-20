@@ -16,8 +16,8 @@
         @endif
 
         {{-- Header --}}
-        <section class="intro" style="max-width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
-            <h1 class="display-font" style="font-size:clamp(2rem, 3.4vw, 3rem); margin:0;">نقش ها</h1>
+        <section class="intro intro--header">
+            <h1 class="display-font panel-title--roles">نقش ها</h1>
 
             @can('permission', 'create-role')
                 <a href="{{ route('panel.roles.create') }}" class="button button-primary">
@@ -30,18 +30,18 @@
         {{-- Roles --}}
         @forelse ($roles as $role)
 
-            <div class="form-card" style="margin-top:24px;">
+            <div class="form-card role-card">
 
                 {{-- Role Header --}}
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <div class="role-header">
 
                     <div>
-                        <h4 style="margin:0 0 4px;">
+                        <h4 class="role-name">
                             {{ $role->name }}
                         </h4>
 
                         @if ($role->description)
-                            <p style="margin:0; color:var(--muted);">
+                            <p class="role-description">
                                 {{ $role->description }}
                             </p>
                         @endif
@@ -49,7 +49,7 @@
 
 
                     {{-- Actions --}}
-                    <div style="display:flex; gap:8px;">
+                    <div class="role-actions">
 
                         @can('permission', 'update-role')
                             @if ($role->name !== 'creator')
@@ -72,13 +72,13 @@
                                     action="{{ route('panel.roles.destroy', $role) }}"
                                     method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this role?');"
-                                    style="display:inline;"
+                                    class="d-inline"
                                 >
 
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit" class="btn text-danger" style="border:1px solid var(--line); background:none;">
+                                    <button type="submit" class="btn text-danger role-delete-btn">
                                         حذف
                                     </button>
 
@@ -94,16 +94,16 @@
 
 
                 {{-- Permissions --}}
-                <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:16px;">
+                <div class="role-permissions">
 
-                    <h6 style="margin:0 0 12px; color:var(--muted);">
+                    <h6 class="role-permissions-title">
                         اختیارات
                     </h6>
 
 
                     @if ($role->permissions->count())
 
-                        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <div class="permissions-list">
 
                             @foreach ($role->permissions as $permission)
 
@@ -117,7 +117,7 @@
 
                     @else
 
-                        <p style="color:var(--muted); margin:0;">
+                        <p class="color-muted m-0">
                             این نقش هیچ اختیاری ندارد
                         </p>
 
@@ -129,7 +129,7 @@
 
         @empty
 
-            <div class="alert alert-info" style="margin-top:24px;">
+            <div class="alert alert-info mt-24">
                 هیچ نقشی یافت نشد
             </div>
 

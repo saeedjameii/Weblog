@@ -14,7 +14,7 @@
                 <h1 class="display-font">ویرایش خبر</h1>
             </section>
 
-            <div class="workspace" style="grid-template-columns: 1fr; max-width: 800px;">
+            <div class="workspace workspace--single">
                 <form action="{{ route('panel.posts.update', $post) }}" method="POST" class="form-card"
                     enctype="multipart/form-data">
 
@@ -28,14 +28,14 @@
                             <input class="form-control @error('title') is-invalid @enderror" type="text" name="title"
                                 value="{{ old('title', $post->title) }}" required>
                             @error('title')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="field full-field">
                             <label>سرویس‌های خبری (دسته‌بندی‌ها)</label>
-                            <select class="form-control @error('categories') is-invalid @enderror" name="categories[]"
-                                multiple required style="min-height: 120px;">
+                            <select class="form-control @error('categories') is-invalid @enderror select--tall" name="categories[]"
+                                multiple required >
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         {{ in_array($category->id, old('categories', $post->categories->pluck('id')->toArray())) ? 'selected' : '' }}>
@@ -44,16 +44,16 @@
                                 @endforeach
                             </select>
                             @error('categories')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="field full-field">
                             <label>متن کامل خبر</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" style="min-height: 300px;"
+                            <textarea class="form-control @error('description') is-invalid @enderror textarea--tall" name="description"
                                 required>{{ old('description', $post->description) }}</textarea>
                             @error('description')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -61,15 +61,15 @@
                         @if ($post->images->isNotEmpty())
                             <div class="field full-field">
                                 <label>تصاویر فعلی</label>
-                                <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;">
+                                <div class="edit-images-grid">
                                     @foreach ($post->images as $image)
-                                        <div style="position:relative; width:120px;">
+                                        <div class="edit-image-wrap">
                                             <img src="{{ Storage::url($image->path) }}" alt="تصویر پست"
-                                                style="width:120px; height:80px; object-fit:cover; border-radius:6px; border:1px solid var(--line);">
+                                                class="edit-image-thumb">
                                         </div>
                                     @endforeach
                                 </div>
-                                <p style="color:var(--muted); font-size:0.85rem; margin-top:8px;">
+                                <p class="edit-images-note">
                                     با آپلود تصاویر جدید، تصاویر فعلی جایگزین می‌شوند.
                                 </p>
                             </div>
@@ -79,16 +79,16 @@
                         <div class="field full-field">
                             <label for="images">
                                 {{ $post->images->isNotEmpty() ? 'جایگزینی تصاویر' : 'تصاویر خبر' }}
-                                <span style="color:var(--muted); font-weight:400;">(اختیاری — حداکثر ۵ تصویر، هر کدام تا ۵
+                                <span class="label-hint">(اختیاری — حداکثر ۵ تصویر، هر کدام تا ۵
                                     مگابایت)</span>
                             </label>
                             <input class="form-control" type="file" id="images" name="images[]"
                                 accept="image/jpeg,image/png,image/webp" multiple>
                             @error('images')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                             @error('images.*')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -100,7 +100,7 @@
                         <div class="field">
                             <label for="publish-date-display">
                                 تاریخ انتشار (شمسی)
-                                <span style="color:var(--muted); font-weight:400;">(اختیاری)</span>
+                                <span class="label-hint">(اختیاری)</span>
                             </label>
                             <div class="jalali-date-wrap">
                                 <input class="form-control jalali-date-input @error('published_date') is-invalid @enderror"
@@ -113,30 +113,30 @@
                                 value="{{ old('published_date', $jalaliPublishedDate) }}"/>
                             <div id="post-jalali-calendar" class="jalali-calendar" role="dialog" aria-label="تقویم شمسی تاریخ انتشار" hidden></div>
                             @error('published_date')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="field">
                             <label for="published_time">
                                 ساعت انتشار
-                                <span style="color:var(--muted); font-weight:400;">(اختیاری)</span>
+                                <span class="label-hint">(اختیاری)</span>
                             </label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
+                            <div class="publish-time-row">
                                 <input class="form-control @error('published_time') is-invalid @enderror"
                                     type="time" id="published_time" name="published_time"
                                     value="{{ old('published_time', $jalaliPublishedTime) }}"
                                     dir="ltr">
-                                <button type="button" data-clear-publish-date class="button button-secondary" style="padding: 0 12px; height: 42px; font-size: 0.82rem; white-space: nowrap;" title="پاک کردن تاریخ و زمان">
+                                <button type="button" data-clear-publish-date class="button button-secondary btn--instant-publish" title="پاک کردن تاریخ و زمان">
                                     انتشار فوری
                                 </button>
                             </div>
                             @error('published_time')
-                                <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                <span class="validation-message validation-message--visible">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="field full-field" style="margin-top: -10px;">
+                        <div class="field full-field field--negative-top">
                             <span class="field-hint">
                                 💡 در صورت تعیین تاریخ و ساعت در آینده، خبر در حالت زمان‌بندی قرار می‌گیرد. با زدن «انتشار فوری» تاریخ خالی شده و خبر در همان لحظه منتشر می‌گردد.
                             </span>
@@ -145,7 +145,7 @@
                     </div>
 
                     <div
-                        style="display:flex; align-items:center; gap:14px; margin-top:30px; padding-top:20px; border-top: 1px solid var(--line);">
+                        class="edit-form-actions">
                         @if ($post->status === 'draft')
                             <button type="submit" name="action" value="draft" class="button button-secondary">
                                 ذخیره پیش‌نویس

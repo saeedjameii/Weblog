@@ -54,7 +54,7 @@
                     @forelse ($latestPosts as $post)
                         <article class="news-card">
                             <div class="news-body">
-                                <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px;">
+                                <div class="tags-row">
                                     @forelse ($post->categories as $category)
                                         <span class="tag">{{ $category->full_name }}</span>
                                     @empty

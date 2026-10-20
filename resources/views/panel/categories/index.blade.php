@@ -12,10 +12,10 @@
     @endif
 
     <div class="main-content">
-        <section class="intro" style="max-width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
+        <section class="intro intro--header">
             <div>
                 <p class="kicker">پنل مدیریت</p>
-                <h1 class="display-font" style="font-size:clamp(2rem, 3.4vw, 3rem); margin:8px 0 0;">دسته‌بندی‌ها</h1>
+                <h1 class="display-font panel-title--categories">دسته‌بندی‌ها</h1>
             </div>
             @can('permission', 'create-category')
                 <a href="{{ route('panel.categories.create') }}" class="button button-primary">
@@ -24,31 +24,31 @@
             @endcan
         </section>
 
-        <div class="form-card" style="margin-top:34px;">
-            <div class="section-heading" style="justify-content:space-between; align-items:center; margin-bottom:0;">
+        <div class="form-card categories-card">
+            <div class="section-heading section-heading--flush">
                 <div>
-                    <h2 style="margin:0;">لیست دسته‌بندی‌ها</h2>
-                    <p class="section-description" style="margin:4px 0 0;">{{ $categories->count() }} دسته‌بندی</p>
+                    <h2 class="m-0">لیست دسته‌بندی‌ها</h2>
+                    <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی</p>
                 </div>
             </div>
 
             @if ($categories->count())
-                <div style="margin-top:24px;">
+                <div class="categories-list">
                     @foreach ($categories as $category)
-                        <div class="spec-row" style="align-items:flex-start;">
-                            <div style="display:flex; align-items:flex-start; gap:14px;">
-                                <span class="step-number" style="background:#eef4eb; color:var(--forest); font-size:18px; flex-shrink:0;">📁</span>
+                        <div class="spec-row spec-row--top">
+                            <div class="category-icon-wrap">
+                                <span class="step-number step-number--category">📁</span>
                                 @include('panel.categories.partials.category-tree', ['category' => $category])
                             </div>
                         </div>
                     @endforeach
                 </div>
             @else
-                <div style="text-align:center; padding:60px 20px;">
-                    <div style="font-size:45px;">📁</div>
-                    <h3 style="margin:18px 0 8px;">هیچ دسته‌بندی‌ای وجود ندارد</h3>
-                    <p style="color:var(--muted);">هنوز هیچ دسته‌بندی‌ای ایجاد نشده است.</p>
-                    <a href="{{ route('panel.categories.create') }}" class="button button-primary" style="margin-top:14px;">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📁</div>
+                    <h3 class="empty-state-title">هیچ دسته‌بندی‌ای وجود ندارد</h3>
+                    <p class="color-muted">هنوز هیچ دسته‌بندی‌ای ایجاد نشده است.</p>
+                    <a href="{{ route('panel.categories.create') }}" class="button button-primary mt-14">
                         + ساخت دسته‌بندی جدید
                     </a>
                 </div>

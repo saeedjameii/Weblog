@@ -29,43 +29,43 @@
             </p>
         </section>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px; margin-top:24px;">
+        <div class="dashboard-grid">
 
             <div class="form-card">
-                <h3 style="margin-top:0;">📦 اخبار من</h3>
-                <p style="color:var(--muted);">اخباری که خودتان ثبت کرده‌اید را ببینید، ویرایش یا حذف کنید.</p>
-                <a href="{{ route('panel.posts.mine') }}" class="button button-primary" style="width:100%; text-align:center;">مشاهده‌ی پست‌های من</a>
+                <h3 class="dashboard-card-title">📦 اخبار من</h3>
+                <p class="dashboard-card-description">اخباری که خودتان ثبت کرده‌اید را ببینید، ویرایش یا حذف کنید.</p>
+                <a href="{{ route('panel.posts.mine') }}" class="button button-primary dashboard-card-link">مشاهده‌ی پست‌های من</a>
             </div>
 
             @canany(['update-any-post', 'delete-any-post'])
                 <div class="form-card">
-                    <h3 style="margin-top:0;">📦 مدیریت اخبارها</h3>
-                    <p style="color:var(--muted);">اخبار را ببینید، ویرایش یا حذف کنید.</p>
+                    <h3 class="dashboard-card-title">📦 مدیریت اخبارها</h3>
+                    <p class="dashboard-card-description">اخبار را ببینید، ویرایش یا حذف کنید.</p>
 
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <a href="{{ route('panel.posts.all') }}" class="button button-primary" style="width:100%; text-align:center;">لیست اخبار</a>
+                    <div class="dashboard-card-actions">
+                        <a href="{{ route('panel.posts.all') }}" class="button button-primary dashboard-card-link">لیست اخبار</a>
                     </div>
                 </div>
             @endcanany
 
             @can('permission', 'create-post')
                 <div class="form-card">
-                    <h3 style="margin-top:0;">➕ ثبت خبر جدید</h3>
-                    <p style="color:var(--muted);">یک خبر تازه برای اجاره در سایت ثبت کنید.</p>
-                    <a href="{{ route('panel.posts.create') }}" class="button button-primary" style="width:100%; text-align:center;">ثبت خبر</a>
+                    <h3 class="dashboard-card-title">➕ ثبت خبر جدید</h3>
+                    <p class="dashboard-card-description">یک خبر تازه برای اجاره در سایت ثبت کنید.</p>
+                    <a href="{{ route('panel.posts.create') }}" class="button button-primary dashboard-card-link">ثبت خبر</a>
                 </div>
             @endcan
 
             @canany(['create-category', 'update-category', 'delete-category'])
                 <div class="form-card">
-                    <h3 style="margin-top:0;">📁 مدیریت دسته‌بندی‌ها</h3>
-                    <p style="color:var(--muted);">دسته‌بندی و زیردسته‌بندی اخبار را بسازید یا ویرایش کنید.</p>
+                    <h3 class="dashboard-card-title">📁 مدیریت دسته‌بندی‌ها</h3>
+                    <p class="dashboard-card-description">دسته‌بندی و زیردسته‌بندی اخبار را بسازید یا ویرایش کنید.</p>
 
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <a href="{{ route('panel.categories.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست دسته‌بندی‌ها</a>
+                    <div class="dashboard-card-actions">
+                        <a href="{{ route('panel.categories.index') }}" class="btn btn-secondary dashboard-card-action">لیست دسته‌بندی‌ها</a>
 
                         @can('permission', 'create-category')
-                            <a href="{{ route('panel.categories.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ جدید</a>
+                            <a href="{{ route('panel.categories.create') }}" class="btn btn-secondary dashboard-card-action">+ جدید</a>
                         @endcan
                     </div>
                 </div>
@@ -73,14 +73,14 @@
 
             @canany(['create-role', 'update-role', 'delete-role'])
                 <div class="form-card">
-                    <h3 style="margin-top:0;">🛡️ مدیریت نقش‌ها</h3>
-                    <p style="color:var(--muted);">نقش‌ها و اختیارات (permission) هر نقش را تعریف کنید.</p>
+                    <h3 class="dashboard-card-title">🛡️ مدیریت نقش‌ها</h3>
+                    <p class="dashboard-card-description">نقش‌ها و اختیارات (permission) هر نقش را تعریف کنید.</p>
 
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <a href="{{ route('panel.roles.index') }}" class="btn btn-secondary" style="flex:1; text-align:center;">لیست نقش‌ها</a>
+                    <div class="dashboard-card-actions">
+                        <a href="{{ route('panel.roles.index') }}" class="btn btn-secondary dashboard-card-action">لیست نقش‌ها</a>
 
                         @can('permission', 'create-role')
-                            <a href="{{ route('panel.roles.create') }}" class="btn btn-secondary" style="flex:1; text-align:center;">+ نقش جدید</a>
+                            <a href="{{ route('panel.roles.create') }}" class="btn btn-secondary dashboard-card-action">+ نقش جدید</a>
                         @endcan
                     </div>
                 </div>
@@ -88,17 +88,17 @@
 
             @canany(['assign-role', 'manage-users'])
                 <div class="form-card">
-                    <h3 style="margin-top:0;">👥 مدیریت کاربران</h3>
-                    <p style="color:var(--muted);">به کاربران نقش بدهید یا حساب‌های کاربری را مدیریت کنید.</p>
-                    <a href="{{ route('panel.users.index') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت کاربران</a>
+                    <h3 class="dashboard-card-title">👥 مدیریت کاربران</h3>
+                    <p class="dashboard-card-description">به کاربران نقش بدهید یا حساب‌های کاربری را مدیریت کنید.</p>
+                    <a href="{{ route('panel.users.index') }}" class="button button-primary dashboard-card-link">مدیریت کاربران</a>
                 </div>
             @endcanany
 
             @can('permission', 'delete-any-post')
                 <div class="form-card">
-                    <h3 style="margin-top:0;">پست های حذف شده</h3>
-                    <p style="color:var(--muted);">پست های درون سطل زباله را ببینید و در صورت نیاز آن ها را بازیابی کنید</p>
-                    <a href="{{ route('panel.posts.trashed') }}" class="button button-primary" style="width:100%; text-align:center;">مدیریت پست های حذف شده</a>
+                    <h3 class="dashboard-card-title">پست های حذف شده</h3>
+                    <p class="dashboard-card-description">پست های درون سطل زباله را ببینید و در صورت نیاز آن ها را بازیابی کنید</p>
+                    <a href="{{ route('panel.posts.trashed') }}" class="button button-primary dashboard-card-link">مدیریت پست های حذف شده</a>
                 </div>
             @endcan
 

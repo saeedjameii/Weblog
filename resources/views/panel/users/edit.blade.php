@@ -13,14 +13,14 @@
             <h1 class="display-font">ویرایش کاربر: {{ $user->first_name }} {{ $user->last_name }}</h1>
         </section>
 
-        <div class="workspace" style="grid-template-columns: 1fr; max-width: 800px;">
+        <div class="workspace workspace--single">
             <form action="{{ route('panel.users.update', $user) }}" method="POST" class="form-card">
                 @csrf
                 @method('PUT')
 
                 @if ($errors->any())
-                    <div class="validation-message" style="display:block;margin-bottom:16px;">
-                        <ul style="margin:0;padding-inline-start:20px;">
+                    <div class="validation-message validation-errors">
+                        <ul class="errors-list">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
@@ -29,7 +29,7 @@
                 @endif
 
                 @if (session('success'))
-                    <div style="background: #eef4eb; color: var(--forest); padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+                    <div class="alert--success-inline">
                         {{ session('success') }}
                     </div>
                 @endif
@@ -74,8 +74,8 @@
                         <div id="signup-jalali-calendar" class="jalali-calendar" role="dialog" aria-label="تقویم شمسی تاریخ تولد" hidden></div>
                     </div>
 
-                    <div class="field full-field" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--line);">
-                        <p style="margin-top: 0; color: var(--muted); font-size: 0.9rem;">اگر نمی‌خواهید رمز عبور کاربر را تغییر دهید، فیلدهای زیر را خالی بگذارید.</p>
+                    <div class="field full-field password-section-divider">
+                        <p class="password-section-note">اگر نمی‌خواهید رمز عبور کاربر را تغییر دهید، فیلدهای زیر را خالی بگذارید.</p>
                     </div>
 
                     <div class="field">

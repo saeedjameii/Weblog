@@ -23,8 +23,8 @@
             @forelse ($posts as $post)
                 <article class="news-card">
                     @if ($post->images->isNotEmpty())
-                        <div style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius);">
-                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="{{ $post->title }}" style="width:100%; height:180px; object-fit:cover; display:block; border-bottom:1px solid var(--line);">
+                        <div class="news-image-link">
+                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="{{ $post->title }}" class="news-image-cover news-image-cover--sm">
                         </div>
                     @endif
 
@@ -37,11 +37,11 @@
                             @endforelse
 
                             @if ($post->isDraft())
-                                <span class="tag" style="background:#fef3c7; color:#92400e;">پیش‌نویس</span>
+                                <span class="tag tag--draft">پیش‌نویس</span>
                             @elseif ($post->isScheduled())
-                                <span class="tag" style="background:#e0f2fe; color:#0369a1;">زمان‌بندی‌شده</span>
+                                <span class="tag tag--scheduled">زمان‌بندی‌شده</span>
                             @else
-                                <span class="tag" style="background:#dcfce7; color:#15803d;">منتشرشده</span>
+                                <span class="tag tag--published">منتشرشده</span>
                             @endif
                         </div>
 

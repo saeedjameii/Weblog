@@ -39,7 +39,7 @@
                         >
 
                         @error('name')
-                            <span class="validation-message" style="display:block;">
+                            <span class="validation-message">
                                 {{ $message }}
                             </span>
                         @enderror
@@ -62,7 +62,7 @@
                                     @checked(in_array($permission->id, $rolePermissions))
                                 >
 
-                                <label style="margin:0;">
+                                <label class="permission-label">
                                     {{ $permission->name }}
                                 </label>
 
@@ -72,7 +72,7 @@
 
 
                         @error('permissions')
-                            <span class="validation-message" style="display:block;">
+                            <span class="validation-message">
                                 {{ $message }}
                             </span>
                         @enderror
@@ -81,7 +81,7 @@
 
                 </div>
 
-                <button type="submit" class="button button-primary" style="margin-top:8px;">
+                <button type="submit" class="button button-primary mt-8">
                     بروزرسانی نقش
                 </button>
 

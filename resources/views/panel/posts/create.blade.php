@@ -13,12 +13,12 @@
                 <p class="intro-copy">اخبار، مقالات و رویدادهای جدید را از اینجا روی سایت منتشر کنید.</p>
             </section>
 
-            <div class="workspace" style="grid-template-columns: 1fr; max-width: 800px;">
+            <div class="workspace workspace--single">
                 <form action="{{ route('panel.posts.store') }}" method="POST" enctype="multipart/form-data" id="listing-form" class="form-card">
                     @csrf
                     @if ($errors->any())
-                        <div class="validation-message" style="display:block;margin-bottom:16px;">
-                            <ul style="margin:0;padding-inline-start:20px;">
+                        <div class="validation-message validation-errors">
+                            <ul class="errors-list">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -26,7 +26,7 @@
                         </div>
                     @endif
                     
-                    <section class="form-section" style="border: none; padding: 0; margin: 0;">
+                    <section class="form-section form-section--flat">
                         <div class="section-heading">
                             <div>
                                 <h2>محتوای خبر</h2>
@@ -43,7 +43,7 @@
 
                             <div class="field full-field">
                                 <label for="categories">سرویس‌های خبری (دسته‌بندی‌ها)</label>
-                                <select class="form-control" id="categories" name="categories[]" multiple required style="min-height: 120px;">
+                                <select class="form-control select--tall" id="categories" name="categories[]" multiple required>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" 
                                             {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
@@ -56,12 +56,12 @@
 
                             <div class="field full-field">
                                 <label for="description">متن کامل خبر</label>
-                                <textarea class="form-control" id="description" name="description" style="min-height: 300px;" 
+                                <textarea class="form-control textarea--tall" id="description" name="description"
                                     placeholder="محتوای مقاله یا خبر را اینجا بنویسید..." required>{{ old('description') }}</textarea>
                             </div>
 
                             <div class="field full-field">
-                                <label for="images">تصاویر خبر <span style="color:var(--muted); font-weight:400;">(اختیاری — حداکثر ۵ تصویر، هر کدام تا ۵ مگابایت)</span></label>
+                                <label for="images">تصاویر خبر <span class="label-hint">(اختیاری — حداکثر ۵ تصویر، هر کدام تا ۵ مگابایت)</span></label>
                                 <input
                                     class="form-control"
                                     type="file"
@@ -71,17 +71,17 @@
                                     multiple
                                 >
                                 @error('images')
-                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                    <span class="validation-message validation-message--visible">{{ $message }}</span>
                                 @enderror
                                 @error('images.*')
-                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                    <span class="validation-message validation-message--visible">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="field">
                                 <label for="publish-date-display">
                                     تاریخ انتشار (شمسی)
-                                    <span style="color:var(--muted); font-weight:400;">(اختیاری)</span>
+                                    <span class="label-hint">(اختیاری)</span>
                                 </label>
                                 <div class="jalali-date-wrap">
                                     <input class="form-control jalali-date-input @error('published_date') is-invalid @enderror"
@@ -93,30 +93,30 @@
                                 <input id="published_date" name="published_date" type="hidden" value="{{ old('published_date') }}"/>
                                 <div id="post-jalali-calendar" class="jalali-calendar" role="dialog" aria-label="تقویم شمسی تاریخ انتشار" hidden></div>
                                 @error('published_date')
-                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                    <span class="validation-message validation-message--visible">{{ $message }}</span>
                                 @enderror
                             </div>
 
                             <div class="field">
                                 <label for="published_time">
                                     ساعت انتشار
-                                    <span style="color:var(--muted); font-weight:400;">(اختیاری)</span>
+                                    <span class="label-hint">(اختیاری)</span>
                                 </label>
-                                <div style="display: flex; gap: 8px; align-items: center;">
+                                <div class="publish-time-row">
                                     <input class="form-control @error('published_time') is-invalid @enderror"
                                         type="time" id="published_time" name="published_time"
                                         value="{{ old('published_time') }}"
                                         dir="ltr">
-                                    <button type="button" data-clear-publish-date class="button button-secondary" style="padding: 0 12px; height: 42px; font-size: 0.82rem; white-space: nowrap;" title="پاک کردن تاریخ و زمان">
+                                    <button type="button" data-clear-publish-date class="button button-secondary btn--instant-publish" title="پاک کردن تاریخ و زمان">
                                         انتشار فوری
                                     </button>
                                 </div>
                                 @error('published_time')
-                                    <span class="validation-message" style="display:block;">{{ $message }}</span>
+                                    <span class="validation-message validation-message--visible">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <div class="field full-field" style="margin-top: -10px;">
+                            <div class="field full-field field--negative-top">
                                 <span class="field-hint">
                                     💡 در صورت تعیین تاریخ و ساعت در آینده، خبر در حالت زمان‌بندی قرار گرفته و تا فرارسیدن زمان مشخص‌شده منتشر نخواهد شد. در صورت خالی گذاشتن، خبر بلافاصله پس از انتشار نمایش داده می‌شود.
                                 </span>

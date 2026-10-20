@@ -13,7 +13,7 @@
             <h1 class="display-font">کاربران و نقش‌ها</h1>
             <p class="intro-copy">حساب‌های کاربری سایت را مدیریت کنید، ادمین‌های جدید بسازید و نقش‌ها را مشخص کنید.</p>
             @can('permission', 'manage-users')
-                <div style="margin-top: 20px;">
+                <div class="mt-20">
                     <a href="{{ route('panel.users.create') }}" class="button button-primary">+ ایجاد کاربر جدید</a>
                 </div>
             @endcan
@@ -35,10 +35,10 @@
         </div>
 
         @if (session('success'))
-            <div class="alert alert-success" style="margin-bottom: 24px;">{{ session('success') }}</div>
+            <div class="alert alert-success mb-24">{{ session('success') }}</div>
         @endif
         @if (session('error'))
-            <div class="alert alert-danger" style="margin-bottom: 24px;">{{ session('error') }}</div>
+            <div class="alert alert-danger mb-24">{{ session('error') }}</div>
         @endif
 
         <section aria-label="فهرست کاربران">
@@ -57,16 +57,16 @@
                             </h3>
                             <p>{{ $user->email }}</p>
                             
-                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <div class="users-tags-row">
                                 @if ($user->isCreator())
-                                    <span class="tag" style="background:#e9ecef;">🌟 Creator (سازنده)</span>
+                                    <span class="tag tag--creator">🌟 Creator (سازنده)</span>
                                 @elseif ($user->isAdmin())
-                                    <span class="tag" style="background:#e9ecef;">🛡️ Admin</span>
+                                    <span class="tag tag--admin">🛡️ Admin</span>
                                     @foreach ($user->roles as $role)
                                         <span class="tag">{{ $role->name }}</span>
                                     @endforeach
                                 @else
-                                    <span class="tag" style="background:#f8f9fa; border:1px solid var(--line);">👤 کاربر عادی</span>
+                                    <span class="tag tag--normal-user">👤 کاربر عادی</span>
                                 @endif
                             </div>
                         </div>
@@ -74,7 +74,7 @@
 
                     <div class="user-actions-section">
                         @if ($user->isCreator())
-                            <span style="color:var(--muted); font-size:0.9rem; font-style:italic;">حساب سازنده قابل تغییر نیست</span>
+                            <span class="creator-note">حساب سازنده قابل تغییر نیست</span>
                         @else
 
                             @if ($user->isAdmin() && !$user->trashed())
@@ -89,7 +89,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <button type="submit" class="button button-secondary" style="padding: 0 16px; white-space: nowrap;">ثبت نقش</button>
+                                    <button type="submit" class="button button-secondary btn--submit-role">ثبت نقش</button>
                                 </form>
                             @endif
 
@@ -135,8 +135,8 @@
 
                 </article>
             @empty
-                <div class="alert alert-info text-center" style="padding: 40px;">
-                    <span style="font-size: 2rem; display: block; margin-bottom: 10px;">👥</span>
+                <div class="alert alert-info text-center empty-state--large">
+                    <span>👥</span>
                     هنوز هیچ کاربری در سیستم ثبت نشده است.
                 </div>
             @endforelse

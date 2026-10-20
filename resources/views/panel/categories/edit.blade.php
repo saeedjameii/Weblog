@@ -37,7 +37,7 @@
                         >
 
                         @error('name')
-                            <span class="validation-message" style="display:block;">{{ $message }}</span>
+                            <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -60,13 +60,13 @@
                         </select>
 
                         @error('parent_id')
-                            <span class="validation-message" style="display:block;">{{ $message }}</span>
+                            <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>
 
                 </div>
 
-                <button type="submit" class="button button-primary" style="margin-top:8px;">
+                <button type="submit" class="button button-primary mt-8">
                     ویرایش دسته‌بندی
                 </button>
 

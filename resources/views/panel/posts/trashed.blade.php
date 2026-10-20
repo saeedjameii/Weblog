@@ -17,28 +17,28 @@
         </section>
 
         @if (session('success'))
-            <div class="alert alert-success" style="margin-top:20px;">{{ session('success') }}</div>
+            <div class="alert alert-success mt-20">{{ session('success') }}</div>
         @endif
 
         @error('post')
-            <div class="alert alert-danger" style="margin-top:20px;">{{ $message }}</div>
+            <div class="alert alert-danger mt-20">{{ $message }}</div>
         @enderror
 
-        <div class="container news-grid" style="margin-top:24px; padding:0;">
+        <div class="container news-grid mt-24 p-0">
 
             @forelse ($posts as $post)
 
-                <article class="news-card" style="opacity: 0.7;">
+                <article class="news-card trashed-card">
 
                     @if($post->images->isNotEmpty())
-                        <div style="display:block; overflow:hidden; border-top-left-radius:var(--radius); border-top-right-radius:var(--radius);">
-                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="تصویر خبر" style="width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--line);">
+                        <div class="news-image-link">
+                            <img src="{{ Storage::url($post->images->first()->path) }}" alt="تصویر خبر" class="news-image-cover news-image-cover--sm">
                         </div>
                     @endif
 
                     <div class="news-body">
 
-                        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px;">
+                        <div class="tags-row">
                             @forelse ($post->categories as $category)
                                 <span class="tag">{{ $category->full_name }}</span>
                             @empty
@@ -57,12 +57,12 @@
                         <form
                             action="{{ route('panel.posts.restore', $post->id) }}"
                             method="POST"
-                            style="margin-top:12px;"
+                            class="trashed-form"
                             onsubmit="return confirm('این پست بازیابی شود؟');"
                         >
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="button button-secondary" style="width:100%;">بازیابی پست</button>
+                            <button type="submit" class="button button-secondary w-full">بازیابی پست</button>
                         </form>
 
                     </div>
@@ -70,7 +70,7 @@
 
             @empty
 
-                <div class="users-empty" style="grid-column:1/-1;">
+                <div class="users-empty full-width">
                     <span aria-hidden="true">🗑️</span>
                     <p>هیچ پست حذف‌شده‌ای وجود ندارد.</p>
                 </div>
