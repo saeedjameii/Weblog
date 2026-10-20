@@ -16,11 +16,12 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next, ...$permissions): Response
     {
+        $user = auth('api')->user();
 
-        $user = auth()->user();
-
-        if(!$user){
-            return redirect()->route('login')->withCookie(cookie()->forget('token'))->withErrors('email', 'حساب کاربری شما حذف شده است');
+        if (! $user) {
+            return redirect()->route('login')
+                ->withCookie(cookie()->forget('token'))
+                ->withErrors(['email' => 'لطفا ابتدا وارد حساب خود شوید.']);
         }
 
         foreach ($permissions as $permission) {
@@ -30,6 +31,5 @@ class CheckPermission
         }
 
         abort(403);
-
     }
 }

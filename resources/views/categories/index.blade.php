@@ -72,11 +72,8 @@
 
                     <h3 style="margin:18px 0 8px;">هیچ دسته‌بندی‌ای وجود ندارد</h3>
 
-                    <p style="color:var(--muted);">شما هنوز هیچ دسته‌بندی‌ای ایجاد نکرده‌اید.</p>
+                    <p style="color:var(--muted);"> هنوز هیچ دسته‌بندی‌ای ایجاد نشده است  .</p>
 
-                    <a href="{{ route('panel.categories.create') }}" class="button button-primary" style="margin-top:14px;">
-                        + ساخت دسته‌بندی جدید
-                    </a>
 
                 </div>
 

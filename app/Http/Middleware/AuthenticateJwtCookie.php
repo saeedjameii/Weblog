@@ -17,7 +17,7 @@ class AuthenticateJwtCookie
             try {
                 $user = JWTAuth::setToken($token)->authenticate();
                 if($user){
-                    auth()->setUser($user);
+                    auth('api')->setUser($user);
                 }
                 if($user && $user->trashed()){
                     JWTAuth::invalidate($token);
@@ -25,7 +25,7 @@ class AuthenticateJwtCookie
                         'email' => 'حساب کاربری شما حذف شده است']);
                 }
             } catch (\Throwable $e) {
-
+                return $next($request)->withCookie(cookie()->forget('token'));
             }
         }
 
