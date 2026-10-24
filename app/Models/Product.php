@@ -12,10 +12,6 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    // public function users(){
-    //     return $this->belongsTo(User::class);
-    // }
-
     public function images(){
         return $this->morphMany(Image::class, 'imageable');
     }
@@ -23,10 +19,5 @@ class Product extends Model
     public function prices(){
         return $this->hasMany(Price::class);
     }
-
-    public function attributes(){
-        return $this->belongsToMany(Attribute::class, 'attribute_values');
-    }
-
 
 }
