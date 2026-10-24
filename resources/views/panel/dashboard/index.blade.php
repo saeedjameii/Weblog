@@ -102,6 +102,22 @@
                 </div>
             @endcan
 
+            @canany(['create-product', 'update-product', 'delete-product'])
+                <div class="form-card">
+                    <h3 class="dashboard-card-title"> مدیریت محصولات</h3>
+                    <p class="dashboard-card-description">محصولات مورد نیاز را ایجاد کنید یا آن ها را ویرایش و حذف کنید.</p>
+                    <a href="{{ route('panel.products.index') }}" class="button button-primary dashboard-card-link">مدیریت محصولات</a>
+                </div>
+            @endcanany
+
+            @canany(['create-attribute', 'update-attribute', 'delete-attribute'])
+                <div class="form-card">
+                    <h3 class="dashboard-card-title"> مدیریت ویژگی های محصولات</h3>
+                    <p class="dashboard-card-description"> ویژگی محصولات مورد نیاز را ایجاد کنید یا آن ها را ویرایش و حذف کنید.</p>
+                    <a href="{{ route('panel.attributes.index') }}" class="button button-primary dashboard-card-link">مدیریت ویژگی های محصولات</a>
+                </div>
+            @endcanany
+
         </div>
 
     </div>
