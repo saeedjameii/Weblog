@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Permission;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RbacSeeder extends Seeder
@@ -31,6 +31,15 @@ class RbacSeeder extends Seeder
             'assign-role',
 
             'manage-users',
+
+            'create-product',
+            'update-product',
+            'delete-product',
+
+            'create-attribute',
+            'update-attribute',
+            'delete-attribute',
+            
         ];
 
         foreach($permissions as $permission){
