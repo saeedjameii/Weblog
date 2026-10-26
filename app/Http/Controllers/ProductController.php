@@ -28,7 +28,7 @@ class ProductController extends Controller
 
         if($request->filled('category_id')){
             $query->whereHas('categories', function ($q) use ($request){
-                $q->where('category_id', $request->category_id);
+                $q->where('categories.id', $request->category_id);
             });
         }
 
@@ -48,12 +48,14 @@ class ProductController extends Controller
 
         if($request->filled('search')){
             $search = $request->search;
-            $query->where('name', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%");
+            });  
         }
 
         if($request->filled('category_id')){
             $query->whereHas('categories', function ($q) use ($request){
-                $q->where('category_id', $request->category_id);
+                $q->where('categories.id', $request->category_id);
             });
         }
 

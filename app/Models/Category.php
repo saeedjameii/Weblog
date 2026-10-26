@@ -13,11 +13,11 @@ class Category extends Model
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
-    public static function forSelection(): Collection
+    public static function forSelection(?string $type = null): Collection
     {
         $query = static::query()->select(['id', 'name', 'type', 'parent_id'])->orderBy('name');
 
-        if($query !== null) {
+        if($type !== null) {
             $query->where('type', $type);
         }
 
