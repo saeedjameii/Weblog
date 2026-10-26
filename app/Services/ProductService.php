@@ -11,7 +11,7 @@ class ProductService
 {
 	public function create(array $data): Product
 	{
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($product, $data) {
             $product = Product::create([
                 'name' => $data['name'],
                 'description' => $data['description'],

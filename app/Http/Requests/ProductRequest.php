@@ -30,6 +30,8 @@ class ProductRequest extends FormRequest
             'weight' => 'required|numeric|min:0',
             'categories' => 'required|array',
             'categories.*'   => ['required', Rule::exists('categories', 'id')->where(fn($query) => $query->where('type', 'product'))],
+            'images'   => 'nullable|array|max:5',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ];
     }
 }

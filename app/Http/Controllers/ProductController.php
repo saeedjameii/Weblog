@@ -22,7 +22,9 @@ class ProductController extends Controller
 
         if($request->filled('search')){
             $search = $request->search;
-            $query->where('name', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%");
+            });        
         }
 
         if($request->filled('category_id')){
@@ -31,7 +33,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->pagginate(8)->withQueryString();
+        $products = $query->paginate(8)->withQueryString();
         $categories = Category::forSelection();
 
         return view('products.index', compact('products', 'categories'));
@@ -56,7 +58,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->pagginate(8)->withQueryString();
+        $products = $query->paginate(8)->withQueryString();
         $categories = Category::forSelection();
 
         return view('panel.products.index', compact('products', 'categories'));
@@ -78,18 +80,15 @@ class ProductController extends Controller
         return view('panel.products.edit', compact('product', 'categories'));
     }
 
-    public function update(ProductRequest $request){
-        $this->productService->update($request->validated());
+    public function update(ProductRequest $request, Product $product){
+        $this->productService->update($request->validated(), $product);
         return redirect()->route('panel.products.index')->with('success', 'محصول با موفقیت ویرایش شد');
     }
 
-    public function destroy(){
+    public function destroy(Product $product){
         try{
-            foreach($product->images as $image){
-                Storage::disk('public')->delete($image->path);
-            }
             $product->delete();
-        return redirect()->route('panel.products.index')->with('success', 'محصول با موفقیت حذف شد');
+            return redirect()->route('panel.products.index')->with('success', 'محصول با موفقیت حذف شد');
         }catch(QueryException $e){
             return redirect()->route('panel.products.index')->with('error', 'این محصول قابل حذف نمی‌باشد');
         }

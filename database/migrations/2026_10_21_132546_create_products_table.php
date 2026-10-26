@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('unit');
             $table->decimal('weight', 8, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
