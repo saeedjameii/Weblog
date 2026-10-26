@@ -21,7 +21,6 @@
         <div class="workspace">
             <form action="{{ route('panel.categories.store') }}" method="POST" class="form-card">
                 @csrf
-                <input type="hidden" name="type" value="post">
                 <div class="field-grid">
                     <div class="field full-field">
                         <label for="name">نام دسته‌بندی</label>
@@ -58,6 +57,17 @@
                         </select>
 
                         @error('parent_id')
+                            <span class="validation-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    
+                    <div class="field full-field">
+                        <label for="type">نوع دسته‌بندی</label>
+                        <select class="form-control" name="type" id="type" required>
+                            <option value="post" {{ old('type') === 'post' ? 'selected' : '' }}>اخبار و مقالات (پست)</option>
+                            <option value="product" {{ old('type') === 'product' ? 'selected' : '' }}>فروشگاه (محصول)</option>
+                        </select>
+                        @error('type')
                             <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>

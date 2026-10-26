@@ -15,7 +15,13 @@ class Category extends Model
 
     public static function forSelection(): Collection
     {
-        $categories = static::query()->select(['id', 'name', 'parent_id'])->orderBy('name')->get();
+        $query = static::query()->select(['id', 'name', 'type', 'parent_id'])->orderBy('name');
+
+        if($query !== null) {
+            $query->where('type', $type);
+        }
+
+        $categories = $query->get();
 
         $categoriesById = $categories->keyBy('id');
 
@@ -29,7 +35,7 @@ class Category extends Model
 
     public static function forSelectionExceptSubtree(self $category): Collection
     {
-        $categories = static::forSelection();
+        $categories = static::forSelection($category->type);
         $excludedIds = [$category->getKey()];
         $parentIds = $excludedIds;
 

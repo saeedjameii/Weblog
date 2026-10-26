@@ -33,7 +33,7 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(8)->withQueryString();
-        $categories = Category::forSelection();
+        $categories = Category::forSelection('product');
 
         return view('products.index', compact('products', 'categories'));
     }
@@ -58,13 +58,13 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(8)->withQueryString();
-        $categories = Category::forSelection();
+        $categories = Category::forSelection('product');
 
         return view('panel.products.index', compact('products', 'categories'));
     }
 
     public function create(){
-        $categories = Category::forSelection();
+        $categories = Category::forSelection('product');
         return view('panel.products.create', compact('categories'));
     }
 
@@ -74,7 +74,7 @@ class ProductController extends Controller
     }
 
     public function edit(Product $product){
-        $categories = Category::forSelection();
+        $categories = Category::forSelection('product');
         $product->load(['categories', 'images']);
         return view('panel.products.edit', compact('product', 'categories'));
     }
