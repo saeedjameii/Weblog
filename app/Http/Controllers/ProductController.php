@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -67,7 +68,8 @@ class ProductController extends Controller
 
     public function create(){
         $categories = Category::forSelection('product');
-        return view('panel.products.create', compact('categories'));
+        $attributes = Attribute::with('values')->orderBy('name')->get();
+        return view('panel.products.create', compact('categories', 'attributes'));
     }
 
     public function store(ProductRequest $request){
@@ -82,7 +84,7 @@ class ProductController extends Controller
     }
 
     public function update(ProductRequest $request, Product $product){
-        $this->productService->update($request->validated(), $product);
+        $this->productService->update($product, $request->validated());
         return redirect()->route('panel.products.index')->with('success', 'محصول با موفقیت ویرایش شد');
     }
 

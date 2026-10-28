@@ -8,7 +8,7 @@ use App\Models\Attribute;
 class AttributeController extends Controller
 {
     public function index(){
-        $attributes = Attribute::with('values')->latest()->get();
+        $attributes = Attribute::with(['values' => fn ($query) => $query->withCount('prices')])->latest()->get();
         return view('panel.attributes.index', compact('attributes'));
     }
 
@@ -21,10 +21,12 @@ class AttributeController extends Controller
 
         Attribute::create($data);
 
-        return redirect()->route('panel.attributes.index')->with('success', 'ویژگی با موفقیت ایچاد شد');
+        return redirect()->route('panel.attributes.index')->with('success', 'ویژگی با موفقیت ایجاد شد. حالا مقدارهای آن را اضافه کنید.');
     }
 
     public function edit(Attribute $attribute){
+        $attribute->load(['values' => fn ($query) => $query->withCount('prices')]);
+
         return view('panel.attributes.edit', compact('attribute'));
     }
 
@@ -33,13 +35,19 @@ class AttributeController extends Controller
 
         $attribute->update($data);
 
-        return redirect()->route('panel.attributes.index')->with('success', 'ویژگی مورد نظر با موفقیت ویرایش شد');
+        return redirect()->route('panel.attributes.edit', $attribute)->with('success', 'ویژگی با موفقیت ویرایش شد.');
     }
 
-    public function destroy(Attribute $attribute){
+    public function destroy(Attribute $attribute)
+    {
+        if ($attribute->values()->whereHas('prices')->exists()) {
+            return back()->withErrors(['attribute' => 'این ویژگی در تنوع‌های محصولات استفاده شده و قابل حذف نیست.']);
+        }
+
         $attribute->delete();
-        return redirect()->route('panel.attributes.index')->with('success', 'ویژگی مورد نظر با موفقیت حذف شد');
+
+        return redirect()->route('panel.attributes.index')->with('success', 'ویژگی با موفقیت حذف شد.');
     }
 
-    
+
 }

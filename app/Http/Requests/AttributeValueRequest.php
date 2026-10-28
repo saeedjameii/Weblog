@@ -24,7 +24,7 @@ class AttributeValueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'attribute_id' => 'required|exists:attributes,id',
+            'attribute_id' => 'required|integer|exists:attributes,id',
             'value' => 'required|string|max:100',
             'color_code' => ['nullable', 'string', new RequiredColorCode($this->attribute_id)],
         ];
