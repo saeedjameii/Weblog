@@ -39,6 +39,17 @@
                     </div>
 
                     <div class="field full-field">
+                        <label for="type">نوع دسته‌بندی</label>
+                        <select class="form-control" name="type" id="type" required>
+                            <option value="post" {{ old('type') === 'post' ? 'selected' : '' }}>اخبار و مقالات (پست)</option>
+                            <option value="product" {{ old('type') === 'product' ? 'selected' : '' }}>فروشگاه (محصول)</option>
+                        </select>
+                        @error('type')
+                            <span class="validation-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="field full-field">
                         <label for="parent_id">دسته‌بندی والد</label>
 
                         <select class="form-control" name="parent_id" id="parent_id">
@@ -57,17 +68,6 @@
                         </select>
 
                         @error('parent_id')
-                            <span class="validation-message">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    
-                    <div class="field full-field">
-                        <label for="type">نوع دسته‌بندی</label>
-                        <select class="form-control" name="type" id="type" required>
-                            <option value="post" {{ old('type') === 'post' ? 'selected' : '' }}>اخبار و مقالات (پست)</option>
-                            <option value="product" {{ old('type') === 'product' ? 'selected' : '' }}>فروشگاه (محصول)</option>
-                        </select>
-                        @error('type')
                             <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>

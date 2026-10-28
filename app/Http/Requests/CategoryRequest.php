@@ -26,7 +26,7 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|max:250|string',
             'type' => 'required|string|in:post,product',
-            'parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent($this->route('category'))],
+            'parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent($this->route('category'), $this->type)],
         ];
     }
 }
