@@ -1377,26 +1377,14 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
 .status-badge.deleted { background: #feebeb; color: #e63946; }
 
 /* Product and attribute management */
-.attribute-option-list,
 .attribute-value-list {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
-.attribute-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 13px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--cream);
-}
-.attribute-option small { color: var(--muted); }
-.attribute-option.is-unavailable { opacity: .6; }
-.variant-list,
+.price-list,
 .attribute-admin-list { display: grid; gap: 18px; }
-.variant-card,
+.price-card,
 .attribute-admin-card,
 .product-admin-card {
   min-width: 0;
@@ -1405,8 +1393,8 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
   border-radius: 18px;
   background: var(--cream);
 }
-.variant-card { margin: 0; }
-.variant-heading,
+.price-card { margin: 0; }
+.price-heading,
 .attribute-admin-heading,
 .product-admin-card {
   display: flex;
@@ -1414,15 +1402,15 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
   justify-content: space-between;
   gap: 16px;
 }
-.variant-heading { margin-bottom: 18px; }
-.variant-heading legend { color: var(--forest-dark); font-weight: 700; }
+.price-heading { margin-bottom: 18px; }
+.price-heading legend { color: var(--forest-dark); font-weight: 700; }
 .button-small { min-height: 38px; padding: 7px 11px; font-size: .8rem; }
-.variant-final-price {
+.price-final-amount {
   align-self: end;
   padding: 13px 0;
   color: var(--muted);
 }
-.variant-final-price strong { color: var(--forest); }
+.price-final-amount strong { color: var(--forest); }
 .attribute-admin-card h2,
 .product-admin-card h2 { margin: 0; font-size: 1.1rem; }
 .attribute-admin-card p,
@@ -1456,10 +1444,10 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
 .product-admin-card > div { min-width: 0; }
 .product-admin-card .tags-row { display: flex; flex-wrap: wrap; gap: 6px; }
 @media (max-width: 640px) {
-  .variant-card,
+  .price-card,
   .attribute-admin-card,
   .product-admin-card { padding: 17px; }
-  .variant-heading,
+  .price-heading,
   .attribute-admin-heading,
   .product-admin-card,
   .attribute-value-edit-row { align-items: stretch; flex-direction: column; }

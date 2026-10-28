@@ -16,7 +16,7 @@
     </form>
     <div class="product-admin-list">
         @forelse ($products as $product)
-            <article class="product-admin-card"><div><h2>{{ $product->name }}</h2><p class="color-muted">{{ $product->unit }} · {{ $product->weight }}</p><div class="tags-row">@forelse ($product->categories as $category)<span class="tag">{{ $category->full_name }}</span>@empty<span class="tag">بدون دسته‌بندی</span>@endforelse</div><p>{{ $product->prices->count() }} تنوع فروش</p></div>
+            <article class="product-admin-card"><div><h2>{{ $product->name }}</h2><p class="color-muted">{{ $product->unit }} · {{ $product->weight }}</p><div class="tags-row">@forelse ($product->categories as $category)<span class="tag">{{ $category->full_name }}</span>@empty<span class="tag">بدون دسته‌بندی</span>@endforelse</div><p>{{ $product->prices->count() }} قیمت ثبت‌شده</p></div>
                 @can('permission', 'delete-product')<form action="{{ route('panel.products.destroy', $product) }}" method="POST" onsubmit="return confirm('محصول حذف شود؟')">@csrf @method('DELETE')<button class="button button-danger" type="submit">حذف محصول</button></form>@endcan
             </article>
         @empty<div class="empty-state"><h2>محصولی ثبت نشده است</h2><p class="color-muted">برای شروع، محصول جدیدی بسازید.</p></div>@endforelse

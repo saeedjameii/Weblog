@@ -184,7 +184,7 @@ const parentSelect = document.getElementById('parent-select');
 function filterParentOptions() {
     const selectedType = typeSelect.value;
     [...parentSelect.options].forEach(option => {
-        if (!option.dataset.type) return; // گزینه‌ی "بدون والد"
+        if (!option.dataset.type) return; 
         option.hidden = option.dataset.type !== selectedType;
     });
     if (parentSelect.selectedOptions[0]?.hidden) {
@@ -193,4 +193,4 @@ function filterParentOptions() {
 }
 
 typeSelect.addEventListener('change', filterParentOptions);
-filterParentOptions(); // اجرای اولیه موقع لود صفحه
+filterParentOptions();
