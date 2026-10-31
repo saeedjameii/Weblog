@@ -79,8 +79,23 @@ class ProductController extends Controller
 
     public function edit(Product $product){
         $categories = Category::forSelection('product');
-        $product->load(['categories', 'images']);
-        return view('panel.products.edit', compact('product', 'categories'));
+        $attributes = Attribute::with('values')->orderBy('name')->get();
+        $product->load(['categories', 'images', 'prices.attributeValues']);
+
+        $existingPrices = $product->prices->map(function ($p) {
+            return [
+                'price' => $p->price,
+                'discount' => $p->discount,
+                'inventory' => $p->inventory,
+                'attribute_values' => $p->attributeValues->pluck('id')->toArray(),
+            ];
+        })->toArray();
+
+        $oldPrices = old('prices', !empty($existingPrices) ? $existingPrices : [
+            ['price' => '', 'discount' => '', 'inventory' => '', 'attribute_values' => []]
+        ]);
+
+        return view('panel.products.edit', compact('product', 'categories', 'attributes', 'oldPrices'));
     }
 
     public function update(ProductRequest $request, Product $product){

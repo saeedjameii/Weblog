@@ -38,6 +38,11 @@ class ProductService
 
             $product->categories()->sync($data['categories']);
 
+            if (!empty($data['prices'])) {
+                $product->prices()->delete();
+                $this->syncPrices($product, $data['prices']);
+            }
+
             if(!empty($data['images'])){
                 foreach ($product->images as $image){
                     Storage::disk('public')->delete($image->path);
