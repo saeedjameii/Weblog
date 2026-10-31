@@ -18,7 +18,7 @@ class ProductController extends Controller
     ){}
 
     public function index(Request $request){
-        $query = Product::with(['categories', 'images', 'prices.attributeValues'])->latest();
+        $query = Product::where('status', 'available')->with(['categories', 'images', 'prices.attributeValues'])->latest();
 
         if($request->filled('search')){
             $search = $request->search;
