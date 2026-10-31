@@ -48,42 +48,39 @@
 
 
                     <div class="field full-field">
+                        <label>اختیارات دسترسی</label>
 
-                        <label>اختیارات</label>
-
-                        @foreach ($permissions as $permission)
-
-                            <div class="permission-checkbox-row">
-
-                                <input
-                                    type="checkbox"
-                                    name="permissions[]"
-                                    value="{{ $permission->id }}"
-                                    @checked(in_array($permission->id, $rolePermissions))
-                                >
-
-                                <label class="permission-label">
-                                    {{ $permission->name }}
+                        <div class="permission-checkbox-grid">
+                            @foreach ($permissions as $permission)
+                                <label class="permission-checkbox-row">
+                                    <input
+                                        type="checkbox"
+                                        name="permissions[]"
+                                        value="{{ $permission->id }}"
+                                        @checked(in_array($permission->id, $rolePermissions))
+                                    >
+                                    <span class="permission-label">
+                                        {{ $permission->name }}
+                                    </span>
                                 </label>
-
-                            </div>
-
-                        @endforeach
-
+                            @endforeach
+                        </div>
 
                         @error('permissions')
                             <span class="validation-message">
                                 {{ $message }}
                             </span>
                         @enderror
-
                     </div>
 
                 </div>
 
-                <button type="submit" class="button button-primary mt-8">
-                    بروزرسانی نقش
-                </button>
+                <div class="actions">
+                    <a class="button button-secondary" href="{{ route('panel.roles.index') }}">انصراف</a>
+                    <button type="submit" class="button button-primary">
+                        بروزرسانی نقش
+                    </button>
+                </div>
 
             </form>
         </div>

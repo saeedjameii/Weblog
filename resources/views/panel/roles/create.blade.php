@@ -28,28 +28,32 @@
                     </div>
 
                     <div class="field full-field">
-                        <label>اختیارات</label>
+                        <label>اختیارات دسترسی</label>
 
-                        @foreach ($permissions as $permission)
-                            <div class="permission-checkbox-row">
-                                <input
-                                    type="checkbox"
-                                    name="permissions[]"
-                                    value="{{ $permission->id }}"
-                                >
-
-                                <label class="permission-label">
-                                    {{ $permission->name }}
+                        <div class="permission-checkbox-grid">
+                            @foreach ($permissions as $permission)
+                                <label class="permission-checkbox-row">
+                                    <input
+                                        type="checkbox"
+                                        name="permissions[]"
+                                        value="{{ $permission->id }}"
+                                    >
+                                    <span class="permission-label">
+                                        {{ $permission->name }}
+                                    </span>
                                 </label>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
 
                 </div>
 
-                <button type="submit" class="button button-primary mt-8">
-                   ساخت نقش
-                </button>
+                <div class="actions">
+                    <a class="button button-secondary" href="{{ route('panel.roles.index') }}">انصراف</a>
+                    <button type="submit" class="button button-primary">
+                       ساخت نقش
+                    </button>
+                </div>
             </form>
         </div>
 
