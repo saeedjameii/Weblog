@@ -77,9 +77,12 @@
 
                 </div>
 
-                <button type="submit" class="button button-primary mt-8">
-                    ویرایش دسته‌بندی
-                </button>
+                <div class="actions">
+                    <a class="button button-secondary" href="{{ route('panel.categories.index') }}">انصراف</a>
+                    <button type="submit" class="button button-primary">
+                        ویرایش دسته‌بندی
+                    </button>
+                </div>
 
             </form>
         </div>
