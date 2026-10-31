@@ -16,8 +16,38 @@
     </form>
     <div class="product-admin-list">
         @forelse ($products as $product)
-            <article class="product-admin-card"><div><h2>{{ $product->name }}</h2><p class="color-muted">{{ $product->unit }} · {{ $product->weight }}</p><div class="tags-row">@forelse ($product->categories as $category)<span class="tag">{{ $category->full_name }}</span>@empty<span class="tag">بدون دسته‌بندی</span>@endforelse</div><p>{{ $product->prices->count() }} قیمت ثبت‌شده</p></div>
-                @can('permission', 'delete-product')<form action="{{ route('panel.products.destroy', $product) }}" method="POST" onsubmit="return confirm('محصول حذف شود؟')">@csrf @method('DELETE')<button class="button button-danger" type="submit">حذف محصول</button></form>@endcan
+            <article class="product-admin-card">
+                <div class="product-admin-card-inner">
+                    @if ($product->images->isNotEmpty())
+                        <img src="{{ Storage::url($product->images->first()->path) }}" alt="{{ $product->name }}" class="product-admin-thumb">
+                    @else
+                        <div class="product-admin-thumb product-admin-thumb--placeholder" aria-hidden="true">🛍️</div>
+                    @endif
+                    <div>
+                        <h2>{{ $product->name }}</h2>
+                        <p class="color-muted">{{ $product->unit }} · {{ $product->weight }} کیلوگرم</p>
+                        <div class="tags-row">
+                            @forelse ($product->categories as $category)
+                                <span class="tag">{{ $category->full_name }}</span>
+                            @empty
+                                <span class="tag">بدون دسته‌بندی</span>
+                            @endforelse
+                        </div>
+                        <p class="mt-8 color-muted">{{ $product->prices->count() }} تنوع قیمت فعال</p>
+                    </div>
+                </div>
+                <div class="product-admin-actions">
+                    @can('permission', 'update-product')
+                        <a class="button button-secondary button-small" href="{{ route('panel.products.edit', $product) }}">ویرایش</a>
+                    @endcan
+                    @can('permission', 'delete-product')
+                        <form action="{{ route('panel.products.destroy', $product) }}" method="POST" onsubmit="return confirm('محصول حذف شود؟')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="button button-danger button-small" type="submit">حذف</button>
+                        </form>
+                    @endcan
+                </div>
             </article>
         @empty<div class="empty-state"><h2>محصولی ثبت نشده است</h2><p class="color-muted">برای شروع، محصول جدیدی بسازید.</p></div>@endforelse
     </div>

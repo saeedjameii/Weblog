@@ -1455,5 +1455,226 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
   .attribute-value-create-form { grid-template-columns: 1fr; }
   .attribute-value-edit-form .button,
   .attribute-value-create-form .button,
-  .product-admin-card > form .button { width: 100%; }
+  .product-admin-card > form .button,
+  .product-admin-actions .button { width: 100%; }
 }
+
+/* --- Modern Product Image Upload & Dropzone --- */
+.file-dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 20px;
+  border: 2px dashed #b5c7b1;
+  border-radius: 16px;
+  background: #fbfdf9;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+.file-dropzone:hover {
+  border-color: var(--forest);
+  background: #f4f8f1;
+}
+.file-dropzone.is-dragover {
+  border-color: var(--forest-dark);
+  background: var(--sage);
+  transform: scale(1.01);
+}
+.file-dropzone-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+.file-dropzone-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sage);
+  color: var(--forest);
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+.file-dropzone-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #2b3d30;
+  margin: 0;
+}
+.file-dropzone-title strong {
+  color: var(--forest);
+  text-decoration: underline;
+}
+.file-dropzone-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* --- Image Preview Grid (New Uploads) --- */
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.image-preview-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(31, 45, 35, 0.05);
+  animation: rise-in 0.3s ease both;
+}
+.image-preview-thumb {
+  width: 100%;
+  height: 105px;
+  object-fit: cover;
+  background: #eef2ec;
+  display: block;
+}
+.image-preview-meta {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.image-preview-name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.image-preview-size {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.image-preview-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: rgba(31, 45, 35, 0.75);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+/* --- Existing Images Grid in Edit --- */
+.existing-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.existing-image-card {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.existing-image-thumb {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  display: block;
+}
+.existing-image-badge {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(41, 93, 67, 0.85);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+.existing-images-note {
+  margin: 8px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #f3f7f0;
+  color: var(--forest);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  border: 1px solid #dce8d7;
+}
+
+/* --- Enhanced Product Card in Panel Index --- */
+.product-admin-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+.product-admin-thumb {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #f0f4ee;
+  flex-shrink: 0;
+}
+.product-admin-thumb--placeholder {
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  color: var(--muted);
+}
+.product-admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* --- Permission checkbox rows --- */
+.permission-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+.permission-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.permission-checkbox-row:hover {
+  background: var(--sage);
+  border-color: #cbd8c6;
+}
+.permission-checkbox-row input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--forest);
+  cursor: pointer;
+}
+

@@ -9,7 +9,7 @@
 <main class="page-area"><div class="main-content">
     <section class="intro"><p class="kicker">مدیریت فروشگاه</p><h1 class="display-font">ایجاد محصول</h1><p class="intro-copy">اطلاعات محصول و قیمت‌های قابل فروش آن را ثبت کنید.</p></section>
     <div class="workspace workspace--single">
-        <form action="{{ route('panel.products.store') }}" method="POST" class="form-card" data-product-form>
+        <form action="{{ route('panel.products.store') }}" method="POST" enctype="multipart/form-data" class="form-card" data-product-form>
             @csrf
             @if ($errors->any())<div class="alert alert-danger"><ul class="errors-list">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
             <section class="form-section form-section--flat">
@@ -20,6 +20,25 @@
                     <div class="field"><label for="product-unit">واحد اندازه‌گیری</label><input class="form-control" id="product-unit" name="unit" value="{{ old('unit') }}" maxlength="50" required>@error('unit')<span class="validation-message">{{ $message }}</span>@enderror</div>
                     <div class="field"><label for="product-weight">وزن</label><input class="form-control" id="product-weight" name="weight" type="number" min="0" step="0.01" value="{{ old('weight') }}" required>@error('weight')<span class="validation-message">{{ $message }}</span>@enderror</div>
                     <div class="field full-field"><label for="product-categories">دسته‌بندی‌ها</label><select class="form-control select--tall" id="product-categories" name="categories[]" multiple required>@foreach ($categories as $category)<option value="{{ $category->id }}" @selected(in_array($category->id, old('categories', [])))>{{ $category->full_name }}</option>@endforeach</select>@error('categories')<span class="validation-message">{{ $message }}</span>@enderror @error('categories.*')<span class="validation-message">{{ $message }}</span>@enderror</div>
+                </div>
+            </section>
+            <section class="form-section">
+                <div class="section-heading">
+                    <div>
+                        <h2>تصاویر محصول</h2>
+                        <p class="section-description">حداکثر ۵ تصویر، هر کدام حداکثر تا ۵ مگابایت (فرمت‌های JPG، PNG، WEBP)</p>
+                    </div>
+                </div>
+                <div class="field full-field">
+                    <div class="file-dropzone" data-file-dropzone>
+                        <input class="file-dropzone-input" type="file" id="product-images" name="images[]" accept="image/jpeg,image/png,image/webp" multiple data-image-input>
+                        <div class="file-dropzone-icon">📷</div>
+                        <p class="file-dropzone-title"><strong>انتخاب تصاویر</strong> یا کشیدن و رها کردن فایل‌ها اینجا</p>
+                        <p class="file-dropzone-desc">فرمت‌های مجاز: JPG, PNG, WEBP — حداکثر ۵ تصویر</p>
+                    </div>
+                    @error('images')<span class="validation-message">{{ $message }}</span>@enderror
+                    @error('images.*')<span class="validation-message">{{ $message }}</span>@enderror
+                    <div class="image-preview-grid" data-image-preview></div>
                 </div>
             </section>
             <section class="form-section">
