@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class ProductRequest extends FormRequest
 {
@@ -27,10 +28,19 @@ class ProductRequest extends FormRequest
             'description' => 'required|string',
             'unit' => 'required|string|max:50',
             'weight' => 'required|numeric|min:0',
-            'categories' => 'required|array',
-            'categories.*'   => ['required', Rule::exists('categories', 'id')->where(fn($query) => $query->where('type', 'product'))],
+            'categories' => 'required|array|min:1',
+            'categories.*' => ['required', 'integer', 'distinct', Rule::exists('categories', 'id')->where(fn ($query) => $query->where('type', 'product'))],
+            'prices' => [$this->isMethod('post') ? 'required' : 'sometimes', 'array', 'min:1'],
+            ...PriceRequest::nestedRules('prices.*.'),
             'images'   => 'nullable|array|max:5',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        if (is_array($this->input('prices'))) {
+            $validator->after(fn (Validator $validator) => PriceRequest::validatePrices($validator, $this->input('prices')));
+        }
     }
 }
