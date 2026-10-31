@@ -118,6 +118,7 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
                 Route::put('/{product}', [ProductController::class, 'update'])->name('update');
             });
                 Route::delete('/{product}', [ProductController::class, 'destroy'])->middleware('permission:delete-product')->name('destroy');
+                Route::patch('/{id}/restore', [ProductController::class, 'restore'])->middleware('permission:update-product,delete-product')->name('restore');
         });
 
         Route::prefix('attributes')->name('attributes.')->group(function (){

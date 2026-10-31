@@ -38,14 +38,28 @@
                 </div>
                 <div class="product-admin-actions">
                     @can('permission', 'update-product')
-                        <a class="button button-secondary button-small" href="{{ route('panel.products.edit', $product) }}">ویرایش</a>
+                        @if (!$product->trashed())
+                            <a class="button button-secondary button-small" href="{{ route('panel.products.edit', $product) }}">ویرایش</a>
+                        @endif
                     @endcan
                     @can('permission', 'delete-product')
+                        @if (!$product->trashed())
                         <form action="{{ route('panel.products.destroy', $product) }}" method="POST" onsubmit="return confirm('محصول حذف شود؟')">
                             @csrf
                             @method('DELETE')
                             <button class="button button-danger button-small" type="submit">حذف</button>
                         </form>
+                        @endif
+                    @endcan
+
+                    @canany(['update-product', 'delete-product'])
+                        @if ($product->trashed())
+                            <form action="{{ route('panel.products.restore', $product->id) }}" method="POST" onsubmit="return confirm('آیا می‌خواهید این محصول را بازیابی کنید؟');">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="button button-secondary">بازیابی</button>
+                            </form>
+                        @endif
                     @endcan
                 </div>
             </article>

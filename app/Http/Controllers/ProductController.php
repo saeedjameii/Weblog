@@ -45,7 +45,7 @@ class ProductController extends Controller
     }
 
     public function panelIndex(Request $request){
-        $query = Product::with(['categories', 'images', 'prices.attributeValues'])->latest();
+        $query = Product::withTrashed()->with(['categories', 'images', 'prices.attributeValues'])->latest();
 
         if($request->filled('search')){
             $search = $request->search;
@@ -110,6 +110,18 @@ class ProductController extends Controller
         }catch(QueryException $e){
             return redirect()->route('panel.products.index')->with('error', 'این محصول قابل حذف نمی‌باشد');
         }
+    }
+
+    public function restore($id){
+        $product = Product::withTrashed()->findOrFail($id);
+
+        if(!$product->trashed()){
+            return back()->withErrors(['product' => 'این محصول حذف نشده است']);
+        }
+
+        $product->restore();
+
+        return back()->with('success', 'محصول مورد نظر با موفقیت بازیابی شد');
     }
 
 }
