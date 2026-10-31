@@ -56,6 +56,11 @@ if (productForm) {
       refreshPrices();
     });
 
+    productForm.addEventListener('submit', () => {
+      const submitButton = productForm.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
+    });
+
     refreshPrices();
   }
 
