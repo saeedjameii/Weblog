@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Product;
 use App\Services\PostService;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
@@ -19,7 +20,8 @@ class PostController extends Controller
 
     public function home(){
         $latestPosts = Post::published()->with(['user', 'images', 'categories'])->latest('published_at')->latest()->take(4)->get();
-        return view('home', compact('latestPosts'));
+        $latestProducts = Product::where('status', 'available')->with(['categories', 'images', 'prices.attributeValues'])->latest()->take(4)->get();
+        return view('home', compact('latestPosts', 'latestProducts'));
     }
 
     public function create()
