@@ -23,7 +23,7 @@ jobs:
           tools: composer:v2
 
       - name: Install Composer dependencies (production only)
-        run: composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+        run: composer install --no-dev --no-scripts --prefer-dist --no-interaction --optimize-autoloader
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -55,6 +55,7 @@ jobs:
             tests/**
             .env
             .env.*
+            database/*.sqlite
             storage/logs/**
             storage/app/**
             storage/framework/cache/**
