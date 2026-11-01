@@ -65,7 +65,8 @@ class ProductService
     private function syncPrices(Product $product, array $prices): void
     {
         foreach ($prices as $priceData) {
-            $attributeValueIds = collect($priceData['attribute_values'])
+            $attributeValueIds = collect($priceData['attribute_values'] ?? [])
+                ->filter(fn ($id) => !empty($id))
                 ->map(fn ($id) => (int) $id)
                 ->sort()
                 ->values();

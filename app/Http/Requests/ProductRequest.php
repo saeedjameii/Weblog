@@ -8,32 +8,55 @@ use Illuminate\Validation\Validator;
 
 class ProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
+    protected function prepareForValidation(): void
+    {
+        if (is_array($this->prices)) {
+            $filteredPrices = array_values(array_filter($this->prices, function ($item) {
+                $hasPrice = isset($item['price']) && $item['price'] !== '' && $item['price'] !== null;
+                $hasInventory = isset($item['inventory']) && $item['inventory'] !== '' && $item['inventory'] !== null;
+                $hasAttributes = !empty(array_filter($item['attribute_values'] ?? []));
+
+                return $hasPrice || $hasInventory || $hasAttributes;
+            }));
+
+            $this->merge([
+                'prices' => !empty($filteredPrices) ? $filteredPrices : $this->prices
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'unit' => 'required|string|max:50',
-            'weight' => 'required|numeric|min:0',
-            'categories' => 'required|array|min:1',
+            'name'         => 'required|string|max:255',
+            'description'  => 'required|string',
+            'unit'         => 'required|string|max:50',
+            'weight'       => 'required|numeric|min:0',
+            'categories'   => 'required|array|min:1',
             'categories.*' => ['required', 'integer', 'distinct', Rule::exists('categories', 'id')->where(fn ($query) => $query->where('type', 'product'))],
-            'prices' => [$this->isMethod('post') ? 'required' : 'sometimes', 'array', 'min:1'],
+            'prices'       => [$this->isMethod('post') ? 'required' : 'sometimes', 'array', 'min:1'],
             ...PriceRequest::nestedRules('prices.*.'),
-            'images'   => 'nullable|array|max:5',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+            'images'       => 'nullable|array|max:5',
+            'images.*'     => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name'               => 'نام محصول',
+            'description'        => 'توضیحات',
+            'unit'               => 'واحد اندازه‌گیری',
+            'weight'             => 'وزن',
+            'categories'         => 'دسته‌بندی‌ها',
+            'prices.*.price'     => 'قیمت اصلی',
+            'prices.*.inventory' => 'موجودی انبار',
+            'prices.*.discount'  => 'درصد تخفیف',
         ];
     }
 

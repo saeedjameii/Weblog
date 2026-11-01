@@ -48,9 +48,10 @@ if (productForm) {
     });
 
     addButton.addEventListener('click', () => {
+      const currentIndex = nextIndex++;
       const row = template.content.cloneNode(true);
       row.querySelectorAll('[name]').forEach(input => {
-        input.name = input.name.replaceAll('__INDEX__', String(nextIndex++));
+        input.name = input.name.replaceAll('__INDEX__', String(currentIndex));
       });
       priceList.append(row);
       refreshPrices();
@@ -155,4 +156,3 @@ if (productForm) {
     }
   }
 }
-

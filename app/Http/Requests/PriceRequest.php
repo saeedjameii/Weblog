@@ -8,19 +8,11 @@ use Illuminate\Validation\Validator;
 
 class PriceRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return self::nestedRules();
@@ -32,8 +24,8 @@ class PriceRequest extends FormRequest
             $prefix.'price' => ['required', 'numeric', 'min:0'],
             $prefix.'discount' => ['nullable', 'numeric', 'min:0', 'max:100'],
             $prefix.'inventory' => ['required', 'integer', 'min:0'],
-            $prefix.'attribute_values' => ['required', 'array', 'min:1'],
-            $prefix.'attribute_values.*' => ['required', 'integer', 'exists:attribute_values,id'],
+            $prefix.'attribute_values' => ['nullable', 'array'],
+            $prefix.'attribute_values.*' => ['nullable', 'integer', 'exists:attribute_values,id'],
         ];
     }
 
@@ -52,30 +44,38 @@ class PriceRequest extends FormRequest
 
     public static function validatePrices(Validator $validator, array $prices, string $root = 'prices'): void
     {
-        $allValueIds = collect($prices)->flatMap(fn ($price) => $price['attribute_values'] ?? [])->unique();
+        $allValueIds = collect($prices)->flatMap(fn ($price) => $price['attribute_values'] ?? [])->filter(fn ($id) => !empty($id))->unique();
+
         $valuesById = AttributeValue::query()->whereIn('id', $allValueIds)->get(['id', 'attribute_id'])->keyBy('id');
         $seenCombinations = [];
 
         foreach ($prices as $index => $price) {
-            $values = collect($price['attribute_values'] ?? [])->map(fn ($id) => (int) $id);
-            $attributeIds = $values->map(fn ($id) => $valuesById->get($id)?->attribute_id);
             $field = ($root !== '' ? $root.'.'.$index.'.' : '').'attribute_values';
 
-            // Incomplete rows already receive required errors from the rules
-            // above. They are not a meaningful attribute combination and must
-            // not collide with one another as an empty combination.
-            if ($values->isEmpty() || $values->contains(0)) {
+            if ((!isset($price['price']) || $price['price'] === '') && (!isset($price['inventory']) || $price['inventory'] === '')) {
                 continue;
             }
 
-            if ($attributeIds->contains(null) || $attributeIds->unique()->count() !== $attributeIds->count()) {
-                $validator->errors()->add($field, 'برای هر ویژگی فقط یک مقدار معتبر انتخاب کنید.');
+            $values = collect($price['attribute_values'] ?? [])->filter(fn ($id) => !empty($id) && (int) $id > 0)->map(fn ($id) => (int) $id);
+
+            if ($values->isNotEmpty()) {
+                $attributeIds = $values->map(fn ($id) => $valuesById->get($id)?->attribute_id);
+
+                if ($attributeIds->contains(null) || $attributeIds->unique()->count() !== $attributeIds->count()) {
+                    $validator->errors()->add($field, 'برای هر ویژگی فقط یک مقدار معتبر انتخاب کنید.');
+                }
             }
 
-            $combination = $values->sort()->implode(':');
+            $combination = $values->isEmpty() ? '__NO_ATTRIBUTES__' : $values->sort()->implode(':');
+
             if (isset($seenCombinations[$combination])) {
-                $validator->errors()->add($field, 'این ترکیب مقدارهای ویژگی قبلاً برای همین محصول وارد شده است.');
+                if ($combination === '__NO_ATTRIBUTES__') {
+                    $validator->errors()->add($field, 'نمی‌توانید بیش از یک قیمت بدون ویژگی ثبت کنید. سایر قیمت‌ها باید دارای ویژگی مشخص و متمایز باشند.');
+                } else {
+                    $validator->errors()->add($field, 'این ترکیب مقدارهای ویژگی قبلاً برای همین محصول وارد شده است.');
+                }
             }
+
             $seenCombinations[$combination] = true;
         }
     }

@@ -1,4 +1,4 @@
-@extends('layout.panel')
+﻿@extends('layout.panel')
 
 @section('title', 'ایجاد محصول')
 @section('header-actions')
@@ -49,9 +49,19 @@
                         <fieldset class="price-card" data-price-row>
                             <div class="price-heading"><legend>قیمت <span data-price-number>{{ $loop->iteration }}</span></legend><button class="button button-secondary button-small" type="button" data-remove-price>حذف قیمت</button></div>
                             <div class="field-grid">
-                                @foreach ($attributes as $attribute)
-                                    <div class="field full-field"><label>{{ $attribute->name }}</label><select class="form-control" name="prices[{{ $index }}][attribute_values][]" required><option value="">انتخاب {{ $attribute->name }}</option>@foreach ($attribute->values as $value)<option value="{{ $value->id }}" @selected(in_array($value->id, data_get($price, 'attribute_values', [])))>{{ $value->value }}{{ $attribute->type === 'color' && $value->color_code ? ' — '.$value->color_code : '' }}</option>@endforeach</select></div>
-                                @endforeach
+                            @foreach ($attributes as $attribute)
+                                <div class="field full-field">
+                                    <label>{{ $attribute->name }} (اختیاری)</label>
+                                    <select class="form-control" name="prices[{{ $index }}][attribute_values][]">
+                                        <option value="">بدون انتخاب / پیش‌فرض</option>
+                                        @foreach ($attribute->values as $value)
+                                            <option value="{{ $value->id }}" @selected(in_array($value->id, data_get($price, 'attribute_values', [])))>
+                                                {{ $value->value }}{{ $attribute->type === 'color' && $value->color_code ? ' — '.$value->color_code : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endforeach
                                 <div class="field"><label>قیمت اصلی</label><input class="form-control" type="number" min="0" step="0.01" name="prices[{{ $index }}][price]" value="{{ data_get($price, 'price') }}" data-price-amount required></div>
                                 <div class="field"><label>درصد تخفیف</label><input class="form-control" type="number" min="0" max="100" step="0.01" name="prices[{{ $index }}][discount]" value="{{ data_get($price, 'discount') }}" data-price-discount></div>
                                 <div class="field"><label>موجودی</label><input class="form-control" type="number" min="0" step="1" name="prices[{{ $index }}][inventory]" value="{{ data_get($price, 'inventory') }}" required></div>
@@ -72,9 +82,19 @@
     <fieldset class="price-card" data-price-row>
         <div class="price-heading"><legend>قیمت <span data-price-number></span></legend><button class="button button-secondary button-small" type="button" data-remove-price>حذف قیمت</button></div>
         <div class="field-grid">
-            @foreach ($attributes as $attribute)
-                <div class="field full-field"><label>{{ $attribute->name }}</label><select class="form-control" name="prices[__INDEX__][attribute_values][]" required><option value="">انتخاب {{ $attribute->name }}</option>@foreach ($attribute->values as $value)<option value="{{ $value->id }}">{{ $value->value }}{{ $attribute->type === 'color' && $value->color_code ? ' — '.$value->color_code : '' }}</option>@endforeach</select></div>
-            @endforeach
+        @foreach ($attributes as $attribute)
+            <div class="field full-field">
+                <label>{{ $attribute->name }} (اختیاری)</label>
+                <select class="form-control" name="prices[__INDEX__][attribute_values][]">
+                    <option value="">بدون انتخاب / پیش‌فرض</option>
+                    @foreach ($attribute->values as $value)
+                        <option value="{{ $value->id }}">
+                            {{ $value->value }}{{ $attribute->type === 'color' && $value->color_code ? ' — '.$value->color_code : '' }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        @endforeach
             <div class="field"><label>قیمت اصلی</label><input class="form-control" type="number" min="0" step="0.01" name="prices[__INDEX__][price]" data-price-amount required></div>
             <div class="field"><label>درصد تخفیف</label><input class="form-control" type="number" min="0" max="100" step="0.01" name="prices[__INDEX__][discount]" data-price-discount></div>
             <div class="field"><label>موجودی</label><input class="form-control" type="number" min="0" step="1" name="prices[__INDEX__][inventory]" required></div>

@@ -1,4 +1,4 @@
-@extends('layout.panel')
+﻿@extends('layout.panel')
 
 @section('title', 'ویرایش محصول: '.$product->name)
 @section('header-actions')
@@ -108,7 +108,7 @@
                 <div class="section-heading">
                     <div>
                         <h2>قیمت‌های محصول</h2>
-                        <p class="section-description">برای هر قیمت، مقدار ویژگی‌های مربوط به همان قیمت را انتخاب کنید.</p>
+                        <p class="section-description">برای هر قیمت، مقدار ویژگی‌های مربوط به همان قیمت را انتخاب کنید (یا برای قیمت پایه خالی بگذارید).</p>
                     </div>
                 </div>
 
@@ -124,9 +124,9 @@
                             <div class="field-grid">
                                 @foreach ($attributes as $attribute)
                                     <div class="field full-field">
-                                        <label>{{ $attribute->name }}</label>
-                                        <select class="form-control" name="prices[{{ $index }}][attribute_values][]" required>
-                                            <option value="">انتخاب {{ $attribute->name }}</option>
+                                        <label>{{ $attribute->name }} (اختیاری)</label>
+                                        <select class="form-control" name="prices[{{ $index }}][attribute_values][]">
+                                            <option value="">بدون انتخاب / پیش‌فرض</option>
                                             @foreach ($attribute->values as $value)
                                                 <option value="{{ $value->id }}" @selected(in_array($value->id, data_get($price, 'attribute_values', [])))>
                                                     {{ $value->value }}{{ $attribute->type === 'color' && $value->color_code ? ' — '.$value->color_code : '' }}
@@ -182,9 +182,9 @@
         <div class="field-grid">
             @foreach ($attributes as $attribute)
                 <div class="field full-field">
-                    <label>{{ $attribute->name }}</label>
-                    <select class="form-control" name="prices[__INDEX__][attribute_values][]" required>
-                        <option value="">انتخاب {{ $attribute->name }}</option>
+                    <label>{{ $attribute->name }} (اختیاری)</label>
+                    <select class="form-control" name="prices[__INDEX__][attribute_values][]">
+                        <option value="">بدون انتخاب / پیش‌فرض</option>
                         @foreach ($attribute->values as $value)
                             <option value="{{ $value->id }}">{{ $value->value }}{{ $attribute->type === 'color' && $value->color_code ? ' — '.$value->color_code : '' }}</option>
                         @endforeach
