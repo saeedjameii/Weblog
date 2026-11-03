@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Post;
 use App\Policies\PostPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('access-panel', function($user){
             return $user->canAccessPanel();
         });
+
+        if (! Schema::hasTable('permissions')) {
+            return;
+        }
 
         foreach (Permission::query()->pluck('name') as $permissionName) {
             Gate::define($permissionName, function($user) use ($permissionName){
