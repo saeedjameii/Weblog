@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'دسته‌بندی‌ها — خبرنامه')
+@section('title', 'دسته‌بندی محصولات')
 
 @section('content')
 
@@ -21,10 +21,10 @@
         {{-- Page Header --}}
         <section class="intro intro--header">
             <div>
-                <h1 class="display-font panel-title--categories">دسته‌بندی‌ها</h1>
+                <h1 class="display-font panel-title--categories">دسته‌بندی محصولات</h1>
            </div>
             @can('permission', 'create-category')
-                <a href="{{ route('panel.categories.create') }}" class="button button-primary">
+                <a href="{{ route('panel.categories.products.create') }}" class="button button-primary">
                     + ساخت دسته‌بندی جدید
                 </a>
             @endcan
@@ -36,7 +36,7 @@
 
             <div class="section-heading section-heading--flush">
                 <div>
-                    <h2 class="m-0">لیست دسته‌بندی‌ها</h2>
+                    <h2 class="m-0">لیست دسته‌بندی‌های محصولات</h2>
                     <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی‌ها</p>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                             <div class="category-icon-wrap">
                                 <span class="step-number step-number--category">📁</span>
 
-                                    @include('categories.partials.category-tree', [
+                                    @include('categories.partials.product-category-tree', [
                                         'category' => $category
                                     ])
                             </div>

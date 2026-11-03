@@ -1,5 +1,5 @@
 @extends('layout.panel')
-@section('title', 'مدیریت دسته‌بندی‌ها — پنل')
+@section('title', 'دسته‌بندی محصولات — پنل')
 
 @section('content')
 <main class="page-area">
@@ -15,10 +15,10 @@
         <section class="intro intro--header">
             <div>
                 <p class="kicker">پنل مدیریت</p>
-                <h1 class="display-font panel-title--categories">دسته‌بندی‌ها</h1>
+                <h1 class="display-font panel-title--categories">دسته‌بندی محصولات</h1>
             </div>
             @can('permission', 'create-category')
-                <a href="{{ route('panel.categories.create') }}" class="button button-primary">
+                <a href="{{ route('panel.categories.products.create') }}" class="button button-primary">
                     + ساخت دسته‌بندی جدید
                 </a>
             @endcan
@@ -27,7 +27,7 @@
         <div class="form-card categories-card">
             <div class="section-heading section-heading--flush">
                 <div>
-                    <h2 class="m-0">لیست دسته‌بندی‌ها</h2>
+                    <h2 class="m-0">لیست دسته‌بندی‌های محصولات</h2>
                     <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی</p>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <div class="empty-state-icon">📁</div>
                     <h3 class="empty-state-title">هیچ دسته‌بندی‌ای وجود ندارد</h3>
                     <p class="color-muted">هنوز هیچ دسته‌بندی‌ای ایجاد نشده است.</p>
-                    <a href="{{ route('panel.categories.create') }}" class="button button-primary mt-14">
+                    <a href="{{ route('panel.categories.products.create') }}" class="button button-primary mt-14">
                         + ساخت دسته‌بندی جدید
                     </a>
                 </div>

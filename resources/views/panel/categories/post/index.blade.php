@@ -1,0 +1,59 @@
+@extends('layout.panel')
+@section('title', 'دسته‌بندی پست‌ها — پنل')
+
+@section('content')
+<main class="page-area">
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    <div class="main-content">
+        <section class="intro intro--header">
+            <div>
+                <p class="kicker">پنل مدیریت</p>
+                <h1 class="display-font panel-title--categories">دسته‌بندی پست‌ها</h1>
+            </div>
+            @can('permission', 'create-category')
+                <a href="{{ route('panel.categories.posts.create') }}" class="button button-primary">
+                    + ساخت دسته‌بندی جدید
+                </a>
+            @endcan
+        </section>
+
+        <div class="form-card categories-card">
+            <div class="section-heading section-heading--flush">
+                <div>
+                    <h2 class="m-0">لیست دسته‌بندی‌های پست</h2>
+                    <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی</p>
+                </div>
+            </div>
+
+            @if ($categories->count())
+                <div class="categories-list">
+                    @foreach ($categories as $category)
+                        <div class="spec-row spec-row--top">
+                            <div class="category-icon-wrap">
+                                <span class="step-number step-number--category">📁</span>
+                                @include('panel.categories.partials.category-tree', ['category' => $category])
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">📁</div>
+                    <h3 class="empty-state-title">هیچ دسته‌بندی‌ای وجود ندارد</h3>
+                    <p class="color-muted">هنوز هیچ دسته‌بندی‌ای ایجاد نشده است.</p>
+                    <a href="{{ route('panel.categories.posts.create') }}" class="button button-primary mt-14">
+                        + ساخت دسته‌بندی جدید
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+</main>
+@endsection

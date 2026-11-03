@@ -33,6 +33,19 @@ class Category extends Model
         return $categories;
     }
 
+    public static function treeRootsForType(string $type): Collection
+    {
+        return static::query()
+            ->where('type', $type)
+            ->where(function ($query) use ($type) {
+                $query->whereNull('parent_id')
+                    ->orWhereHas('parent', fn ($parentQuery) => $parentQuery->where('type', '!=', $type));
+            })
+            ->with('children')
+            ->orderBy('name')
+            ->get();
+    }
+
     public static function forSelectionExceptSubtree(self $category): Collection
     {
         $categories = static::forSelection($category->type);

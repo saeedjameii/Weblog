@@ -25,7 +25,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/posts', [CategoryController::class, 'postIndex'])->name('categories.posts.index');
+Route::get('/categories/products', [CategoryController::class, 'productIndex'])->name('categories.products.index');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -53,17 +54,22 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
         });
 
         Route::prefix('categories')->name('categories.')->group(function () {
-            Route::get('/', [CategoryController::class, 'panelIndex'])->middleware('permission:create-category,update-category,delete-category')->name('index');
+            Route::middleware('permission:create-category,update-category,delete-category')->group(function () {
+                Route::get('/posts', [CategoryController::class, 'postPanelIndex'])->name('posts.index');
+                Route::get('/products', [CategoryController::class, 'productPanelIndex'])->name('products.index');
+            });
             Route::middleware('permission:create-category')->group(function () {
-                Route::get('/create', [CategoryController::class, 'create'])->name('create');
-                Route::post('/', [CategoryController::class, 'store'])->name('store');
+                Route::get('/posts/create', [CategoryController::class, 'createPost'])->name('posts.create');
+                Route::post('/posts', [CategoryController::class, 'storePost'])->name('posts.store');
+                Route::get('/products/create', [CategoryController::class, 'createProduct'])->name('products.create');
+                Route::post('/products', [CategoryController::class, 'storeProduct'])->name('products.store');
             });
-
             Route::middleware('permission:update-category')->group(function () {
-                Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
-                Route::put('/{category}', [CategoryController::class, 'update'])->name('update');
+                Route::get('/posts/{category}/edit', [CategoryController::class, 'editPost'])->name('posts.edit');
+                Route::put('/posts/{category}', [CategoryController::class, 'updatePost'])->name('posts.update');
+                Route::get('/products/{category}/edit', [CategoryController::class, 'editProduct'])->name('products.edit');
+                Route::put('/products/{category}', [CategoryController::class, 'updateProduct'])->name('products.update');
             });
-
             Route::delete('/{category}', [CategoryController::class, 'destroy'])->middleware('permission:delete-category')->name('destroy');
         });
         Route::prefix('users')->name('users.')->group(function () {

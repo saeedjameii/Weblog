@@ -97,6 +97,12 @@
                         <span>مدیریت همه اخبار</span>
                     </a>
                 @endcanany
+                @canany(['create-category', 'update-category', 'delete-category'])
+                    <a href="{{ route('panel.categories.posts.index') }}" class="mobile-nav-item {{ request()->routeIs('panel.categories.posts.*') ? 'is-active' : '' }}">
+                        <span class="item-icon">📂</span>
+                        <span>دسته‌بندی پست‌ها</span>
+                    </a>
+                @endcanany
             </div>
         </div>
 
@@ -110,6 +116,12 @@
                     <a href="{{ route('panel.products.index') }}" class="mobile-nav-item {{ request()->routeIs('panel.products.*') ? 'is-active' : '' }}">
                         <span class="item-icon">📦</span>
                         <span>محصولات و تنوع قیمت‌ها</span>
+                    </a>
+                @endcanany
+                @canany(['create-category', 'update-category', 'delete-category'])
+                    <a href="{{ route('panel.categories.products.index') }}" class="mobile-nav-item {{ request()->routeIs('panel.categories.products.*') ? 'is-active' : '' }}">
+                        <span class="item-icon">🛍️</span>
+                        <span>دسته‌بندی محصولات</span>
                     </a>
                 @endcanany
                 @canany(['create-attribute', 'update-attribute', 'delete-attribute'])
@@ -127,12 +139,6 @@
                 <span>⚙️ تنظیمات و دسترسی‌ها</span>
             </div>
             <div class="mobile-nav-links-list">
-                @canany(['create-category', 'update-category', 'delete-category'])
-                    <a href="{{ route('panel.categories.index') }}" class="mobile-nav-item {{ request()->routeIs('panel.categories.*') ? 'is-active' : '' }}">
-                        <span class="item-icon">📂</span>
-                        <span>دسته‌بندی‌ها</span>
-                    </a>
-                @endcanany
                 @canany(['create-role', 'update-role', 'delete-role'])
                     <a href="{{ route('panel.roles.index') }}" class="mobile-nav-item {{ request()->routeIs('panel.roles.*') ? 'is-active' : '' }}">
                         <span class="item-icon">🛡️</span>

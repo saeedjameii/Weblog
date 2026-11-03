@@ -58,14 +58,24 @@
 
             @canany(['create-category', 'update-category', 'delete-category'])
                 <div class="form-card">
-                    <h3 class="dashboard-card-title">📁 مدیریت دسته‌بندی‌ها</h3>
+                    <h3 class="dashboard-card-title">📁 دسته‌بندی پست‌ها</h3>
                     <p class="dashboard-card-description">دسته‌بندی و زیردسته‌بندی اخبار را بسازید یا ویرایش کنید.</p>
 
                     <div class="dashboard-card-actions">
-                        <a href="{{ route('panel.categories.index') }}" class="btn btn-secondary dashboard-card-action">لیست دسته‌بندی‌ها</a>
+                        <a href="{{ route('panel.categories.posts.index') }}" class="btn btn-secondary dashboard-card-action">لیست دسته‌بندی‌های پست</a>
 
                         @can('permission', 'create-category')
-                            <a href="{{ route('panel.categories.create') }}" class="btn btn-secondary dashboard-card-action">+ جدید</a>
+                            <a href="{{ route('panel.categories.posts.create') }}" class="btn btn-secondary dashboard-card-action">+ دسته‌بندی پست</a>
+                        @endcan
+                    </div>
+                </div>
+                <div class="form-card">
+                    <h3 class="dashboard-card-title">🛍️ دسته‌بندی محصولات</h3>
+                    <p class="dashboard-card-description">دسته‌بندی و زیردسته‌بندی کالاهای فروشگاه را بسازید یا ویرایش کنید.</p>
+                    <div class="dashboard-card-actions">
+                        <a href="{{ route('panel.categories.products.index') }}" class="btn btn-secondary dashboard-card-action">لیست دسته‌بندی‌های محصول</a>
+                        @can('permission', 'create-category')
+                            <a href="{{ route('panel.categories.products.create') }}" class="btn btn-secondary dashboard-card-action">+ دسته‌بندی محصول</a>
                         @endcan
                     </div>
                 </div>

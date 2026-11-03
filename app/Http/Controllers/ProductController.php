@@ -29,7 +29,7 @@ class ProductController extends Controller
 
         if($request->filled('category_id')){
             $query->whereHas('categories', function ($q) use ($request){
-                $q->where('categories.id', $request->category_id);
+                $q->where('categories.id', $request->category_id)->where('categories.type', 'product');
             });
         }
 
@@ -56,7 +56,7 @@ class ProductController extends Controller
 
         if($request->filled('category_id')){
             $query->whereHas('categories', function ($q) use ($request){
-                $q->where('categories.id', $request->category_id);
+                $q->where('categories.id', $request->category_id)->where('categories.type', 'product');
             });
         }
 

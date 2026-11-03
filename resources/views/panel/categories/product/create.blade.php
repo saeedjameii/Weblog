@@ -1,9 +1,10 @@
 @extends('layout.panel')
 
-@section('title', 'ویرایش دسته‌بندی — خبرنامه')
+@section('title', 'ساخت دسته‌بندی — خبرنامه')
+
 
 @section('header-actions')
-    <a class="browse-link" href="{{ route('panel.categories.index') }}">← بازگشت به صفحه قبل</a>
+    <a class="browse-link" href="{{ route('panel.categories.products.index') }}">← بازگشت به صفحه قبل</a>
 @endsection
 
 @section('content')
@@ -13,17 +14,14 @@
 
         <section class="intro">
             <p class="kicker">مدیریت محتوا</p>
-            <h1 class="display-font">ویرایش دسته‌بندی</h1>
-            <p class="intro-copy">نام یا دسته‌بندی والد را ویرایش کنید</p>
+            <h1 class="display-font">دسته‌بندی جدید</h1>
+            <p class="intro-copy">یک دسته‌بندی تازه بسازید یا آن را زیرمجموعه‌ی یک دسته‌بندی دیگر قرار دهید.</p>
         </section>
 
         <div class="workspace">
-            <form action="{{ route('panel.categories.update', $category) }}" method="POST" class="form-card">
+            <form action="{{ route('panel.categories.products.store') }}" method="POST" class="form-card">
                 @csrf
-                @method('PUT')
-                <input type="hidden" name="type" value="{{ $category->type }}">
                 <div class="field-grid">
-
                     <div class="field full-field">
                         <label for="name">نام دسته‌بندی</label>
                         <input
@@ -33,24 +31,14 @@
                             id="name"
                             maxlength="60"
                             placeholder="مثلاً: ابزار برقی"
-                            value="{{ old('name', $category->name) }}"
-                        >
+                            value="{{ old('name') }}">
 
                         @error('name')
                             <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="field full-field">
-                        <label for="type">نوع دسته‌بندی</label>
-                        <select class="form-control" name="type" id="type" required>
-                            <option value="post" {{ old('type', $category->type) === 'post' ? 'selected' : '' }}>اخبار و مقالات (پست)</option>
-                            <option value="product" {{ old('type', $category->type) === 'product' ? 'selected' : '' }}>فروشگاه (محصول)</option>
-                        </select>
-                        @error('type')
-                            <span class="validation-message">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    <input type="hidden" name="type" value="product">
 
                     <div class="field full-field">
                         <label for="parent_id">دسته‌بندی والد</label>
@@ -59,12 +47,12 @@
 
                             <option value="">بدون والد (دسته‌بندی اصلی)</option>
 
-                            @foreach($categories as $parent)
+                            @foreach($categories as $category)
                                 <option
-                                    value="{{ $parent->id }}"
-                                    {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}
+                                    value="{{ $category->id }}"
+                                    {{ old('parent_id') == $category->id ? 'selected' : '' }}
                                 >
-                                    {{ $parent->full_name }}
+                                    {{ $category->full_name }}
                                 </option>
                             @endforeach
 
@@ -78,9 +66,9 @@
                 </div>
 
                 <div class="actions">
-                    <a class="button button-secondary" href="{{ route('panel.categories.index') }}">انصراف</a>
+                    <a class="button button-secondary" href="{{ route('panel.categories.products.index') }}">انصراف</a>
                     <button type="submit" class="button button-primary">
-                        ویرایش دسته‌بندی
+                        ثبت دسته‌بندی
                     </button>
                 </div>
 
