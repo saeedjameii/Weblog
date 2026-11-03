@@ -1,20 +1,17 @@
 @extends('layout.panel')
 
-@section('title', 'ویرایش دسته‌بندی — خبرنامه')
+@section('title', 'ویرایش دسته‌بندی محصول — خبرنامه')
 
 @section('header-actions')
     <a class="browse-link" href="{{ route('panel.categories.products.index') }}">← بازگشت به صفحه قبل</a>
 @endsection
 
 @section('content')
-
 <main class="page-area">
     <div class="main-content">
-
         <section class="intro">
-            <p class="kicker">مدیریت محتوا</p>
-            <h1 class="display-font">ویرایش دسته‌بندی</h1>
-            <p class="intro-copy">نام یا دسته‌بندی والد را ویرایش کنید</p>
+            <p class="kicker">مدیریت فروشگاه</p>
+            <h1 class="display-font">ویرایش دسته‌بندی محصول: {{ $category->name }}</h1>
         </section>
 
         <div class="workspace">
@@ -23,7 +20,6 @@
                 @method('PUT')
                 <input type="hidden" name="type" value="{{ $category->type }}">
                 <div class="field-grid">
-
                     <div class="field full-field">
                         <label for="name">نام دسته‌بندی</label>
                         <input
@@ -32,22 +28,18 @@
                             name="name"
                             id="name"
                             maxlength="60"
-                            placeholder="مثلاً: ابزار برقی"
                             value="{{ old('name', $category->name) }}"
-                        >
+                            required>
 
                         @error('name')
                             <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="field full-field">
+                    <div class="field">
                         <label for="parent_id">دسته‌بندی والد</label>
-
                         <select class="form-control" name="parent_id" id="parent_id">
-
                             <option value="">بدون والد (دسته‌بندی اصلی)</option>
-
                             @foreach($categories as $parent)
                                 <option
                                     value="{{ $parent->id }}"
@@ -56,27 +48,36 @@
                                     {{ $parent->full_name }}
                                 </option>
                             @endforeach
-
                         </select>
-
                         @error('parent_id')
                             <span class="validation-message">{{ $message }}</span>
                         @enderror
                     </div>
 
+                    <div class="field">
+                        <label for="order">اولویت نمایش (ترتیب)</label>
+                        <input
+                            class="form-control"
+                            type="number"
+                            name="order"
+                            id="order"
+                            min="0"
+                            value="{{ old('order', $category->order ?? 0) }}">
+                        <span class="field-hint">عدد کمتر = اولویت بالاتر</span>
+                        @error('order')
+                            <span class="validation-message">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="actions">
                     <a class="button button-secondary" href="{{ route('panel.categories.products.index') }}">انصراف</a>
                     <button type="submit" class="button button-primary">
-                        ویرایش دسته‌بندی
+                        ذخیره تغییرات
                     </button>
                 </div>
-
             </form>
         </div>
-
     </div>
 </main>
-
 @endsection

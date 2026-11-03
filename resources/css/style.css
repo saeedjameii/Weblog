@@ -2646,3 +2646,71 @@ body.mobile-nav-locked {
   }
 }
 
+/* Drag and Drop Category Styles */
+.drag-handle {
+  cursor: grab;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0 6px;
+  user-select: none;
+  display: inline-block;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.drag-handle:hover {
+  color: var(--forest);
+  transform: scale(1.15);
+}
+
+.category-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-badge {
+  color: var(--muted);
+  font-size: 11px;
+  background: var(--sage);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.sortable-item {
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+/* حالتی که آیتم در حال کشیده شدن است */
+.sortable-item.is-dragging {
+  opacity: 0.45;
+  background: #f0f7ed;
+  border: 1px dashed var(--forest);
+}
+
+/* خط نشانگر محل قرارگیری */
+.sortable-item.drop-target-above {
+  border-top: 2px solid var(--forest) !important;
+}
+
+.sortable-item.drop-target-below {
+  border-bottom: 2px solid var(--forest) !important;
+}
+
+/* نشانگر وضعیت ذخیره‌سازی */
+.reorder-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: rise-in 0.3s ease both;
+}

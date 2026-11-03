@@ -28,16 +28,19 @@
             <div class="section-heading section-heading--flush">
                 <div>
                     <h2 class="m-0">لیست دسته‌بندی‌های محصولات</h2>
-                    <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی</p>
+                    <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی اصلی</p>
                 </div>
+                <span class="field-hint" style="color: var(--forest); font-weight: 600;">
+                    💡 برای تغییر ترتیب، آیکون ⋮⋮ را بگیرید و بالا یا پایین بکشید.
+                </span>
             </div>
 
             @if ($categories->count())
-                <div class="categories-list">
+                <div class="categories-list sortable-list" data-reorder-url="{{ route('panel.categories.reorder') }}">
                     @foreach ($categories as $category)
                         <div class="spec-row spec-row--top">
-                            <div class="category-icon-wrap">
-                                <span class="step-number step-number--category">📁</span>
+                            <div class="category-icon-wrap" style="width: 100%;">
+                                <span class="step-number step-number--category">🛍️</span>
                                 @include('panel.categories.partials.category-tree', ['category' => $category])
                             </div>
                         </div>
@@ -45,9 +48,9 @@
                 </div>
             @else
                 <div class="empty-state">
-                    <div class="empty-state-icon">📁</div>
+                    <div class="empty-state-icon">🛍️</div>
                     <h3 class="empty-state-title">هیچ دسته‌بندی‌ای وجود ندارد</h3>
-                    <p class="color-muted">هنوز هیچ دسته‌بندی‌ای ایجاد نشده است.</p>
+                    <p class="color-muted">هنوز هیچ دسته‌بندی‌ای برای محصولات ایجاد نشده است.</p>
                     <a href="{{ route('panel.categories.products.create') }}" class="button button-primary mt-14">
                         + ساخت دسته‌بندی جدید
                     </a>

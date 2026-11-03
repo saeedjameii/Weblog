@@ -15,7 +15,7 @@ class Category extends Model
 
     public static function forSelection(?string $type = null): Collection
     {
-        $query = static::query()->select(['id', 'name', 'type', 'parent_id'])->orderBy('name');
+        $query = static::query()->select(['id', 'name', 'type', 'parent_id', 'order'])->orderBy('order')->orderBy('name');
 
         if($type !== null) {
             $query->where('type', $type);
@@ -41,7 +41,8 @@ class Category extends Model
                 $query->whereNull('parent_id')
                     ->orWhereHas('parent', fn ($parentQuery) => $parentQuery->where('type', '!=', $type));
             })
-            ->with('children')
+            ->with(['children' => fn($q) => $q->orderBy('order')->orderBy('name')])
+            ->orderBy('order')
             ->orderBy('name')
             ->get();
     }
@@ -76,7 +77,7 @@ class Category extends Model
     }
 
     public function children(){
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id')->orderBy('order')->orderBy('name');
     }
 
     public function posts(){

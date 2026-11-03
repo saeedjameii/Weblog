@@ -5,7 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/style.css', 'resources/js/app.js', 'resources/js/create-post.js', 'resources/js/product-create.js'],
+            input: ['resources/css/style.css', 'resources/js/app.js', 'resources/js/create-post.js', 'resources/js/product-create.js', 'resources/js/category-sortable.js',
+],
             refresh: true,
         }),
         tailwindcss(),

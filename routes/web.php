@@ -54,6 +54,7 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
         });
 
         Route::prefix('categories')->name('categories.')->group(function () {
+            Route::post('/reorder', [CategoryController::class, 'reorder'])->middleware('permission:update-category')->name('reorder');
             Route::middleware('permission:create-category,update-category,delete-category')->group(function () {
                 Route::get('/posts', [CategoryController::class, 'postPanelIndex'])->name('posts.index');
                 Route::get('/products', [CategoryController::class, 'productPanelIndex'])->name('products.index');

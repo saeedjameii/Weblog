@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'پنل مدیریت — خبرنامه و فروشگاه')</title>
 
-    @vite(['resources/css/style.css', 'resources/js/app.js', 'resources/js/create-post.js', 'resources/js/product-create.js'])
+    @vite(['resources/css/style.css', 'resources/js/app.js', 'resources/js/create-post.js', 'resources/js/product-create.js', 'resources/js/category-sortable.js'])
 </head>
 <body>
 <header class="navbar navbar--panel">
@@ -99,7 +99,7 @@
                 @endcanany
                 @canany(['create-category', 'update-category', 'delete-category'])
                     <a href="{{ route('panel.categories.posts.index') }}" class="mobile-nav-item {{ request()->routeIs('panel.categories.posts.*') ? 'is-active' : '' }}">
-                        <span class="item-icon">📂</span>
+                        <span class="item-icon">📁</span>
                         <span>دسته‌بندی پست‌ها</span>
                     </a>
                 @endcanany

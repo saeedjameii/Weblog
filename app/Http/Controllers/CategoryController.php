@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostCategoryRequest;
 use App\Http\Requests\ProductCategoryRequest;
+use App\Http\Requests\ReorderRequest;
 use App\Models\Category;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -94,6 +96,19 @@ class CategoryController extends Controller
         catch(QueryException $e){
             return redirect()->route($route)->with('error', 'این دسته‌بندی قابل حذف نیست؛ ابتدا موارد وابسته به آن را مدیریت کنید.');
         }
+    }
+
+    public function reorder(ReorderRequest $request){
+        DB::transaction(function () use ($request) {
+            foreach($request->input('order') as $position => $categoryId){
+                Category::where('id', $categoryId)-> update(['order' => $position]);
+            }
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ترتیب دسته بندی ها با موفقیت ذخیره شد'
+        ]);
     }
 
 }

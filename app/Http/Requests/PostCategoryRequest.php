@@ -27,6 +27,7 @@ class PostCategoryRequest extends FormRequest
             'name' => 'required|max:250|string',
             'type' => 'required|string|in:post',
             'parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent($this->route('category'), $this->type)],
+            'order' => 'nullable|integer|min:0'
         ];
     }
 }
