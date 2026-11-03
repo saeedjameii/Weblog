@@ -67,7 +67,7 @@
                         <div>
                             <strong class="mobile-user-name">{{ auth('api')->user()->first_name }}
                                 {{ auth('api')->user()->last_name }}</strong>
-                            <span class="mobile-user-sub">{{ auth('api')->user()->phone_number }}</span>
+                            <span class="mobile-user-sub">{{ auth('api')->user()->phone_number ?? auth('api')->user()->email }}</span>
                         </div>
                     </div>
                     <div class="mobile-user-actions">

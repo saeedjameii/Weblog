@@ -41,37 +41,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="birth-date-display">تاریخ تولد</label><div class="jalali-date-wrap"><input class="input jalali-date-input"
-                     id="birth-date-display" type="text" value="" placeholder="۱۴۰۵/۰۶/۱۲" readonly required aria-haspopup="dialog" aria-expanded="false"/><button
-                     class="jalali-calendar-button" type="button" aria-label="انتخاب تاریخ تولد" data-signup-date-picker>📅</button></div><input
-                     id="birth_date" name="birth_date" type="hidden" value="{{ old('birth_date') }}"/>
-                    <div id="signup-jalali-calendar" class="jalali-calendar" role="dialog" aria-label="تقویم شمسی تاریخ تولد" hidden></div>
-                    <div>
-                        @error('birth_date')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="national_code">کد ملی</label><input class="input" id="national_code" name="national_code"
-                        type="text" value="{{ old('national_code') }}" placeholder="1234567890" required />
-                    <div>
-                        @error('national_code')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="phone_number">شماره تلفن</label><input class="input" id="phone_number" name="phone_number"
-                        type="text" value="{{ old('phone_number') }}" placeholder="09123456789" required />
-                    <div>
-                        @error('phone_number')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label for="email">ایمیل</label><input class="input" id="email" name="email"
                         type="email" value="{{ old('email') }}" placeholder="you@example.com" required />
                     <div>
