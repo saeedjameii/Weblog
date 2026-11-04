@@ -55,7 +55,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         $remember = $request->boolean('remember', false);
 
-        $ttlMinutes = $remember ? (30 * 24 * 60) : 1;
+        $ttlMinutes = $remember ? (30 * 24 * 60) : 120;
 
         auth('api')->factory()->setTTL($ttlMinutes);
 
