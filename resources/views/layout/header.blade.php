@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>@yield('title', 'خبرنامه و فروشگاه — تازه‌ترین اخبار و محصولات')</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <script>document.documentElement.classList.add('js');</script>
 
     @vite(['resources/css/style.css', 'resources/css/theme.css', 'resources/js/app.js', 'resources/js/create-post.js', 'resources/js/site-ui.js'])

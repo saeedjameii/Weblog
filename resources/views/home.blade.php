@@ -71,8 +71,7 @@
                 <div class="hero-image-wrap">
                     <div class="hero-image-card">
                         <div class="hero-image-media">
-                            <img src="{{ asset('images/logo.png') }}" alt="خبرنامه و فروشگاه" class="hero-img"
-                                onerror="this.src='https://picsum.photos/seed/news/800/600'" />
+                            <img src="{{ asset('images/logo.svg') }}" alt="خبرنامه و فروشگاه" class="hero-img"/>
                         </div>
                     </div>
                 </div>
