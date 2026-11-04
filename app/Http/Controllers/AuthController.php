@@ -53,12 +53,19 @@ class AuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember', false);
+
+        $ttlMinutes = $remember ? (30 * 24 * 60) : 1;
+
+        auth('api')->factory()->setTTL($ttlMinutes);
 
         if (! $token = auth('api')->attempt($credentials)) {
             return redirect()->back()->withInput()->withErrors(['email' => 'ایمیل یا رمز عبور اشتباه است.']);
         }
 
-        return redirect()->route('home')->withCookie(cookie('token', $token, 60))->with('success', 'ورود موفقیت‌آمیز بود.');
+        $cookie = cookie('token', $token, $ttlMinutes, null, null, true, true);
+
+        return redirect()->route('home')->withCookie($cookie)->with('success', 'ورود موفقیت‌آمیز بود.');
     }
 
     public function logout(Request $request)
