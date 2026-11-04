@@ -1,0 +1,476 @@
+/* ==========================================================================
+   theme.css - همه‌ی قواعد زیر body.site-theme است (پنل مدیریت متاثر نمی‌شود)
+   نصب فونت:  npm i @fontsource/vazirmatn
+   ========================================================================== */
+@import "@fontsource/vazirmatn/400.css";
+@import "@fontsource/vazirmatn/500.css";
+@import "@fontsource/vazirmatn/700.css";
+
+/* ---------- ۱) توکن‌ها (--forest/--sage/--ink/--muted/--danger دست نخورده‌اند) ---------- */
+:root {
+  --brand-50:#eef2ff; --brand-100:#e0e7ff; --brand-300:#a5b4fc; --brand-500:#5b5bd6; --brand-700:#3f3fa8; --brand-900:#25255f;
+  --blog-50:#ecfeff; --blog-100:#cffafe; --blog-300:#67e8f9; --blog-500:#0891b2; --blog-700:#0e6f8a; --blog-900:#134557;
+  --shop-50:#fff4ed; --shop-100:#ffe6d5; --shop-300:#fdba8c; --shop-500:#f2622f; --shop-700:#c2410c; --shop-900:#7c2d12;
+  --accent-50:#f5f3ff; --accent-300:#c4b5fd; --accent-500:#7c3aed; --accent-700:#5b21b6;
+  --ok-50:#ecfdf3; --ok-500:#16a34a; --ok-700:#116a33;
+  --warn-50:#fffbeb; --warn-500:#d97706; --warn-700:#92400e;
+  --err-50:#fef2f2; --err-500:#dc2626; --err-700:#991b1b;
+  --n-0:#fff; --n-50:#f8fafc; --n-100:#f1f5f9; --n-200:#e2e8f0; --n-300:#cbd5e1; --n-500:#64748b; --n-700:#334155; --n-900:#0f172a;
+
+  --t-text: var(--n-900);
+  --t-text-soft: var(--n-700);
+  --t-bg: #f4f6fb;
+  --t-border: rgba(255,255,255,.6);
+  --t-line: rgba(15,23,42,.10);
+
+  --shadow-sm: 0 1px 2px rgba(15,23,42,.08), 0 4px 10px -2px rgba(15,23,42,.06);
+  --shadow-md: 0 2px 4px rgba(15,23,42,.08), 0 10px 24px -6px rgba(15,23,42,.12);
+  --shadow-lg: 0 4px 8px rgba(15,23,42,.08), 0 22px 44px -12px rgba(15,23,42,.18);
+  --shadow-xl: 0 8px 16px rgba(15,23,42,.10), 0 40px 70px -20px rgba(15,23,42,.28);
+  --shadow-glass: 0 1px 0 rgba(255,255,255,.75) inset, 0 6px 16px -4px rgba(15,23,42,.10), 0 24px 48px -16px rgba(60,60,140,.18);
+  --shadow-shop: 0 4px 8px rgba(194,65,12,.14), 0 18px 36px -10px rgba(194,65,12,.36);
+  --shadow-blog: 0 4px 8px rgba(14,111,138,.14), 0 18px 36px -10px rgba(14,111,138,.34);
+
+  --glass-blur: 10px;
+  --radius-sm: 10px; --radius-md: 16px; --radius-lg: 22px; --radius-xl: 30px;
+  --space: clamp(.75rem, 2.5vw, 1.25rem);
+  --container: 1240px;
+  --touch: 44px;
+  /* لایه‌ها: هدر ۱۰۰۰ و drawer ۱۱۰۰/۱۲۰۰ در style.css تعریف شده‌اند */
+  --z-buybar: 900; --z-sheet: 1060; --z-toast: 1300;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+@media (min-width: 1024px) { :root { --glass-blur: 18px; } }
+
+/* ---------- پایه ---------- */
+body.site-theme [hidden] { display: none !important; }
+body.site-theme {
+  font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  color: var(--t-text);
+  background: var(--t-bg);
+  line-height: 1.8;
+  font-size: clamp(.94rem, .9rem + .2vw, 1.02rem);
+  overflow-x: clip;
+  min-height: 100dvh;
+  min-width: 320px;
+}
+body.site-theme .container { width: min(var(--container), calc(100% - 2 * var(--space))); }
+body.site-theme img { max-width: 100%; }
+body.site-theme :focus-visible { outline: 3px solid var(--brand-500); outline-offset: 3px; border-radius: 6px; }
+body.site-theme .ico { inline-size: 1.15em; block-size: 1.15em; flex: none; vertical-align: -.2em; }
+
+/* mesh ثابت و سبک (بدون filter) */
+body.site-theme::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40vmax 40vmax at 90% 5%,  rgba(8,145,178,.22), transparent 60%),
+    radial-gradient(45vmax 45vmax at 5% 30%,  rgba(242,98,47,.18), transparent 60%),
+    radial-gradient(40vmax 40vmax at 70% 95%, rgba(124,58,237,.20), transparent 60%),
+    radial-gradient(35vmax 35vmax at 20% 100%, rgba(91,91,214,.16), transparent 60%),
+    var(--t-bg);
+}
+
+/* ---------- ۴) شیشه ---------- */
+body.site-theme .glass,
+body.site-theme .glass-soft,
+body.site-theme .glass-strong,
+body.site-theme .glass-dark {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--t-border);
+  box-shadow: var(--shadow-glass);
+  border-radius: var(--radius-lg);
+}
+body.site-theme .glass        { background: rgba(255,255,255,.62); }
+body.site-theme .glass-soft   { background: rgba(255,255,255,.42); }
+body.site-theme .glass-strong { background: rgba(255,255,255,.84); }
+body.site-theme .glass-dark   { background: rgba(15,23,42,.80); color: #f8fafc; border-color: rgba(255,255,255,.12); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  body.site-theme .glass, body.site-theme .glass-soft, body.site-theme .glass-strong { background: rgba(255,255,255,.94); }
+  body.site-theme .glass-dark { background: rgba(15,23,42,.96); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  body.site-theme .glass, body.site-theme .glass-soft, body.site-theme .glass-strong,
+  body.site-theme .navbar.site-header-glass, body.site-theme .site-footer-glass, body.site-theme .auth-card {
+    -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--n-0);
+  }
+  body.site-theme .glass-dark { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--n-900); }
+}
+
+/* ---------- هدر، منو، فوتر ----------
+   drawer و backdrop بیرون از <header> هستند و دست نخورده‌اند. */
+body.site-theme .navbar.site-header-glass {
+  height: auto; min-height: 68px;
+  background: rgba(255,255,255,.72);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border-block-end: 1px solid var(--t-border);
+  box-shadow: 0 1px 0 rgba(255,255,255,.75) inset, 0 8px 24px -14px rgba(15,23,42,.2);
+  padding-block-start: env(safe-area-inset-top);
+  transition: min-height .25s var(--ease), box-shadow .25s var(--ease);
+}
+body.site-theme .navbar.site-header-glass.is-scrolled { min-height: 58px; box-shadow: var(--shadow-md); }
+body.site-theme .nav-inner { gap: .75rem; min-width: 0; }
+body.site-theme .logo { color: var(--t-text); min-width: 0; }
+body.site-theme .logo-icon { background: linear-gradient(135deg, var(--shop-700), var(--accent-700)); box-shadow: var(--shadow-sm); }
+body.site-theme .logo-text { white-space: nowrap; }
+body.site-theme .logo-badge { color: var(--shop-700); font-weight: 500; }
+body.site-theme .sx-nav-links { display: none; gap: .25rem; margin-inline-start: 1rem; }
+@media (min-width: 900px) { body.site-theme .sx-nav-links { display: flex; } }
+body.site-theme .sx-nav-link {
+  display: inline-flex; align-items: center; gap: .4rem; min-block-size: var(--touch); padding-inline: 1rem;
+  border-radius: 12px; color: var(--t-text-soft); font-weight: 500; transition: background .2s, color .2s;
+}
+body.site-theme .sx-nav-link:hover { background: rgba(255,255,255,.7); color: var(--t-text); }
+body.site-theme .sx-nav-link.is-active { background: var(--brand-100); color: var(--brand-900); font-weight: 700; }
+body.site-theme .nav-actions { min-width: 0; }
+body.site-theme .nav-actions .btn { min-block-size: var(--touch); }
+body.site-theme .menu-toggle-btn { min-block-size: var(--touch); min-inline-size: var(--touch); }
+body.site-theme .nav-user-greeting { display: inline-flex; align-items: center; gap: .35rem; font-weight: 500; }
+
+body.site-theme .btn-primary { background: linear-gradient(135deg, var(--brand-700), var(--accent-700)); }
+body.site-theme .btn-primary:hover { background: linear-gradient(135deg, var(--brand-900), var(--accent-700)); }
+body.site-theme .btn-secondary { background: rgba(255,255,255,.75); border-color: var(--t-line); color: var(--brand-900); }
+
+body.site-theme .mobile-nav-drawer { background: rgba(255,255,255,.96); border-inline-start: 1px solid var(--t-border); }
+body.site-theme .mobile-nav-item { min-block-size: var(--touch); border-radius: 12px; display: flex; align-items: center; gap: .6rem; }
+body.site-theme .mobile-nav-item.is-active { background: var(--brand-100); color: var(--brand-900); }
+body.site-theme .mobile-nav-section-title { color: var(--t-text-soft); }
+body.site-theme .item-icon { display: inline-grid; place-items: center; color: var(--brand-700); }
+
+body.site-theme .footer.site-footer-glass {
+  margin-block-start: 3rem; background: rgba(255,255,255,.6); color: var(--t-text);
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+  border-block-start: 1px solid var(--t-border); box-shadow: 0 -1px 0 rgba(255,255,255,.7) inset;
+  padding: 2rem 0 calc(1.5rem + env(safe-area-inset-bottom));
+}
+body.site-theme .footer-cols { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+@media (min-width: 768px) { body.site-theme .footer-cols { grid-template-columns: 2fr 1fr 1fr; } }
+body.site-theme .footer-cols h2 { font-size: 1rem; margin: 0 0 .5rem; }
+body.site-theme .footer-cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+body.site-theme .footer-cols a { display: inline-flex; min-block-size: var(--touch); align-items: center; color: var(--t-text-soft); }
+body.site-theme .footer-cols a:hover { color: var(--brand-700); }
+body.site-theme .footer-note { margin-block-start: 1rem; padding-block-start: 1rem; border-block-start: 1px solid var(--t-line); color: var(--t-text-soft); font-size: .85rem; }
+
+/* ---------- ۲) قاب عکس ---------- */
+body.site-theme .frame {
+  position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--n-100), var(--n-50));
+  box-shadow: 0 0 0 1px rgba(15,23,42,.06) inset, var(--shadow-sm);
+}
+body.site-theme .frame--product { aspect-ratio: 1 / 1; background: linear-gradient(145deg, #fff, var(--n-100)); }
+body.site-theme .frame--product-tall { aspect-ratio: 4 / 5; background: linear-gradient(145deg, #fff, var(--n-100)); }
+body.site-theme .frame--cover { aspect-ratio: 16 / 9; }
+body.site-theme .frame--thumb { aspect-ratio: 1 / 1; inline-size: 72px; border-radius: var(--radius-sm); }
+body.site-theme .frame > img {
+  position: absolute; inset: 0; inline-size: 100%; block-size: 100%; transition: transform .5s var(--ease);
+}
+body.site-theme .frame--product > img, body.site-theme .frame--product-tall > img { object-fit: contain; padding: 6%; }
+body.site-theme .frame--cover > img, body.site-theme .frame--thumb > img { object-fit: cover; }
+body.site-theme .frame--thumb > img { padding: 0; }
+body.site-theme a:hover > .frame > img, body.site-theme .frame:hover > img { transform: scale(1.05); }
+/* خنثی‌سازی استایل‌های قدیمی (.detail-image / .article-main-image) روی عکس داخل قاب */
+body.site-theme .frame > img { max-block-size: none; border: 0; border-radius: 0; background: none; margin: 0; }
+/* skeleton فقط وقتی JS فعال است (وگرنه برای همیشه روی عکس می‌ماند) */
+html.js body.site-theme .frame.is-loading::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.75) 50%, transparent 80%) var(--n-100);
+  background-size: 200% 100%; animation: shimmer 1.3s linear infinite;
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+body.site-theme .frame--empty {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect x='10' y='14' width='44' height='36' rx='6'/><circle cx='24' cy='28' r='4'/><path d='M10 44l14-12 12 10 8-6 10 8'/></svg>") center / 30% no-repeat,
+    linear-gradient(135deg, var(--brand-50), var(--shop-50) 60%, var(--blog-50));
+}
+
+/* ---------- ۳) دکمه، badge، lift ---------- */
+body.site-theme .lift { transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
+body.site-theme .lift:hover { transform: translateY(-4px); }
+body.site-theme .lift:active { transform: translateY(0) scale(.985); }
+
+body.site-theme .btn-glow, body.site-theme .btn-soft {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-block-size: var(--touch); padding-inline: 1.3rem; border-radius: 14px; border: 0;
+  font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s;
+}
+body.site-theme .btn-glow { color: #fff; background: linear-gradient(135deg, var(--shop-700), var(--accent-700)); box-shadow: var(--shadow-shop); }
+body.site-theme .btn-glow--blog { background: linear-gradient(135deg, var(--blog-700), var(--brand-700)); box-shadow: var(--shadow-blog); }
+body.site-theme .btn-glow:hover, body.site-theme .btn-soft:hover { transform: translateY(-2px); }
+body.site-theme .btn-glow:active, body.site-theme .btn-soft:active { transform: translateY(0) scale(.97); }
+body.site-theme .btn-soft { color: var(--t-text); font-weight: 500; background: rgba(255,255,255,.7); border: 1px solid var(--t-line); box-shadow: var(--shadow-sm); }
+
+body.site-theme .badge {
+  display: inline-flex; align-items: center; gap: .3rem; padding: .1rem .65rem; border-radius: 999px;
+  font-size: .78rem; font-weight: 500; line-height: 1.7; background: var(--brand-100); color: var(--brand-900);
+}
+body.site-theme .badge--shop { background: var(--shop-100); color: var(--shop-900); }
+body.site-theme .badge--blog { background: var(--blog-100); color: var(--blog-900); }
+body.site-theme .badge--ok   { background: var(--ok-50);   color: var(--ok-700); }
+body.site-theme .badge--warn { background: var(--warn-50); color: var(--warn-700); }
+body.site-theme .badge--err  { background: var(--err-50);  color: var(--err-700); }
+body.site-theme .badges { display: flex; flex-wrap: wrap; gap: .35rem; }
+
+/* ---------- کارت‌ها و گرید ---------- */
+body.site-theme .pgrid { display: grid; gap: var(--space); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 768px)  { body.site-theme .pgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { body.site-theme .pgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+body.site-theme .pgrid--posts { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px)  { body.site-theme .pgrid--posts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { body.site-theme .pgrid--posts { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+body.site-theme .pcard {
+  display: flex; flex-direction: column; gap: .55rem; min-width: 0; padding: .6rem;
+  background: rgba(255,255,255,.88); border: 1px solid var(--t-border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); color: inherit;
+}
+body.site-theme .pcard:hover { box-shadow: var(--shadow-shop); }
+body.site-theme .pcard--post:hover { box-shadow: var(--shadow-blog); }
+body.site-theme .pcard__media { position: relative; display: block; }
+body.site-theme .pcard__badges { position: absolute; inset-block-start: .5rem; inset-inline-start: .5rem; z-index: 2; }
+body.site-theme .pcard__body { display: flex; flex-direction: column; gap: .35rem; padding: .15rem .35rem .35rem; flex: 1; min-width: 0; }
+body.site-theme .pcard__title { margin: 0; font-weight: 700; font-size: .97rem; line-height: 1.7; min-width: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+body.site-theme .pcard__title a { color: inherit; }
+body.site-theme .pcard__title a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; } /* کل کارت قابل کلیک */
+body.site-theme .pcard { position: relative; }
+body.site-theme .pcard__cat { font-size: .8rem; color: var(--t-text-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.site-theme .pcard__text { margin: 0; color: var(--t-text-soft); font-size: .88rem;
+  display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+body.site-theme .pcard__price { margin-block-start: auto; padding-block-start: .3rem; display: flex; flex-direction: column; }
+body.site-theme .pcard__price small { color: var(--t-text-soft); font-size: .76rem; }
+body.site-theme .pcard__price strong { font-size: 1.05rem; color: var(--shop-700); }
+body.site-theme .pcard__old { color: var(--n-500); text-decoration: line-through; font-size: .8rem; }
+body.site-theme .pcard__meta { margin-block-start: auto; display: flex; justify-content: space-between; gap: .5rem; align-items: center; font-size: .82rem; color: var(--t-text-soft); }
+body.site-theme .pcard__more { color: var(--blog-700); font-weight: 700; display: inline-flex; align-items: center; gap: .25rem; }
+
+body.site-theme .rail {
+  display: grid; grid-auto-flow: column; grid-auto-columns: clamp(160px, 44vw, 250px); gap: var(--space);
+  overflow-x: auto; scroll-snap-type: x mandatory; padding-block: .5rem 1rem; scrollbar-width: thin; overscroll-behavior-x: contain;
+}
+body.site-theme .rail--posts { grid-auto-columns: clamp(250px, 78vw, 340px); }
+body.site-theme .rail > * { scroll-snap-align: start; min-width: 0; }
+
+/* ---------- عناوین بخش‌ها ---------- */
+body.site-theme .sx-section { padding-block: clamp(1.5rem, 4vw, 3rem); }
+body.site-theme .sx-head { display: flex; flex-wrap: wrap; gap: .75rem 1rem; align-items: end; justify-content: space-between; margin-block-end: 1rem; }
+body.site-theme .sx-kicker { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem; font-weight: 700; color: var(--brand-700); }
+body.site-theme .sx-kicker--shop { color: var(--shop-700); }
+body.site-theme .sx-kicker--blog { color: var(--blog-700); }
+body.site-theme .sx-title { margin: 0; font-size: clamp(1.25rem, 1rem + 1.2vw, 1.9rem); line-height: 1.6; }
+body.site-theme .sx-lead { margin: .25rem 0 0; color: var(--t-text-soft); max-width: 62ch; }
+body.site-theme .sx-pagehead { padding: clamp(1.1rem, 3vw, 2rem); margin-block: .5rem 1.25rem; }
+body.site-theme .sx-pagehead--shop { border-inline-start: 5px solid var(--shop-500); }
+body.site-theme .sx-pagehead--blog { border-inline-start: 5px solid var(--blog-500); }
+
+/* ---------- صفحه‌ی اصلی ---------- */
+body.site-theme .sx-hero { padding-block: clamp(1.5rem, 5vw, 4rem); }
+body.site-theme .sx-hero__grid { display: grid; gap: var(--space); align-items: center; }
+@media (min-width: 960px) { body.site-theme .sx-hero__grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); } }
+body.site-theme .sx-hero__main { padding: clamp(1.25rem, 4vw, 2.5rem); }
+body.site-theme .sx-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .9rem; border-radius: 999px; background: var(--brand-100); color: var(--brand-900); font-size: .85rem; font-weight: 500; }
+body.site-theme .sx-pill i { inline-size: .5rem; block-size: .5rem; border-radius: 50%; background: var(--shop-700); }
+body.site-theme .sx-hero__title { font-size: clamp(1.6rem, 1.1rem + 2.4vw, 2.9rem); line-height: 1.55; margin: .9rem 0 .6rem; }
+body.site-theme .sx-hero__desc { color: var(--t-text-soft); margin: 0; max-width: 60ch; }
+body.site-theme .sx-hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block-start: 1.25rem; }
+body.site-theme .sx-hero__art { padding: clamp(1rem, 3vw, 2rem); display: grid; place-items: center; min-block-size: 220px; }
+body.site-theme .sx-hero__art img { max-block-size: 280px; inline-size: auto; object-fit: contain; }
+body.site-theme .sx-features { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-block-start: 1.5rem; }
+body.site-theme .sx-feature { display: flex; gap: .65rem; align-items: center; min-width: 0; }
+body.site-theme .sx-feature__ico { display: grid; place-items: center; inline-size: 40px; block-size: 40px; border-radius: 12px; background: rgba(255,255,255,.8); color: var(--brand-700); box-shadow: var(--shadow-sm); flex: none; }
+body.site-theme .sx-feature strong { display: block; line-height: 1.5; }
+body.site-theme .sx-feature small { color: var(--t-text-soft); }
+
+body.site-theme .sx-gates { display: grid; gap: var(--space); }
+@media (min-width: 800px) { body.site-theme .sx-gates { grid-template-columns: 1fr 1fr; } }
+body.site-theme .sx-gate { padding: clamp(1.1rem, 3vw, 2rem); display: flex; flex-direction: column; gap: .6rem; }
+body.site-theme .sx-gate--blog { border-block-start: 4px solid var(--blog-500); }
+body.site-theme .sx-gate--shop { border-block-start: 4px solid var(--shop-500); }
+body.site-theme .sx-gate h2 { margin: 0; font-size: clamp(1.1rem, 1rem + .6vw, 1.45rem); line-height: 1.6; }
+body.site-theme .sx-gate p { margin: 0; color: var(--t-text-soft); }
+body.site-theme .sx-gate__actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-block-start: auto; padding-block-start: .5rem; }
+
+body.site-theme .sx-trust { display: grid; gap: var(--space); grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+body.site-theme .sx-trust__item { padding: 1.1rem; }
+body.site-theme .sx-trust__item h3 { margin: .5rem 0 .25rem; font-size: 1rem; }
+body.site-theme .sx-trust__item p { margin: 0; color: var(--t-text-soft); font-size: .9rem; }
+body.site-theme .sx-trust__ico { color: var(--accent-700); }
+
+/* ---------- breadcrumb، chip، empty ---------- */
+body.site-theme .breadcrumb { display: flex; flex-wrap: wrap; gap: .1rem .4rem; padding: .75rem 0 .25rem; font-size: .85rem; color: var(--t-text-soft); list-style: none; margin: 0; }
+body.site-theme .breadcrumb li { min-width: 0; }
+body.site-theme .breadcrumb li + li::before { content: "\203A"; margin-inline-end: .4rem; opacity: .6; }
+body.site-theme .breadcrumb a { color: inherit; display: inline-flex; min-block-size: 32px; align-items: center; }
+body.site-theme .breadcrumb a:hover { color: var(--brand-700); text-decoration: underline; }
+body.site-theme .breadcrumb [aria-current] { color: var(--t-text); font-weight: 500; overflow-wrap: anywhere; }
+
+body.site-theme .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+body.site-theme .chip {
+  display: inline-flex; align-items: center; gap: .35rem; min-block-size: 36px; padding-inline: .9rem; border-radius: 999px;
+  background: rgba(255,255,255,.75); border: 1px solid var(--t-line); color: var(--t-text); font-size: .85rem;
+}
+body.site-theme a.chip:hover { background: var(--brand-100); color: var(--brand-900); }
+body.site-theme .chip[aria-current="true"] { background: var(--brand-100); color: var(--brand-900); font-weight: 700; }
+
+body.site-theme .sx-empty { text-align: center; padding: clamp(2rem, 6vw, 4rem) var(--space); max-width: 520px; margin-inline: auto; grid-column: 1 / -1; }
+body.site-theme .sx-empty .ico { inline-size: 56px; block-size: 56px; color: var(--brand-500); margin-block-end: .5rem; }
+body.site-theme .sx-empty h2, body.site-theme .sx-empty h3 { margin: .25rem 0; }
+body.site-theme .sx-empty p { color: var(--t-text-soft); margin: .25rem 0 1rem; }
+
+/* ---------- ۵) محصولات: فیلتر، نوار ابزار ---------- */
+body.site-theme .shop-layout { display: grid; gap: var(--space); }
+@media (min-width: 1024px) { body.site-theme .shop-layout { grid-template-columns: 280px minmax(0, 1fr); align-items: start; } }
+body.site-theme .shop-content { min-width: 0; }
+body.site-theme .toolbar { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; padding: .6rem 1rem; margin-block-end: var(--space); }
+body.site-theme .toolbar__count { font-weight: 700; }
+body.site-theme .filter-open-btn { min-block-size: var(--touch); }
+@media (min-width: 1024px) { body.site-theme .filter-open-btn, body.site-theme .filter-close-btn { display: none; } }
+body.site-theme .filter-panel { padding: 1rem; }
+body.site-theme .filter-panel__head { display: flex; align-items: center; justify-content: space-between; margin-block-end: .75rem; }
+body.site-theme .filter-panel__head h2 { margin: 0; font-size: 1.05rem; }
+body.site-theme .filter-field { display: grid; gap: .3rem; margin-block-end: .9rem; font-weight: 500; }
+body.site-theme .filter-field .input { inline-size: 100%; box-sizing: border-box; }
+body.site-theme .filter-cats { max-block-size: 240px; overflow-y: auto; display: grid; gap: .15rem; margin-block: .25rem 1rem; }
+body.site-theme .filter-cats a { display: flex; align-items: center; min-block-size: 40px; padding-inline: .75rem; border-radius: 10px; color: var(--t-text-soft); overflow-wrap: anywhere; }
+body.site-theme .filter-cats a:hover { background: rgba(255,255,255,.8); color: var(--t-text); }
+body.site-theme .filter-cats a[aria-current="true"] { background: var(--brand-100); color: var(--brand-900); font-weight: 700; }
+@media (min-width: 1024px) { body.site-theme .filter-panel { position: sticky; inset-block-start: 5.5rem; } }
+@media (max-width: 1023.98px) {
+  body.site-theme .filter-panel {
+    position: fixed; inset-inline: 0; inset-block-end: 0; z-index: var(--z-sheet);
+    max-block-size: 85dvh; overflow-y: auto; overscroll-behavior: contain;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0; background: rgba(255,255,255,.96);
+    padding-block-end: calc(1rem + env(safe-area-inset-bottom));
+    transform: translateY(105%); visibility: hidden; transition: transform .3s var(--ease), visibility 0s .3s;
+  }
+  body.site-theme .filter-panel.is-open { transform: none; visibility: visible; transition: transform .3s var(--ease); }
+}
+body.site-theme .sheet-backdrop { position: fixed; inset: 0; z-index: calc(var(--z-sheet) - 1); background: rgba(15,23,42,.5); opacity: 0; pointer-events: none; transition: opacity .25s; }
+body.site-theme .sheet-backdrop.is-open { opacity: 1; pointer-events: auto; }
+@media (min-width: 1024px) { body.site-theme .sheet-backdrop { display: none; } }
+
+/* ---------- و) صفحه‌ی محصول ---------- */
+body.site-theme .pdp { display: grid; gap: var(--space); margin-block-start: .75rem; }
+@media (min-width: 1024px) { body.site-theme .pdp { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; } }
+body.site-theme .gallery { min-width: 0; padding: .75rem; }
+body.site-theme .gallery__thumbs { display: flex; gap: .5rem; margin-block-start: .6rem; overflow-x: auto; padding: .25rem; scroll-snap-type: x proximity; }
+body.site-theme .gallery__thumbs > * { flex: none; scroll-snap-align: start; }
+body.site-theme .product-thumbnail { padding: 0; border: 0; background: none; cursor: pointer; border-radius: var(--radius-sm); min-inline-size: var(--touch); }
+body.site-theme .product-thumbnail.is-active .frame { box-shadow: 0 0 0 3px var(--shop-500); }
+body.site-theme .pdp__info { padding: clamp(1rem, 3vw, 1.75rem); min-width: 0; display: grid; gap: .8rem; }
+@media (min-width: 1024px) { body.site-theme .pdp__info { position: sticky; inset-block-start: 5.5rem; } }
+body.site-theme .pdp__title { font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); line-height: 1.6; margin: 0; overflow-wrap: anywhere; }
+body.site-theme .pdp__price small { display: block; color: var(--t-text-soft); }
+body.site-theme .pdp__price strong { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.8rem); color: var(--shop-700); }
+body.site-theme .pdp__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+body.site-theme .meta-list { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; }
+body.site-theme .meta-list div { padding: .3rem .8rem; border-radius: 12px; background: rgba(255,255,255,.75); border: 1px solid var(--t-line); }
+body.site-theme .meta-list dt { font-size: .75rem; color: var(--t-text-soft); }
+body.site-theme .meta-list dd { margin: 0; font-weight: 700; }
+
+body.site-theme .buybar { position: fixed; inset-inline: 0; inset-block-end: 0; z-index: var(--z-buybar); display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  padding: .6rem var(--space) calc(.6rem + env(safe-area-inset-bottom)); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+body.site-theme .buybar__price small { display: block; font-size: .75rem; color: var(--t-text-soft); line-height: 1.4; }
+body.site-theme .buybar__price strong { color: var(--shop-700); }
+@media (min-width: 1024px) { body.site-theme .buybar { display: none; } }
+@media (max-width: 1023.98px) { body.site-theme .has-buybar { padding-block-end: 6rem; } }
+
+body.site-theme .sx-panel { padding: clamp(1rem, 3vw, 1.75rem); margin-block-start: var(--space); }
+body.site-theme .tabs__list { display: flex; gap: .25rem; overflow-x: auto; border-block-end: 1px solid var(--t-line); }
+body.site-theme .tabs__tab { flex: none; min-block-size: var(--touch); padding-inline: 1.1rem; border: 0; background: none; font: inherit; font-weight: 500; color: var(--t-text-soft); cursor: pointer; border-block-end: 3px solid transparent; }
+body.site-theme .tabs__tab[aria-selected="true"] { color: var(--shop-700); border-block-end-color: var(--shop-500); font-weight: 700; }
+body.site-theme .tabs__panel { padding-block: 1rem 0; }
+body.site-theme .tabs__panel h2 { font-size: 1.05rem; margin: 0 0 .5rem; }
+body.site-theme .table-wrap { overflow-x: auto; border-radius: var(--radius-md); }
+body.site-theme .spec-table { inline-size: 100%; border-collapse: collapse; min-inline-size: 280px; }
+body.site-theme .spec-table th, body.site-theme .spec-table td { padding: .7rem 1rem; text-align: start; border-block-end: 1px solid var(--t-line); }
+body.site-theme .spec-table th { inline-size: 35%; color: var(--t-text-soft); font-weight: 500; background: rgba(255,255,255,.5); }
+
+body.site-theme .option-list { display: grid; gap: .75rem; }
+body.site-theme .option-card { display: grid; gap: .75rem; padding: 1rem; align-items: center; background: rgba(255,255,255,.85); border: 1px solid var(--t-border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+@media (min-width: 720px) { body.site-theme .option-card { grid-template-columns: minmax(0, 1fr) auto auto; } }
+body.site-theme .option-attrs { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
+body.site-theme .option-attr { padding: .25rem .75rem; border-radius: 12px; background: var(--brand-50); display: grid; line-height: 1.5; }
+body.site-theme .option-attr span { font-size: .75rem; color: var(--t-text-soft); }
+body.site-theme .option-price { display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; }
+@media (min-width: 720px) { body.site-theme .option-price { align-items: flex-end; } }
+body.site-theme .option-price strong { color: var(--shop-700); font-size: 1.1rem; }
+body.site-theme .option-price small { color: var(--t-text-soft); font-weight: 400; }
+body.site-theme .option-old { color: var(--n-500); text-decoration: line-through; font-size: .85rem; }
+
+/* ---------- پست‌ها ---------- */
+body.site-theme .search-form { display: grid; gap: .6rem; margin-block-start: 1rem; }
+@media (min-width: 720px) { body.site-theme .search-form { grid-template-columns: minmax(0, 1fr) minmax(0, 220px) auto; align-items: center; } }
+body.site-theme .search-form .input { inline-size: 100%; box-sizing: border-box; }
+body.site-theme .article-wrap { max-inline-size: 820px; margin-inline: auto; }
+body.site-theme .article { padding: clamp(1.1rem, 4vw, 2.25rem); margin-block-start: .75rem; }
+body.site-theme .article__title { font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2.3rem); line-height: 1.6; margin: .6rem 0; overflow-wrap: anywhere; }
+body.site-theme .article__meta { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; color: var(--t-text-soft); font-size: .9rem; }
+body.site-theme .article__meta span { display: inline-flex; align-items: center; gap: .35rem; }
+body.site-theme .article__media { margin-block: 1.25rem; }
+body.site-theme .article__media .detail-image, body.site-theme .article__media .article-main-image { inline-size: 100%; block-size: 100%; }
+body.site-theme .article__text { font-size: 1.04rem; line-height: 2.1; overflow-wrap: anywhere; }
+body.site-theme .article__author { margin-block-start: 1.5rem; padding: 1rem 1.2rem; border-radius: var(--radius-md); background: rgba(255,255,255,.7); border: 1px solid var(--t-line); }
+body.site-theme .article__author p { margin: .15rem 0 0; color: var(--t-text-soft); }
+body.site-theme .thumbs { display: flex; gap: .5rem; overflow-x: auto; margin-block-start: .6rem; padding: .25rem; }
+body.site-theme .thumbs .thumb { flex: none; inline-size: 72px; block-size: 72px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 2px solid transparent; opacity: .85; }
+body.site-theme .thumbs .thumb.active { border-color: var(--blog-500); opacity: 1; }
+body.site-theme .read-progress { position: fixed; inset-block-start: 0; inset-inline: 0; block-size: 3px; z-index: 1001; background: linear-gradient(270deg, var(--blog-500), var(--brand-500)); transform-origin: right center; transform: scaleX(0); pointer-events: none; }
+
+/* ---------- دسته‌بندی‌ها (public) ---------- */
+body.site-theme .sx-cat-card { padding: clamp(1rem, 3vw, 1.75rem); }
+body.site-theme .sx-cat-row { padding: .9rem 0; border-block-end: 1px solid var(--t-line); }
+body.site-theme .sx-cat-row:last-child { border-block-end: 0; }
+body.site-theme .sx-cat-card .category-node-name { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; font-weight: 700; }
+body.site-theme .sx-cat-card .category-node-children { margin-inline-start: 1rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--brand-100); margin-block-start: .4rem; display: grid; gap: .4rem; }
+body.site-theme .sx-cat-card .category-node-children .category-node-name { font-weight: 500; }
+body.site-theme .sx-cat-card .btn { min-block-size: 40px; padding: .35rem 1rem; }
+
+/* ---------- pagination (ساختار custom.blade.php دست نخورده) ---------- */
+body.site-theme .pagination-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; margin-block: 1.75rem; }
+body.site-theme .page-link { display: inline-flex; align-items: center; justify-content: center; min-block-size: var(--touch); min-inline-size: var(--touch); padding-inline: .9rem;
+  border-radius: 12px; background: rgba(255,255,255,.8); border: 1px solid var(--t-line); color: var(--t-text); box-shadow: var(--shadow-sm); transition: transform .2s var(--ease), box-shadow .2s; }
+body.site-theme a.page-link:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+body.site-theme .page-link-active { background: linear-gradient(135deg, var(--brand-700), var(--accent-700)); color: #fff; border-color: transparent; }
+body.site-theme .page-link-disabled { opacity: .5; }
+
+/* ---------- ز) ورود/ثبت‌نام: فقط CSS ---------- */
+body.site-theme .auth-page { background: transparent; min-height: calc(100dvh - 76px); padding: clamp(1.5rem, 6vw, 3.5rem) var(--space); }
+body.site-theme .auth-card {
+  background: rgba(255,255,255,.78); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%); backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--t-border); border-radius: var(--radius-xl); box-shadow: var(--shadow-glass); inline-size: min(100%, 460px);
+}
+body.site-theme .auth-card h1 { line-height: 1.6; }
+body.site-theme .auth-subtitle, body.site-theme .auth-switch { color: var(--t-text-soft); }
+body.site-theme .auth-switch a, body.site-theme .small-link { color: var(--brand-700); font-weight: 700; }
+body.site-theme .auth-card .btn-primary { min-block-size: var(--touch); box-shadow: var(--shadow-sm); }
+body.site-theme .text-danger { color: var(--err-700); }
+body.site-theme .check-row { min-block-size: var(--touch); display: flex; align-items: center; gap: .5rem; }
+
+body.site-theme .input, body.site-theme .select, body.site-theme .search {
+  min-block-size: var(--touch); border-radius: 12px; border: 1px solid var(--n-300); background: rgba(255,255,255,.92); color: var(--t-text);
+  font-family: inherit; padding-inline: .9rem; transition: border-color .2s, box-shadow .2s;
+}
+body.site-theme .input:focus, body.site-theme .select:focus, body.site-theme .search:focus { border-color: var(--brand-500); box-shadow: 0 0 0 4px rgba(91,91,214,.2); outline: none; }
+
+/* ---------- ح) alert / toast / reveal ---------- */
+body.site-theme .alert { border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+body.site-theme .alert-success { background: var(--ok-50); color: var(--ok-700); border-color: #bbf7d0; }
+body.site-theme .alert-danger { background: var(--err-50); color: var(--err-700); border-color: #fecaca; }
+body.site-theme .alert-info { background: var(--brand-50); color: var(--brand-900); border-color: var(--brand-100); }
+body.site-theme .flash-wrap { padding-block-start: var(--space); }
+
+html.js body.site-theme .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+html.js body.site-theme .reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.site-theme *, body.site-theme *::before, body.site-theme *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  html.js body.site-theme .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- خنثی‌سازی پس‌زمینه‌ی مات قدیمی تا mesh دیده شود ---------- */
+body.site-theme .page-area { background: transparent; }
+body.site-theme .sx-cat-card .category-node-children .category-node-name::before { display: none; }
+body.site-theme .sx-cat-card .category-node-name { color: var(--t-text); }
+body.site-theme .sx-cat-card .category-node-children .category-node-name { color: var(--t-text-soft); }

@@ -4,40 +4,41 @@
 
 @section('content')
 
-<main class="page-area">
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif  
+<main>
+    <div class="container">
+        @if(session('success'))
+            <div class="alert alert-success flash-wrap" role="status" data-auto-dismiss="6000">{{ session('success') }}</div>
+        @endif
 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    <div class="main-content">
+        @if(session('error'))
+            <div class="alert alert-danger flash-wrap" role="alert">{{ session('error') }}</div>
+        @endif
+
+        <ol class="breadcrumb" aria-label="مسیر صفحه">
+            <li><a href="{{ route('home') }}">صفحه اصلی</a></li>
+            <li aria-current="page">دسته‌بندی محصولات</li>
+        </ol>
 
         {{-- Page Header --}}
-        <section class="intro intro--header">
+        <section class="sx-pagehead sx-pagehead--shop glass" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;">
             <div>
-                <h1 class="display-font panel-title--categories">دسته‌بندی محصولات</h1>
-           </div>
+                <span class="sx-kicker sx-kicker--shop"><x-icon name="shop" /> دسته‌بندی</span>
+                <h1 class="sx-title">دسته‌بندی محصولات</h1>
+            </div>
             @can('permission', 'create-category')
-                <a href="{{ route('panel.categories.products.create') }}" class="button button-primary">
+                <a href="{{ route('panel.categories.products.create') }}" class="btn-glow">
                     + ساخت دسته‌بندی جدید
                 </a>
             @endcan
         </section>
 
-
         {{-- Categories Card --}}
-        <div class="form-card categories-card">
+        <div class="sx-cat-card glass-strong" style="margin-block-start: var(--space);">
 
-            <div class="section-heading section-heading--flush">
+            <div class="sx-head">
                 <div>
-                    <h2 class="m-0">لیست دسته‌بندی‌های محصولات</h2>
-                    <p class="section-description section-description--flush">{{ $categories->count() }} دسته‌بندی‌ها</p>
+                    <h2 class="sx-title" style="font-size:1.15rem">لیست دسته‌بندی‌های محصولات</h2>
+                    <p class="sx-lead">{{ $categories->count() }} دسته‌بندی‌ها</p>
                 </div>
             </div>
 
@@ -47,16 +48,10 @@
 
                     @foreach ($categories as $category)
 
-                        <div class="spec-row spec-row--top">
-
-                            {{-- Title --}}
-                            <div class="category-icon-wrap">
-                                <span class="step-number step-number--category">📁</span>
-
-                                    @include('categories.partials.product-category-tree', [
-                                        'category' => $category
-                                    ])
-                            </div>
+                        <div class="sx-cat-row">
+                            @include('categories.partials.product-category-tree', [
+                                'category' => $category
+                            ])
                         </div>
 
                     @endforeach
@@ -66,15 +61,10 @@
             @else
 
                 {{-- Empty State --}}
-                <div class="empty-state">
-
-                    <div class="empty-state-icon">📁</div>
-
-                    <h3 class="empty-state-title">هیچ دسته‌بندی‌ای وجود ندارد</h3>
-
-                    <p class="color-muted"> هنوز هیچ دسته‌بندی‌ای ایجاد نشده است  .</p>
-
-
+                <div class="sx-empty">
+                    <x-icon name="folder" />
+                    <h3>هیچ دسته‌بندی‌ای وجود ندارد</h3>
+                    <p>هنوز هیچ دسته‌بندی‌ای ایجاد نشده است.</p>
                 </div>
 
             @endif

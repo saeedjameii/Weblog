@@ -2,69 +2,49 @@
 
 @section('content')
     <main>
-      <section class="browse-header">
-        <div class="container">
-          <div class="kicker">آرشیو جامع</div>
-          <h1 class="section-title">آخرین اخبار و مقالات</h1>
-          <p class="browse-description">
+      <div class="container">
+        <ol class="breadcrumb" aria-label="مسیر صفحه">
+          <li><a href="{{ route('home') }}">صفحه اصلی</a></li>
+          <li aria-current="page">اخبار</li>
+        </ol>
+
+        <section class="sx-pagehead sx-pagehead--blog glass">
+          <span class="sx-kicker sx-kicker--blog">آرشیو جامع</span>
+          <h1 class="sx-title">آخرین اخبار و مقالات</h1>
+          <p class="sx-lead">
             در این بخش می‌توانید تمامی اخبار، گزارش‌ها و مقالات منتشر شده توسط تحریریه را جستجو و مطالعه کنید.
           </p>
-          <form class="search-box" method="GET" action="{{ route('posts.index') }}">
+          <form class="search-form" method="GET" action="{{ route('posts.index') }}">
             <input
-              class="search"
+              class="search input"
               type="search"
               name="search"
               value="{{ request('search') }}"
+              aria-label="جستجو در اخبار"
               placeholder="جستجو در متن یا تیتر اخبار..."/>
-            <select class="select" name="category_id" onchange="this.form.submit()">
+            <select class="select input" name="category_id" aria-label="دسته‌بندی" onchange="this.form.submit()">
               <option value="">همه دسته‌بندی‌ها</option>
                 @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->full_name }}</option>
                 @endforeach
             </select>
-            <button class="button button-primary search-submit" type="submit">
-                جست‌وجو
-            </button>
+            <button class="btn-glow btn-glow--blog search-submit" type="submit"><x-icon name="search" /> جست‌وجو</button>
           </form>
-        </div>
-      </section>
-      <section>
-        <div class="container news-grid">
+        </section>
+
+        <div class="pgrid pgrid--posts" style="margin-block-start: var(--space);">
         @forelse ($posts as $post)
-          <article class="news-card">
-
-            @if($post->images->isNotEmpty())
-                <a href="{{ route('posts.show', $post) }}" class="news-image-link">
-                    <img src="{{ Storage::url($post->images->first()->path) }}" alt="{{ $post->title }}" class="news-image-cover">
-                </a>
-            @endif
-
-            <div class="news-body">
-              <div class="tags-row">
-                  @forelse ($post->categories as $category)
-                      <span class="tag">{{ $category->full_name }}</span>
-                  @empty
-                      <span class="tag">عمومی</span>
-                  @endforelse
-              </div>
-              <h3><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h3>
-              <p class="news-excerpt">{{ Str::limit($post->description, 120) }}</p>
-              <div class="card-bottom">
-                <span class="author">✍️ {{ $post->user->first_name }} {{ $post->user->last_name }}</span>
-                <a class="read-more" href="{{ route('posts.show', $post) }}">ادامه مطلب ←</a>
-              </div>
-            </div>
-          </article>
+          <x-post-card :post="$post" />
         @empty
-            <div class="users-empty full-width">
+            <div class="sx-empty glass users-empty full-width">
+                <x-icon name="empty" />
+                <h2>خبری پیدا نشد</h2>
                 <p>هیچ خبری برای نمایش وجود ندارد.</p>
             </div>
         @endforelse
         </div>
 
-        <div class="container">
-            {{ $posts->links('pagination.custom') }}
-        </div>
-      </section>
+        {{ $posts->links('pagination.custom') }}
+      </div>
     </main>
 @endsection
