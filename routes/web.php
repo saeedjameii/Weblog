@@ -10,15 +10,18 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\JwtCookieMiddleware;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
 
-Route::get('sign-up', [AuthController::class, 'signUp'])->name('signUp');
-Route::post('sign-up', [AuthController::class, 'signUpPost'])->name('signUp.post');
+Route::middleware([RedirectIfAuthenticated::class])->group(function () {
+    Route::get('sign-up', [AuthController::class, 'signUp'])->name('signUp');
+    Route::post('sign-up', [AuthController::class, 'signUpPost'])->name('signUp.post');
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
+});
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
