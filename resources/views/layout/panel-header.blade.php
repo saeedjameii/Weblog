@@ -130,6 +130,12 @@
                         <span>ویژگی‌ها و مشخصات کالا</span>
                     </a>
                 @endcanany
+                @canany(['update-product', 'delete-product'])
+                    <a href="{{ route('panel.products.trashed') }}" class="mobile-nav-item {{ request()->routeIs('panel.products.trashed') ? 'is-active' : '' }}">
+                        <span class="item-icon">📦</span>
+                        <span>محصولات حذف شده</span>
+                    </a>
+                @endcanany
             </div>
         </div>
 

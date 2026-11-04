@@ -45,7 +45,7 @@ class ProductController extends Controller
     }
 
     public function panelIndex(Request $request){
-        $query = Product::withTrashed()->with(['categories', 'images', 'prices.attributeValues'])->latest();
+        $query = Product::with(['categories', 'images', 'prices.attributeValues'])->latest();
 
         if($request->filled('search')){
             $search = $request->search;
@@ -122,6 +122,13 @@ class ProductController extends Controller
         $product->restore();
 
         return back()->with('success', 'محصول مورد نظر با موفقیت بازیابی شد');
+    }
+
+    public function trashed(){
+        $products = Product::onlyTrashed()->with('images', 'categories', 'prices.attributeValues')->latest()->paginate(8)->withQueryString();
+        $categories = Category::forSelection('product');
+
+        return view('panel.products.trashed', compact('products', 'categories'));
     }
 
 }

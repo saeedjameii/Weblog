@@ -124,6 +124,7 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
                 Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
                 Route::put('/{product}', [ProductController::class, 'update'])->name('update');
             });
+                Route::get('/trashed', [ProductController::class, 'trashed'])->middleware('permission:delete-product,update-product')->name('trashed');
                 Route::delete('/{product}', [ProductController::class, 'destroy'])->middleware('permission:delete-product')->name('destroy');
                 Route::patch('/{id}/restore', [ProductController::class, 'restore'])->middleware('permission:update-product,delete-product')->name('restore');
         });
