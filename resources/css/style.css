@@ -60,7 +60,6 @@ select {
   width: 38px;
   height: 38px;
   border-radius: 11px;
-  background: var(--forest);
   color: #fff;
   display: grid;
   place-items: center;
@@ -1836,8 +1835,6 @@ a:focus-visible { outline: 3px solid rgba(41, 93, 67, 0.22); outline-offset: 2px
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: var(--forest);
-  color: #fff;
   display: grid;
   place-items: center;
   font-size: 1.25rem;

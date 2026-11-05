@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'ثبت‌نام — خبرنامه')
+@section('title', 'ثبت‌نام — چی بهتره؟')
 
 @section('header-actions')
     <a class="btn btn-secondary" href="{{ route('home') }}">خانه</a>
@@ -9,13 +9,13 @@
 
 @section('content')
     <main class="auth-page">
-        @if(session('error'))
+        @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
             </div>
         @endif
         <div class="auth-card">
-            <a class="logo auth-logo" href="#"><span class="logo-icon">📰</span>خبرنامه</a>
+            <a class="logo auth-logo" href="#"><span class="logo-icon"><img src="{{ asset('images/logo.svg') }}" alt="چی بهتره؟" height="40"></span>چی بهتره؟</a>
             <h1>حساب کاربری خود را ایجاد کنید</h1>
             <p class="auth-subtitle">
                 به جامعه بپیوندید و شروع به قرض گرفتن یا به اشتراک گذاشتن ابزارها کنید.
@@ -41,8 +41,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email">ایمیل</label><input class="input" id="email" name="email"
-                        type="email" value="{{ old('email') }}" placeholder="you@example.com" required />
+                    <label for="email">ایمیل</label><input class="input" id="email" name="email" type="email"
+                        value="{{ old('email') }}" placeholder="you@example.com" required />
                     <div>
                         @error('email')
                             <p class="text-danger">{{ $message }}</p>
@@ -50,8 +50,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">رمز</label><input class="input" id="password" name="password"
-                        type="password" placeholder="رمز عبور" required />
+                    <label for="password">رمز</label><input class="input" id="password" name="password" type="password"
+                        placeholder="رمز عبور" required />
                     <div>
                         @error('password')
                             <p class="text-danger">{{ $message }}</p>
@@ -59,9 +59,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password_confirmation">تأیید رمز</label><input class="input"
-                        id="password_confirmation" name="password_confirmation" type="password"
-                        placeholder="تکرار رمز عبور" required />
+                    <label for="password_confirmation">تأیید رمز</label><input class="input" id="password_confirmation"
+                        name="password_confirmation" type="password" placeholder="تکرار رمز عبور" required />
                     <div>
                         @error('password_confirmation')
                             <p class="text-danger">{{ $message }}</p>

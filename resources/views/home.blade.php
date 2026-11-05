@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'خبرنامه و فروشگاه — پایگاه جامع اخبار و ویترین تخصصی محصولات')
+@section('title', 'چی بهتره؟  — پایگاه جامع اخبار و ویترین تخصصی محصولات')
 
 @section('content')
     <main class="home-main">
@@ -35,31 +35,28 @@
                     </p>
                     <div class="hero-buttons">
                         <a class="btn btn-primary" href="{{ route('posts.index') }}">
-                            <span>📰 آخرین اخبار و مقالات</span>
+                            <span> آخرین اخبار و مقالات</span>
                         </a>
                         <a class="btn btn-secondary btn-store" href="{{ route('products.index') }}">
-                            <span>🛍️ مشاهده فروشگاه محصولات</span>
+                            <span> مشاهده فروشگاه محصولات</span>
                         </a>
                     </div>
 
                     {{-- نوار مزایای کلیدی --}}
                     <div class="hero-highlights">
                         <div class="hero-highlight-item">
-                            <span class="highlight-icon">⚡</span>
                             <div>
                                 <strong>پوشش زنده اخبار</strong>
                                 <small>دقیق، سریع و بی‌طرف</small>
                             </div>
                         </div>
                         <div class="hero-highlight-item">
-                            <span class="highlight-icon">🏷️</span>
                             <div>
                                 <strong>تنوع قیمت و رنگ</strong>
                                 <small>انتخاب با مشخصات دقیق</small>
                             </div>
                         </div>
                         <div class="hero-highlight-item">
-                            <span class="highlight-icon">🛡️</span>
                             <div>
                                 <strong>تضمین اصالت</strong>
                                 <small>کالاهای تست‌شده و معتبر</small>
@@ -71,7 +68,7 @@
                 <div class="hero-image-wrap">
                     <div class="hero-image-card">
                         <div class="hero-image-media">
-                            <img src="{{ asset('images/logo.svg') }}" alt="خبرنامه و فروشگاه" class="hero-img"/>
+                            <img src="{{ asset('images/logo.svg') }}" alt="چی بهتره؟" class="hero-img" />
                         </div>
                     </div>
                 </div>
@@ -85,7 +82,7 @@
                     {{-- گیت‌وی اخبار --}}
                     <article class="gateway-card gateway-card--news">
                         <div class="gateway-header">
-                            <span class="gateway-tag">📰 تحریریه و مجله</span>
+                            <span class="gateway-tag">تحریریه و مجله</span>
                             <h2 class="gateway-title">تازه‌ترین تحلیل‌ها و اخبار موثق</h2>
                         </div>
                         <p class="gateway-text">
@@ -192,7 +189,7 @@
             <div class="container">
                 <div class="section-head">
                     <div>
-                        <div class="kicker">📰 خبرهای داغ</div>
+                        <div class="kicker">خبرهای داغ</div>
                         <h2 class="section-title">تازه‌ترین مقالات و اخبار منتشر شده</h2>
                     </div>
                     <a class="btn btn-secondary" href="{{ route('posts.index') }}">آرشیو کامل اخبار ←</a>

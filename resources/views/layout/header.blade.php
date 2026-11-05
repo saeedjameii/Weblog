@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>@yield('title', 'خبرنامه و فروشگاه — تازه‌ترین اخبار و محصولات')</title>
+    <title>@yield('title', 'چی بهتره؟ — تازه‌ترین اخبار و محصولات')</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-    <script>document.documentElement.classList.add('js');</script>
+    <script>
+        document.documentElement.classList.add('js');
+    </script>
 
     @vite(['resources/css/style.css', 'resources/css/theme.css', 'resources/js/app.js', 'resources/js/create-post.js', 'resources/js/site-ui.js'])
 </head>
@@ -15,13 +17,15 @@
     <header class="navbar site-header-glass">
         <nav class="container nav-inner" aria-label="ناوبری اصلی">
             <a class="logo" href="{{ route('home') }}">
-                <span class="logo-icon"><x-icon name="news" /></span>
-                <span class="logo-text">خبرنامه <span class="logo-badge">و فروشگاه</span></span>
+                <span class="logo-icon"><img src="{{ asset('images/logo.svg') }}" alt="چی بهتره؟" height="40"></span>
+                <span class="logo-text">چی بهتره؟</span>
             </a>
 
             <div class="sx-nav-links">
-                <a class="sx-nav-link {{ request()->routeIs('posts.*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">اخبار</a>
-                <a class="sx-nav-link {{ request()->routeIs('products.*') ? 'is-active' : '' }}" href="{{ route('products.index') }}">فروشگاه</a>
+                <a class="sx-nav-link {{ request()->routeIs('posts.*') ? 'is-active' : '' }}"
+                    href="{{ route('posts.index') }}">اخبار</a>
+                <a class="sx-nav-link {{ request()->routeIs('products.*') ? 'is-active' : '' }}"
+                    href="{{ route('products.index') }}">فروشگاه</a>
             </div>
 
             {{-- Clean Minimal Nav Actions with Universal Hamburger Menu --}}
@@ -30,7 +34,8 @@
                     @yield('header-actions')
                 @else
                     @if (auth('api')->check())
-                        <span class="nav-user-greeting"><x-icon name="user" /> {{ auth('api')->user()->first_name }}</span>
+                        <span class="nav-user-greeting"><x-icon name="user" />
+                            {{ auth('api')->user()->first_name }}</span>
                         @can('access-panel')
                             <a class="btn btn-secondary btn-sm nav-desktop-only" href="{{ route('panel') }}">پنل کاربری</a>
                         @endcan
@@ -60,9 +65,10 @@
         <div class="mobile-nav-header">
             <a class="logo" href="{{ route('home') }}">
                 <span class="logo-icon"><x-icon name="news" /></span>
-                <span class="logo-text">خبرنامه و فروشگاه</span>
+                <span class="logo-text">چی بهتره؟</span>
             </a>
-            <button type="button" class="mobile-nav-close" aria-label="بستن منو" data-mobile-menu-close><x-icon name="close" /></button>
+            <button type="button" class="mobile-nav-close" aria-label="بستن منو" data-mobile-menu-close><x-icon
+                    name="close" /></button>
         </div>
 
         <div class="mobile-nav-body">
@@ -74,7 +80,8 @@
                         <div>
                             <strong class="mobile-user-name">{{ auth('api')->user()->first_name }}
                                 {{ auth('api')->user()->last_name }}</strong>
-                            <span class="mobile-user-sub">{{ auth('api')->user()->phone_number ?? auth('api')->user()->email }}</span>
+                            <span
+                                class="mobile-user-sub">{{ auth('api')->user()->phone_number ?? auth('api')->user()->email }}</span>
                         </div>
                     </div>
                     <div class="mobile-user-actions">
@@ -87,7 +94,7 @@
                         </form>
                     </div>
                 @else
-                    <p class="mobile-guest-text">به خبرنامه و فروشگاه خوش آمدید!</p>
+                    <p class="mobile-guest-text">به چی بهتره؟ خوش آمدید!</p>
                     <div class="mobile-guest-actions">
                         <a class="btn btn-primary btn-block" href="{{ route('login') }}">ورود به حساب کاربری</a>
                         <a class="btn btn-secondary btn-block" href="{{ route('signUp') }}">ثبت‌نام حساب جدید</a>
@@ -166,4 +173,3 @@
             <span class="mobile-nav-hint">برای بستن منو کلید <kbd>Esc</kbd> را بزنید</span>
         </div>
     </aside>
-

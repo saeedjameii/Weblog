@@ -1,12 +1,8 @@
-/* ==========================================================================
-   theme.css - همه‌ی قواعد زیر body.site-theme است (پنل مدیریت متاثر نمی‌شود)
-   نصب فونت:  npm i @fontsource/vazirmatn
-   ========================================================================== */
+
 @import "@fontsource/vazirmatn/400.css";
 @import "@fontsource/vazirmatn/500.css";
 @import "@fontsource/vazirmatn/700.css";
 
-/* ---------- ۱) توکن‌ها (--forest/--sage/--ink/--muted/--danger دست نخورده‌اند) ---------- */
 :root {
   --brand-50:#eef2ff; --brand-100:#e0e7ff; --brand-300:#a5b4fc; --brand-500:#5b5bd6; --brand-700:#3f3fa8; --brand-900:#25255f;
   --blog-50:#ecfeff; --blog-100:#cffafe; --blog-300:#67e8f9; --blog-500:#0891b2; --blog-700:#0e6f8a; --blog-900:#134557;
@@ -112,7 +108,7 @@ body.site-theme .navbar.site-header-glass {
 body.site-theme .navbar.site-header-glass.is-scrolled { min-height: 58px; box-shadow: var(--shadow-md); }
 body.site-theme .nav-inner { gap: .75rem; min-width: 0; }
 body.site-theme .logo { color: var(--t-text); min-width: 0; }
-body.site-theme .logo-icon { background: linear-gradient(135deg, var(--shop-700), var(--accent-700)); box-shadow: var(--shadow-sm); }
+body.site-theme .logo-icon { background: transparent; box-shadow: none; }
 body.site-theme .logo-text { white-space: nowrap; }
 body.site-theme .logo-badge { color: var(--shop-700); font-weight: 500; }
 body.site-theme .sx-nav-links { display: none; gap: .25rem; margin-inline-start: 1rem; }
@@ -154,7 +150,7 @@ body.site-theme .footer-note { margin-block-start: 1rem; padding-block-start: 1r
 
 /* ---------- ۲) قاب عکس ---------- */
 body.site-theme .frame {
-  position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius-md);
+  display: block; position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius-md);
   background: linear-gradient(135deg, var(--n-100), var(--n-50));
   box-shadow: 0 0 0 1px rgba(15,23,42,.06) inset, var(--shadow-sm);
 }
@@ -356,7 +352,10 @@ body.site-theme .pdp { display: grid; gap: var(--space); margin-block-start: .75
 body.site-theme .gallery { min-width: 0; padding: .75rem; }
 body.site-theme .gallery__thumbs { display: flex; gap: .5rem; margin-block-start: .6rem; overflow-x: auto; padding: .25rem; scroll-snap-type: x proximity; }
 body.site-theme .gallery__thumbs > * { flex: none; scroll-snap-align: start; }
-body.site-theme .product-thumbnail { padding: 0; border: 0; background: none; cursor: pointer; border-radius: var(--radius-sm); min-inline-size: var(--touch); }
+body.site-theme .product-thumbnail { display: block; flex: none; inline-size: auto; block-size: auto; overflow: visible; padding: 0; border: 0; background: none; cursor: pointer; border-radius: var(--radius-sm); min-inline-size: var(--touch); }
+body.site-theme .product-thumbnail .frame { transition: opacity .2s var(--ease), box-shadow .2s var(--ease); }
+body.site-theme .product-thumbnail:not(.is-active) .frame { opacity: .72; }
+body.site-theme .product-thumbnail:hover .frame, body.site-theme .product-thumbnail:focus-visible .frame { opacity: 1; }
 body.site-theme .product-thumbnail.is-active .frame { box-shadow: 0 0 0 3px var(--shop-500); }
 body.site-theme .pdp__info { padding: clamp(1rem, 3vw, 1.75rem); min-width: 0; display: grid; gap: .8rem; }
 @media (min-width: 1024px) { body.site-theme .pdp__info { position: sticky; inset-block-start: 5.5rem; } }
