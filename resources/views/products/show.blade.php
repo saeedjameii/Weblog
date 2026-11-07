@@ -102,6 +102,19 @@
                                 <tbody>
                                     <tr><th scope="row">واحد</th><td>{{ $product->unit }}</td></tr>
                                     <tr><th scope="row">وزن</th><td>{{ number_format((float) $product->weight, 2) }}</td></tr>
+
+                                    
+                                    @php
+                                        $specifications = $product->prices
+                                            ->flatMap(fn ($price) => $price->attributeValues)
+                                            ->groupBy(fn ($value) => $value->attribute?->name ?? 'ویژگی');
+                                    @endphp
+                                    @foreach ($specifications as $attributeName => $values)
+                                        <tr>
+                                            <th scope="row">{{ $attributeName }}</th>
+                                            <td>{{ $values->pluck('value')->unique()->implode(', ') }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
