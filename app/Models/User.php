@@ -88,7 +88,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function canAccessPanel(): bool
     {
-        return $this->isCreator() || $this->isAdmin();
+        return $this->hasVerifiedEmail() && ($this->isCreator() || $this->isAdmin());
     }
 
     public function hasPermission(string $permission): bool{
