@@ -23,6 +23,10 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
 });
 
+Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
+Route::post('/email/verification-notification', [AuthController::class, 'verifyResend'])->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
