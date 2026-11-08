@@ -7,9 +7,13 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+
 
 class AuthController extends Controller
 {
@@ -132,5 +136,57 @@ class AuthController extends Controller
 
         $user->sendEmailVerificationNotification();
         return back()->with('success', 'ایمیل تایید با موفقیت دوباره ارسال شد');
+    }
+
+    public function forgetPassword(){
+        return view('auth.forget-password');
+    }
+
+    public function sendResetLink(Request $request){
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+                return back()->with('success', 'لینک بازیابی رمز عبور به ایمیل شما ارسال شد.');
+        }
+
+        return back()->withErrors(['email' => 'کاربری با این ایمیل یافت نشد']);
+    }
+
+    public function resetPassword(Request $request, String $token){
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email
+            ]);
+    }
+
+    public function updatePassword(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password){
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if($status === Password::PASSWORD_RESET){
+            return redirect()->route('login')->with('success', 'رمز عبور شما با موفقیت تغییر کرد. اکنون وارد شوید.');
+        }
+
+        return back()->withErrors(['email' => 'لینک تغییر رمز منقضی شده یا نامعتبر است.']);
     }
 }

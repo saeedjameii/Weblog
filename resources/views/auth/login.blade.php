@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <div class="password-row">
-                        <label for="password">رمز عبور</label><a class="small-link" href="#">رمز عبور را فراموش
+                        <label for="password">رمز عبور</label><a class="small-link" href="{{ route('password.request') }}">رمز عبور را فراموش
                             کرده‌اید؟</a>
                     </div>
                     <input class="input" id="password" name="password" type="password" placeholder="رمز عبور" required />

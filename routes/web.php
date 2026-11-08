@@ -17,15 +17,20 @@ Route::get('/', [PostController::class, 'home'])->name('home');
 
 Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::get('sign-up', [AuthController::class, 'signUp'])->name('signUp');
-    Route::post('sign-up', [AuthController::class, 'signUpPost'])->name('signUp.post');
+    Route::post('sign-up', [AuthController::class, 'signUpPost'])->middleware('throttle:5,1')->name('signUp.post');
 
     Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'loginPost'])->name('login.post');
+    Route::post('/login', [AuthController::class, 'loginPost'])->middleware('throttle:10,1')->name('login.post');
 });
 
 Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
 Route::post('/email/verification-notification', [AuthController::class, 'verifyResend'])->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/forget-password', [AuthController::class, 'forgetPassword'])->middleware('guest')->name('password.request');
+Route::post('/forget-password', [AuthController::class, 'sendResetLink'])->middleware('guest')->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'updatePassword'])->middleware('guest')->name('password.update');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
