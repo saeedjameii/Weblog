@@ -6,6 +6,7 @@ use App\Enums\UserLevel;
 use App\Models\Role;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute as CastAttribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,6 +53,21 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             'password' => 'hashed',
             'level' => UserLevel::class,
         ];
+    }
+
+    public static function normalizeEmail(string $email): string
+    {
+        $email = preg_replace('/[\p{Cf}\p{Cc}]/u', '', $email) ?? '';
+        $email = preg_replace('/^[\p{Z}\s]+|[\p{Z}\s]+$/u', '', $email) ?? '';
+
+        return mb_strtolower($email, 'UTF-8');
+    }
+
+    protected function email(): CastAttribute
+    {
+        return CastAttribute::make(
+            set: fn ($value) => $value === null ? null : static::normalizeEmail((string) $value),
+        );
     }
 
     public function getJWTIdentifier()

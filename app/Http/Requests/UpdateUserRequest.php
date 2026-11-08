@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use App\Rules\ValidJalaliDate;
 use Illuminate\Foundation\Http\FormRequest;
 use Morilog\Jalali\Jalalian;
@@ -16,6 +17,15 @@ class UpdateUserRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $email = $this->input('email');
+
+        if (is_string($email)) {
+            $this->merge(['email' => User::normalizeEmail($email)]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      */
@@ -26,7 +36,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'first_name' => 'required|max:20',
             'last_name' => 'required|max:20',
-            'email' => 'required|email|unique:users,email,' . $userId,
+            'email' => 'required|email|max:255|unique:users,email,' . $userId,
             'phone_number' => 'required|size:11|regex:/^09[0-9]{9}$/|unique:users,phone_number,' . $userId,
             'birth_date' => ['required', 'regex:/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/', new ValidJalaliDate],
             'national_code' => 'required|size:10|regex:/^[0-9]{10}$/|unique:users,national_code,' . $userId,
@@ -41,4 +51,3 @@ class UpdateUserRequest extends FormRequest
         ]);
     }
 }
-
