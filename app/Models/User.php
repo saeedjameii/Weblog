@@ -116,7 +116,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         )->unique()->values()->all();
     }
     
-    public function markEmailAsVerified(): bool
+    public function markEmailVerified(): bool
     {
         return $this->forceFill([
             'email_verified_at' => $this->freshTimestamp(),
