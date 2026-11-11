@@ -43,6 +43,12 @@ Route::get('/categories/products', [CategoryController::class, 'productIndex'])-
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
+Route::prefix('/compareList/module')->middleware(['auth:api', 'verified'])->group(function () {
+    Route::post('/store', [ProductController::class, 'storeCompareList'])->name('compareList.store');
+    Route::delete('/', [ProductController::class, 'removeCompareList'])->name('compareList.destroy');
+    Route::get('/show', [ProductController::class, 'showCompareList'])->name('compareList.show');
+});
+
 
 Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->middleware([JwtCookieMiddleware::class])->name('panel');

@@ -9,6 +9,7 @@
         'panel'   => '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/>',
         'pen'     => '<path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16l-1 4z"/>',
         'box'     => '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+        'compare' => '<path d="M8 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M16 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M8 12h8M12 8l4 4-4 4"/>',
         'chart'   => '<path d="M4 20V4M4 20h16"/><path d="M8 16v-5M12 16V8M16 16v-3"/>',
         'arrow'   => '<path d="M19 12H5M11 6l-6 6 6 6"/>',
         'search'  => '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/>',

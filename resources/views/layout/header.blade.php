@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'چی بهتره؟ — تازه‌ترین اخبار و محصولات')</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <script>
@@ -137,11 +138,19 @@
                         <span class="item-icon"><x-icon name="shop" /></span>
                         <span>ویترین محصولات فروشگاه</span>
                     </a>
+                    @auth('api')
+                    <a href="{{ route('compareList.show') }}"
+                        class="mobile-nav-item {{ request()->routeIs('compareList.*') ? 'is-active' : '' }}">
+                        <span class="item-icon"><x-icon name="compare" /></span>
+                        <span>مقایسه محصولات</span>
+                    </a>
+                    @endauth
                     <a href="{{ route('categories.products.index') }}"
                         class="mobile-nav-item {{ request()->routeIs('categories.*') ? 'is-active' : '' }}">
                         <span class="item-icon"><x-icon name="folder" /></span>
                         <span>دسته‌بندی‌های محصولات</span>
                     </a>
+                    
                 </div>
             </div>
 

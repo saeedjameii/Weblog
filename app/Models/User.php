@@ -88,6 +88,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->belongsToMany(Role::class);
     }
 
+    public function compareLists(){
+        return $this->hasMany(CompareList::class);
+    }
+
     public function hasRole(string $role): bool{
         return $this->roles()->where('name', $role)->exists();
     }

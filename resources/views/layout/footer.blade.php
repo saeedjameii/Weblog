@@ -23,6 +23,7 @@
             <div class="footer-note">چی بهتره؟</div>
         </div>
     </footer>
+    @stack('scripts')
     </body>
 
     </html>

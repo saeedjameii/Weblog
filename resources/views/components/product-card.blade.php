@@ -35,5 +35,17 @@
                 <strong>به زودی</strong>
             @endif
         </div>
+        @auth('api')
+            <button type="button" class="compare-button" data-compare-button
+                data-product-id="{{ $product->id }}" data-compare-url="{{ route('compareList.store') }}">
+                <x-icon name="compare" />
+                <span>افزودن به مقایسه</span>
+            </button>
+        @else
+            <a class="compare-button" href="{{ route('login') }}" aria-label="ورود برای افزودن {{ $product->name }} به مقایسه">
+                <x-icon name="compare" />
+                <span>ورود و مقایسه</span>
+            </a>
+        @endauth
     </div>
 </article>

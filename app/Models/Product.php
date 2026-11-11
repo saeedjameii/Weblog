@@ -25,6 +25,10 @@ class Product extends Model
         return $this->hasMany(Price::class);
     }
 
+    public function compareLists(){
+        return $this->hasMany(CompareList::class);
+    }
+
     public function isAvailable(): bool{
         return $this->status === 'available';
     }

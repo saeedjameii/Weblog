@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Attribute;
 use App\Models\Category;
+use App\Models\CompareList;
 use App\Models\Product;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller
@@ -129,6 +131,72 @@ class ProductController extends Controller
         $categories = Category::forSelection('product');
 
         return view('panel.products.trashed', compact('products', 'categories'));
+    }
+
+    public function storeCompareList(Request $request){
+        $validated = $request->validate(['product_id' => 'required|integer|exists:products,id']);
+
+        $user = auth('api')->user();
+
+        $productId = $validated['product_id'];
+
+        return DB::transaction(function () use ($user, $productId) {
+            $user->newQuery()->whereKey($user->getKey())->lockForUpdate()->firstOrFail();
+
+            $alreadyAdded = CompareList::where('user_id', $user->id)
+            ->where('product_id', $productId)
+            ->first();
+
+            if($alreadyAdded){
+                return response()->json([
+                    'error' => false,
+                    'message' => 'این محصول قبلا به لیست اضافه شده است',
+                    'data' => $alreadyAdded,
+                ]);
+            }
+
+            $count = CompareList::where('user_id', $user->id)->count();
+
+            if ($count >= 4) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'حداکثر می‌توانید ۴ محصول را مقایسه کنید.',
+                ], 422);
+            }
+
+            $compareItem = CompareList::create([
+                'user_id' => $user->id,
+                'product_id' => $productId,
+            ]);
+
+            return response()->json([
+                'error' => false,
+                'message' => 'محصول با موفقیت به لیست مقایسه اضافه شد.',
+                'data' => $compareItem,
+            ], 201);
+        });
+    }
+
+    public function removeCompareList(Request $request){
+        $validated = $request->validate(['product_id' => 'required|integer|exists:products,id']);
+
+        $user = auth('api')->user();
+        CompareList::where('user_id', $user->id)
+            ->where('product_id', $validated['product_id'])
+            ->delete();
+
+        return response()->json(['message' => 'محصول از لیست مقایسه حذف شد.']);
+    }
+
+    public function showCompareList(){
+
+        $user = auth('api')->user();
+
+        $compareList = CompareList::where('user_id', $user->id)
+            ->with(['product.categories', 'product.images', 'product.prices.attributeValues.attribute'])
+            ->get();
+
+        return view('compare-list.show', compact('compareList'));
     }
 
 }

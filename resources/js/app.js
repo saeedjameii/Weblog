@@ -59,6 +59,81 @@ if (document.readyState === 'loading') {
     initMobileMenu();
 }
 
+// Add products to the user's comparison list.
+
+document.querySelectorAll('[data-compare-button]').forEach(button => {
+    button.addEventListener('click', async () => {
+        if (button.disabled) return;
+
+        const label = button.querySelector('span');
+        const originalLabel = label?.textContent;
+
+        button.disabled = true;
+
+        if (label) label.textContent = 'در حال افزودن…';
+
+        try {
+            const response = await fetch(button.dataset.compareUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+                },
+                body: JSON.stringify({
+                    product_id: button.dataset.productId
+                }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || result.error) {
+                let message = 'افزودن محصول انجام نشد.';
+
+                switch (response.status) {
+                    case 401:
+                        message = 'برای استفاده از این قابلیت ابتدا وارد حساب کاربری شوید.';
+                        break;
+
+                    case 403:
+                        message = 'برای استفاده از این قابلیت ابتدا ایمیل خود را تأیید کنید.';
+                        break;
+
+                    case 422:
+                        message = result.message || 'اطلاعات ارسالی معتبر نیست.';
+                        break;
+
+                    default:
+                        message = 'خطایی رخ داد. لطفاً دوباره تلاش کنید.';
+                }
+
+                throw new Error(message);
+            }
+
+            if (label) label.textContent = 'به مقایسه اضافه شد';
+
+            button.classList.add('is-added');
+
+            button.setAttribute(
+                'aria-label',
+                'محصول به لیست مقایسه اضافه شد'
+            );
+
+        } catch (error) {
+            if (label) {
+                label.textContent = error.message || 'خطا در افزودن';
+
+                window.setTimeout(() => {
+                    label.textContent = originalLabel;
+                }, 2500);
+            }
+
+        } finally {
+            button.disabled = false;
+        }
+    });
+});
+
 // --- Product detail thumbnail switcher ---
 document.querySelectorAll('[data-product-thumbnail]').forEach(button => {
     button.addEventListener('click', () => {
