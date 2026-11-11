@@ -142,6 +142,37 @@
                                 @endif
                             @endforeach
 
+                            @foreach ($attributeNames as $attributeName)
+                                <tr>
+                                    <th class="compare-table__label" scope="row">{{ $attributeName }}</th>
+
+                                    @foreach ($products as $product)
+                                        @php
+                                            $values = $product->prices
+                                                ->flatMap(fn ($price) => $price->attributeValues)
+                                                ->filter(fn ($value) => $value->attribute?->name === $attributeName)
+                                                ->pluck('value')
+                                                ->filter()
+                                                ->unique();
+                                        @endphp
+
+                                        <td>
+                                            @if ($values->isNotEmpty())
+                                                <div class="compare-values">
+                                                    <span>{{ $values->implode(', ') }}</span>
+                                                </div>
+                                            @else
+                                                <span class="compare-muted">—</span>
+                                            @endif
+                                        </td>
+                                    @endforeach
+
+                                    @if ($products->count() < 4)
+                                        <td class="compare-add-cell"></td>
+                                    @endif
+                                </tr>
+                            @endforeach
+
 
                             <tr class="compare-section-row"><th colspan="{{ 1 + $products->count() + ($products->count() < 4 ? 1 : 0) }}">گزینه‌ها و قیمت‌ها</th></tr>
                             <tr>
