@@ -23,14 +23,22 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::post('/login', [AuthController::class, 'loginPost'])->middleware('throttle:10,1')->name('login.post');
 });
 
-Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
-Route::post('/email/verification-notification', [AuthController::class, 'verifyResend'])->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
+Route::prefix('/email')->middleware(['auth:api'])->group(function () {
+    Route::get('/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
+    Route::post('/verification-notification', [AuthController::class, 'verifyResend'])->middleware('throttle:6,1')->name('verification.send');
+});
 
-Route::get('/forget-password', [AuthController::class, 'forgetPassword'])->middleware('guest')->name('password.request');
-Route::post('/forget-password', [AuthController::class, 'sendResetLink'])->middleware('guest')->name('password.email');
-Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.reset');
-Route::post('/reset-password', [AuthController::class, 'updatePassword'])->middleware('guest')->name('password.update');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
+
+Route::prefix('/forget-password')->middleware('guest:api')->group(function () {
+    Route::get('/', [AuthController::class, 'forgetPassword'])->name('password.request');
+    Route::post('/', [AuthController::class, 'sendResetLink'])->name('password.email');
+});
+
+Route::prefix('/reset-password')->middleware('guest:api')->group(function () {
+    Route::get('/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
+    Route::post('/', [AuthController::class, 'updatePassword'])->name('password.update');
+});
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
