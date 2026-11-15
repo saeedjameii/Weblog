@@ -200,7 +200,7 @@ class ProductController extends Controller
         return view('compare-list.show', compact('compareList'));
     }
 
-    public function aiCompare(Request $request, \App\Services\ProductAiComparisonService $aiService)
+    public function aiCompare(Request $request, ProductAiComparisonService $aiService)
     {
         $user = auth('api')->user();
 
