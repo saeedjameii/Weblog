@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->decimal('price');
+            $table->decimal('price', 15, 2);
             $table->decimal('discount', 5, 2)->nullable();
             $table->integer('inventory')->default(0);
-            $table->decimal('final_price');
+            $table->decimal('final_price', 15, 2);
             $table->timestamps();
         });
     }
