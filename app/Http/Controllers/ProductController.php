@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\CompareList;
 use App\Models\Product;
+use App\Services\ProductAiComparisonService;
 use App\Services\ProductService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -199,4 +200,34 @@ class ProductController extends Controller
         return view('compare-list.show', compact('compareList'));
     }
 
+    public function aiCompare(Request $request, \App\Services\ProductAiComparisonService $aiService)
+    {
+        $user = auth('api')->user();
+
+        $compareList = CompareList::where('user_id', $user->id)
+            ->with(['product.categories', 'product.prices.attributeValues.attribute'])
+            ->get();
+
+        $products = $compareList->pluck('product')->filter();
+
+        if ($products->count() < 2) {
+            return response()->json([
+                'message' => 'برای تحلیل هوشمند، باید حداقل دو محصول در لیست مقایسه داشته باشید.'
+            ], 422);
+        }
+
+        $withWebSearch = (bool) $request->input('web_search', false);
+
+        try {
+            $analysis = $aiService->compareProducts($products, $withWebSearch);
+            return response()->json([
+                'success' => true,
+                'data'    => $analysis
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'سرویس هوش مصنوعی در حال حاضر با اختلال مواجه است: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

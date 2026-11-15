@@ -55,6 +55,7 @@ Route::prefix('/compareList/module')->middleware(['auth:api', 'verified'])->grou
     Route::post('/store', [ProductController::class, 'storeCompareList'])->name('compareList.store');
     Route::delete('/', [ProductController::class, 'removeCompareList'])->name('compareList.destroy');
     Route::get('/show', [ProductController::class, 'showCompareList'])->name('compareList.show');
+    Route::post('/ai-analyze', [ProductController::class, 'aiCompare'])->name('compareList.ai');
 });
 
 

@@ -48,6 +48,42 @@
                 <a class="btn-glow" href="{{ route('products.index') }}"><x-icon name="shop" /> رفتن به فروشگاه</a>
             </section>
         @else
+            <section class="compare-ai glass" style="margin-bottom: 24px; padding: 22px; border-radius: 18px; border: 1px solid var(--t-line); background: rgba(255, 255, 255, 0.85); box-shadow: var(--shadow-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div>
+                        <span class="sx-kicker sx-kicker--shop"><x-icon name="compare" /> دستیار هوشمند خرید</span>
+                        <h2 style="font-size: 1.3rem; margin: 6px 0 2px 0; color: var(--t-text);">تحلیل و قضاوت هوش مصنوعی</h2>
+                        <p style="margin: 0; color: var(--t-text-soft); font-size: 0.92rem;">نقاط قوت، معایب و پیشنهاد نهایی بر اساس مشخصات و بررسی‌های بازار</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn-soft" id="btnAiQuick" data-search="0">
+                            ⚡ تحلیل سریع
+                        </button>
+                        <button type="button" class="btn-glow" id="btnAiDeep" data-search="1">
+                            🌐 تحلیل عمیق کارشناسی
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="aiLoadingBox" style="display: none; padding: 25px; text-align: center;">
+                    <div style="display: inline-block; color: var(--brand-700); font-weight: bold; font-size: 1rem;">
+                        <span id="aiLoadingText">در حال پردازش مشخصات توسط هوش مصنوعی...</span>
+                    </div>
+                </div>
+
+                <!-- Results Box -->
+                <div id="aiResultsBox" style="display: none; margin-top: 20px; border-top: 1px solid var(--t-line); padding-top: 18px;">
+                    <div style="background: var(--brand-50, #eef2ff); border: 1px solid var(--brand-300, #a5b4fc); padding: 16px; border-radius: 14px; margin-bottom: 18px;">
+                        <strong style="color: var(--brand-700, #3f3fa8); display: block; margin-bottom: 6px; font-size: 1rem;">💡 جمع‌بندی و نتیجه‌گیری نهایی:</strong>
+                        <p id="aiVerdict" style="margin: 0; line-height: 1.85; color: var(--t-text, #0f172a); font-size: 0.96rem;"></p>
+                    </div>
+
+                    <div id="aiProductsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                        <!-- کارتهای مزایا و معایب اینجا با جاوااسکریپت تزریق می‌شوند -->
+                    </div>
+                </div>
+            </section>
             <section class="compare-board glass" aria-label="جدول مقایسه محصولات">
                 <div class="compare-board__scroll" tabindex="0" aria-label="برای دیدن همهٔ محصولات به‌صورت افقی پیمایش کنید">
                     <table class="compare-table">
@@ -247,5 +283,90 @@
             }
         });
     });
+</script>
+<script>
+    const setupAiButtons = () => {
+        const loadingBox = document.getElementById('aiLoadingBox');
+        const loadingText = document.getElementById('aiLoadingText');
+        const resultsBox = document.getElementById('aiResultsBox');
+        const verdictEl = document.getElementById('aiVerdict');
+        const gridEl = document.getElementById('aiProductsGrid');
+        const btnQuick = document.getElementById('btnAiQuick');
+        const btnDeep = document.getElementById('btnAiDeep');
+
+        const requestAi = async (withWebSearch) => {
+            if (!loadingBox) return;
+
+            btnQuick.disabled = true;
+            btnDeep.disabled = true;
+            resultsBox.style.display = 'none';
+            loadingBox.style.display = 'block';
+            loadingText.textContent = withWebSearch 
+                ? '🌐 در حال تحلیل عمیق بر اساس نقد و بررسی‌ها و تست‌های بازار...' 
+                : '⚡ در حال پردازش مشخصات و مقایسه...';
+
+            try {
+                const response = await fetch("{{ route('compareList.ai') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+                    },
+                    body: JSON.stringify({ web_search: withWebSearch })
+                });
+
+                const json = await response.json();
+                if (!response.ok) throw new Error(json.message || 'خطا در ارتباط با سرور');
+
+                const data = json.data;
+                verdictEl.textContent = data.verdict || data.summary || 'تحلیلی در دسترس نیست.';
+
+                gridEl.innerHTML = '';
+                (data.products || []).forEach(p => {
+                    const card = document.createElement('div');
+                    card.style.cssText = 'background: #ffffff; border: 1px solid var(--t-line, #e2e8f0); border-radius: 14px; padding: 16px; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));';
+                    
+                    const prosList = (p.pros || []).map(item => `<li style="margin-bottom: 4px; color: var(--t-text-soft, #334155);">${item}</li>`).join('');
+                    const consList = (p.cons || []).map(item => `<li style="margin-bottom: 4px; color: var(--t-text-soft, #334155);">${item}</li>`).join('');
+
+                    card.innerHTML = `
+                        ${p.name ? `<h4 style="margin: 0 0 10px 0; font-size: 1.02rem; font-weight: 700; color: var(--t-text, #0f172a); border-bottom: 1px solid var(--t-line, #e2e8f0); padding-bottom: 8px;">${p.name}</h4>` : ''}
+                        <div style="font-weight: 600; color: var(--brand-700, #3f3fa8); font-size: 0.92rem; margin-bottom: 10px; background: rgba(91,91,214,0.07); padding: 8px 10px; border-radius: 8px;">
+                            🎯 مناسب برای: <span style="font-weight: normal; color: var(--t-text, #0f172a);">${p.best_for || 'عموم کاربران'}</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span style="color: #15803d; font-size: 0.88rem; font-weight: bold; display: flex; align-items: center; gap: 4px;">
+                                <span style="display:inline-block; width:6px; height:6px; background:#15803d; border-radius:50%;"></span>
+                                نقاط قوت:
+                            </span>
+                            <ul style="padding-right: 18px; margin: 6px 0; font-size: 0.88rem; line-height: 1.7;">${prosList || '<li style="color: var(--t-text-soft);">موردی ثبت نشده</li>'}</ul>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span style="color: #b91c1c; font-size: 0.88rem; font-weight: bold; display: flex; align-items: center; gap: 4px;">
+                                <span style="display:inline-block; width:6px; height:6px; background:#b91c1c; border-radius:50%;"></span>
+                                نقاط ضعف:
+                            </span>
+                            <ul style="padding-right: 18px; margin: 6px 0; font-size: 0.88rem; line-height: 1.7;">${consList || '<li style="color: var(--t-text-soft);">موردی ثبت نشده</li>'}</ul>
+                        </div>
+                    `;
+                    gridEl.appendChild(card);
+                });
+
+                resultsBox.style.display = 'block';
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                loadingBox.style.display = 'none';
+                btnQuick.disabled = false;
+                btnDeep.disabled = false;
+            }
+        };
+
+        btnQuick?.addEventListener('click', () => requestAi(false));
+        btnDeep?.addEventListener('click', () => requestAi(true));
+    };
+
+    document.addEventListener('DOMContentLoaded', setupAiButtons);
 </script>
 @endpush
