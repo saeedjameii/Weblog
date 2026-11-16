@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Schema::defaultStringLength(191);
+
         Gate::policy(Post::class, PostPolicy::class);
         Gate::define('permission', function($user, $permission){
             return $user->hasPermission($permission);
