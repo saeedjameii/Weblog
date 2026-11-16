@@ -27,6 +27,8 @@
                     href="{{ route('posts.index') }}">اخبار</a>
                 <a class="sx-nav-link {{ request()->routeIs('products.*') ? 'is-active' : '' }}"
                     href="{{ route('products.index') }}">فروشگاه</a>
+                <a class="sx-nav-link {{ request()->routeIs('cart.*') ? 'is-active' : '' }}"
+                    href="{{ route('cart.index') }}">سبد خرید</a>
             </div>
 
             {{-- Clean Minimal Nav Actions with Universal Hamburger Menu --}}
@@ -137,6 +139,11 @@
                         class="mobile-nav-item {{ request()->routeIs('products.*') ? 'is-active' : '' }}">
                         <span class="item-icon"><x-icon name="shop" /></span>
                         <span>ویترین محصولات فروشگاه</span>
+                    </a>
+                    <a href="{{ route('cart.index') }}"
+                        class="mobile-nav-item {{ request()->routeIs('cart.*') ? 'is-active' : '' }}">
+                        <span class="item-icon"><x-icon name="cart" /></span>
+                        <span>سبد خرید</span>
                     </a>
                     @auth('api')
                     <a href="{{ route('compareList.show') }}"

@@ -18,6 +18,21 @@
                 <li aria-current="page">{{ $product->name }}</li>
             </ol>
         </nav>
+        @if (session('success'))
+            <div class="alert alert--ok glass" style="margin-block: 1rem; padding: 0.85rem 1.25rem; border-radius: var(--radius-md); background: rgba(41, 93, 67, 0.1); border: 1px solid var(--forest, #295d43); color: var(--forest-dark, #1d4934); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                <span>{{ session('success') }}</span>
+                <a href="{{ route('cart.index') }}" class="btn btn-primary btn-sm" style="padding: 6px 14px; font-size: 0.85rem;">مشاهده سبد خرید</a>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert--err glass" style="margin-block: 1rem; padding: 0.85rem 1.25rem; border-radius: var(--radius-md); background: rgba(181, 71, 58, 0.1); border: 1px solid var(--danger, #b5473a); color: var(--danger, #b5473a);">
+                <ul style="margin: 0; padding-inline-start: 1.2rem;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <section class="pdp">
             <div class="gallery glass">
@@ -150,8 +165,23 @@
                             @endif
                             <strong>{{ number_format((float) $price->final_price) }} <small>تومان</small></strong>
                         </div>
-                        <div class="{{ $price->inventory > 0 ? 'is-available' : 'is-unavailable' }}">
-                            <span class="badge {{ $price->inventory > 0 ? 'badge--ok' : 'badge--err' }}">{{ $price->inventory > 0 ? 'موجود' : 'ناموجود' }}</span>
+                        <div class="option-actions" style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+                            <span class="badge {{ $price->inventory > 0 ? 'badge--ok' : 'badge--err' }}">
+                                {{ $price->inventory > 0 ? 'موجود در انبار (' . $price->inventory . ')' : 'ناموجود' }}
+                            </span>
+                            @if ($price->inventory > 0)
+                                <form action="{{ route('cart.add') }}" method="POST" style="display: flex; align-items: center; gap: 0.5rem;">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="price_id" value="{{ $price->id }}">
+                                    <input type="number" name="quantity" value="1" min="1" max="{{ $price->inventory }}"
+                                           style="width: 50px; height: 36px; text-align: center; border: 1px solid var(--t-border, #dce4d7); border-radius: 8px; font-weight: 600; background: #fff;" aria-label="تعداد">
+                                    <button type="submit" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;">
+                                        <x-icon name="cart" />
+                                        <span>افزودن به سبد</span>
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </article>
                 @empty

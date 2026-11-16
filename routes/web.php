@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
@@ -56,6 +57,13 @@ Route::prefix('/compareList/module')->middleware(['auth:api', 'verified'])->grou
     Route::delete('/', [ProductController::class, 'removeCompareList'])->name('compareList.destroy');
     Route::get('/show', [ProductController::class, 'showCompareList'])->name('compareList.show');
     Route::post('/ai-analyze', [ProductController::class, 'aiCompare'])->name('compareList.ai');
+});
+
+Route::prefix('/cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::put('/update/{itemId}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
 
