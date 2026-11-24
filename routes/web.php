@@ -5,6 +5,7 @@ use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
@@ -64,6 +65,12 @@ Route::prefix('/cart')->group(function () {
     Route::post('/add', [CartController::class, 'add'])->name('cart.add');
     Route::put('/update/{itemId}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
+});
+
+Route::prefix('/checkout')->group(function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/success/{trackingCode}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
 
 
