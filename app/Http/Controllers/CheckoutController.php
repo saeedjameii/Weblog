@@ -6,7 +6,6 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Price;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -81,9 +80,6 @@ class CheckoutController extends Controller
 
         try {
             return DB::transaction(function () use ($request, $user, $cart) {
-                // ۱. گام اول: کسر مشروط و اتمیک موجودی انبار برای همه اقلام (Atomic Stock Reservation)
-                // این کوئری حتی در شرایط همزمانی شدید، از فروش مازاد بر موجودی جلوگیری می‌کند:
-                // UPDATE prices SET inventory = inventory - quantity WHERE id = ? AND inventory >= quantity
                 foreach ($cart->items as $item) {
                     $affected = Price::where('id', $item->price_id)
                         ->where('inventory', '>=', $item->quantity)
@@ -95,7 +91,6 @@ class CheckoutController extends Controller
                     }
                 }
 
-                // ۲. محاسبه مبالغ مالی
                 $subTotal = $cart->items->sum(function ($item) {
                     return ($item->price?->final_price ?? 0) * $item->quantity;
                 });
@@ -107,7 +102,6 @@ class CheckoutController extends Controller
 
                 $trackingCode = 'ORD-' . date('ymd') . '-' . strtoupper(Str::random(4));
 
-                // ۳. ایجاد سفارش اصلی فقط پس از موفقیت قطعی کسر موجودی انبار
                 $order = Order::create([
                     'user_id'         => $user->id,
                     'tracking_code'   => $trackingCode,
@@ -127,7 +121,6 @@ class CheckoutController extends Controller
                     'note'            => $request->note,
                 ]);
 
-                // ۴. درج اقلام سفارش
                 foreach ($cart->items as $item) {
                     $variantDetails = $item->price?->attributeValues ? $item->price->attributeValues->map(function ($val) {
                         return ($val->attribute?->name ?? 'ویژگی') . ': ' . $val->value;

@@ -16,7 +16,7 @@ return new class extends Migration
             try {
                 DB::statement("ALTER TABLE `{$table}` ENGINE = InnoDB");
             } catch (\Throwable $e) {
-                // نادیده گرفتن در صورت عدم وجود جدول یا خطای سطح دسترسی
+
             }
         }
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // نیازی به بازگردانی به MyISAM نیست چون InnoDB استاندارد مدرن است.
+        
     }
 };
