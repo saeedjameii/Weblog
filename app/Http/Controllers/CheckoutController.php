@@ -81,62 +81,70 @@ class CheckoutController extends Controller
 
         try {
             return DB::transaction(function () use ($request, $user, $cart) {
-                $subTotal = 0;
-
+                // ۱. گام اول: کسر مشروط و اتمیک موجودی انبار برای همه اقلام (Atomic Stock Reservation)
+                // این کوئری حتی در شرایط همزمانی شدید، از فروش مازاد بر موجودی جلوگیری می‌کند:
+                // UPDATE prices SET inventory = inventory - quantity WHERE id = ? AND inventory >= quantity
                 foreach ($cart->items as $item) {
-                    $freshPrice = Price::where('id', $item->price_id)->lockForUpdate()->first();
+                    $affected = Price::where('id', $item->price_id)
+                        ->where('inventory', '>=', $item->quantity)
+                        ->decrement('inventory', $item->quantity);
 
-                    if (! $freshPrice || $item->quantity > $freshPrice->inventory) {
-                        $stock = $freshPrice ? $freshPrice->inventory : 0;
-                        throw new \Exception("متاسفانه موجودی کالای «{$item->product->name}» حین نهایی‌سازی به پایان رسید (موجودی فعلی: {$stock} عدد).");
+                    if (! $affected) {
+                        $currentStock = Price::where('id', $item->price_id)->value('inventory') ?? 0;
+                        throw new \Exception("متاسفانه موجودی کالای «{$item->product->name}» در همین لحظه به پایان رسید یا کافی نیست (موجودی فعلی: {$currentStock} عدد).");
                     }
-
-                    $subTotal += $freshPrice->final_price * $item->quantity;
                 }
 
-            $shippingCost = $subTotal >= 10000000 ? 0 : 150000;
-            $discountCode = $request->input('discount_code');
-            $discountAmount = 0;
-            $totalAmount = max(0, ($subTotal - $discountAmount) + $shippingCost);
+                // ۲. محاسبه مبالغ مالی
+                $subTotal = $cart->items->sum(function ($item) {
+                    return ($item->price?->final_price ?? 0) * $item->quantity;
+                });
 
-            $trackingCode = 'ORD-' . date('ymd') . '-' . strtoupper(Str::random(4));
+                $shippingCost = $subTotal >= 10000000 ? 0 : 150000;
+                $discountCode = $request->input('discount_code');
+                $discountAmount = 0;
+                $totalAmount = max(0, ($subTotal - $discountAmount) + $shippingCost);
 
-            $order = Order::create([
-                'user_id'         => $user->id,
-                'tracking_code'   => $trackingCode,
-                'status'          => 'pending',
-                'payment_status'  => 'unpaid',
-                'payment_method'  => 'online',
-                'discount_code'   => $discountCode,
-                'discount_amount' => $discountAmount,
-                'total_amount'    => $totalAmount,
-                'shipping_cost'   => $shippingCost,
-                'recipient_name'  => $request->recipient_name,
-                'recipient_phone' => $request->recipient_phone,
-                'province'        => $request->province,
-                'city'            => $request->city,
-                'address'         => $request->address,
-                'postal_code'     => $request->postal_code,
-                'note'            => $request->note,
-            ]);
+                $trackingCode = 'ORD-' . date('ymd') . '-' . strtoupper(Str::random(4));
 
-            foreach ($cart->items as $item) {
-                $variantDetails = $item->price->attributeValues->map(function ($val) {
-                    return ($val->attribute?->name ?? 'ویژگی') . ': ' . $val->value;
-                })->implode(' | ');
-
-                $order->items()->create([
-                    'product_id'   => $item->product_id,
-                    'price_id'     => $item->price_id,
-                    'product_name' => $item->product->name,
-                    'variant_name' => $variantDetails ?: null,
-                    'unit_price'   => $item->price->final_price,
-                    'quantity'     => $item->quantity,
-                    'total_price'  => $item->price->final_price * $item->quantity,
+                // ۳. ایجاد سفارش اصلی فقط پس از موفقیت قطعی کسر موجودی انبار
+                $order = Order::create([
+                    'user_id'         => $user->id,
+                    'tracking_code'   => $trackingCode,
+                    'status'          => 'pending',
+                    'payment_status'  => 'unpaid',
+                    'payment_method'  => 'online',
+                    'discount_code'   => $discountCode,
+                    'discount_amount' => $discountAmount,
+                    'total_amount'    => $totalAmount,
+                    'shipping_cost'   => $shippingCost,
+                    'recipient_name'  => $request->recipient_name,
+                    'recipient_phone' => $request->recipient_phone,
+                    'province'        => $request->province,
+                    'city'            => $request->city,
+                    'address'         => $request->address,
+                    'postal_code'     => $request->postal_code,
+                    'note'            => $request->note,
                 ]);
 
-                $item->price->decrement('inventory', $item->quantity);
-            }
+                // ۴. درج اقلام سفارش
+                foreach ($cart->items as $item) {
+                    $variantDetails = $item->price?->attributeValues ? $item->price->attributeValues->map(function ($val) {
+                        return ($val->attribute?->name ?? 'ویژگی') . ': ' . $val->value;
+                    })->implode(' | ') : null;
+
+                    $unitPrice = $item->price?->final_price ?? 0;
+
+                    $order->items()->create([
+                        'product_id'   => $item->product_id,
+                        'price_id'     => $item->price_id,
+                        'product_name' => $item->product->name,
+                        'variant_name' => $variantDetails ?: null,
+                        'unit_price'   => $unitPrice,
+                        'quantity'     => $item->quantity,
+                        'total_price'  => $unitPrice * $item->quantity,
+                    ]);
+                }
 
                 $cart->items()->delete();
 
