@@ -113,24 +113,26 @@
                                         @csrf
                                         @method('PUT')
                                         <label for="qty_{{ $item->id }}">تعداد:</label>
-                                        <input type="number" id="qty_{{ $item->id }}" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->price->inventory }}" class="cart-qty-input">
+                                        <input type="number" id="qty_{{ $item->id }}" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->price?->inventory ?? 1 }}" class="cart-qty-input">
                                         <button type="submit" class="btn btn-secondary btn-sm cart-qty-btn" title="بروزرسانی تعداد">
                                             ثبت
                                         </button>
-                                        @if ($item->price->inventory < 5)
+                                        @if ($item->price && $item->price->inventory < 5)
                                             <small class="cart-low-stock">(تنها {{ $item->price->inventory }} عدد در انبار)</small>
+                                        @elseif (! $item->price)
+                                            <small class="cart-low-stock cart-out-of-stock">(تنوع دیگر در دسترس نیست)</small>
                                         @endif
                                     </form>
 
                                     {{-- قیمت کل این ردیف --}}
                                     <div class="cart-item-price">
-                                        @if ($item->price->discount > 0)
+                                        @if ($item->price && $item->price->discount > 0)
                                             <div class="cart-item-old-price">
                                                 {{ number_format((float) ($item->price->price * $item->quantity)) }}
                                             </div>
                                         @endif
                                         <div class="cart-item-final-price">
-                                            {{ number_format((float) ($item->price->final_price * $item->quantity)) }}
+                                            {{ number_format((float) (($item->price?->final_price ?? 0) * $item->quantity)) }}
                                             <small>تومان</small>
                                         </div>
                                     </div>
@@ -150,7 +152,7 @@
                         </div>
 
                         @php
-                            $rawSubtotal = $cart->items->sum(fn($i) => $i->price->price * $i->quantity);
+                            $rawSubtotal = $cart->items->sum(fn($i) => ($i->price?->price ?? 0) * $i->quantity);
                             $totalDiscount = $rawSubtotal - $total;
                         @endphp
 

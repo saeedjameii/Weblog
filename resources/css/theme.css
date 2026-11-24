@@ -719,3 +719,4 @@ body.site-theme .add-to-cart-btn { display: inline-flex; align-items: center; ga
 body.site-theme .success-actions-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 body.site-theme .success-actions-row .btn-glow { display: inline-flex; align-items: center; gap: 6px; padding: 12px 24px; }
 body.site-theme .success-actions-row .btn { padding: 12px 24px; }
+body.site-theme .cart-out-of-stock { color: #dc2626; font-weight: 600; }

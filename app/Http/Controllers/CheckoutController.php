@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CheckoutRequest;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,6 +28,12 @@ class CheckoutController extends Controller
         }
 
         foreach($cart->items as $item){
+            if (! $item->price || ! $item->product) {
+                return redirect()->route('cart.index')->withErrors([
+                    'cart' => "یکی از کالاهای سبد خرید شما دیگر در دسترس نیست یا تنوع آن نامعتبر شده است. لطفاً سبد خرید خود را بررسی کنید."
+                ]);
+            }
+
             if($item->quantity > $item->price->inventory){
                 return redirect()->route('cart.index')->withErrors([
                     'cart' => "موجودی کالای «{$item->product->name}» در انبار تغییر کرده است (حداکثر موجودی فعلی: {$item->price->inventory} عدد)."
@@ -34,8 +41,8 @@ class CheckoutController extends Controller
             }
         }
 
-        $subTotal = $cart->items->sum(function ($item){
-            return $item->price->final_price * $item->quantity;
+        $subTotal = $cart->items->sum(function ($item) {
+            return ($item->price?->final_price ?? 0) * $item->quantity;
         });
 
         $discountAmount = 0;
@@ -59,17 +66,33 @@ class CheckoutController extends Controller
             ]);
         }
         foreach ($cart->items as $item) {
+            if (! $item->price || ! $item->product) {
+                return redirect()->route('cart.index')->withErrors([
+                    'cart' => "کالای «" . ($item->product?->name ?? 'نامشخص') . "» دیگر در فروشگاه ارائه نمی‌شود یا تنوع آن نامعتبر است."
+                ]);
+            }
+
             if ($item->quantity > $item->price->inventory) {
                 return redirect()->route('cart.index')->withErrors([
-                    'cart' => "متاسفانه موجودی «{$item->product->name}» حین ثبت سفارش به اتمام رسید یا تغییر کرد."
+                    'cart' => "متاسفانه موجودی «{$item->product->name}» حین ثبت سفارش به اتمام رسید یا کافی نیست (حداکثر موجودی فعلی: {$item->price->inventory} عدد)."
                 ]);
             }
         }
 
-        return DB::transaction(function () use ($request, $user, $cart) {
-            $subTotal = $cart->items->sum(function ($item) {
-                return $item->price->final_price * $item->quantity;
-            });
+        try {
+            return DB::transaction(function () use ($request, $user, $cart) {
+                $subTotal = 0;
+
+                foreach ($cart->items as $item) {
+                    $freshPrice = Price::where('id', $item->price_id)->lockForUpdate()->first();
+
+                    if (! $freshPrice || $item->quantity > $freshPrice->inventory) {
+                        $stock = $freshPrice ? $freshPrice->inventory : 0;
+                        throw new \Exception("متاسفانه موجودی کالای «{$item->product->name}» حین نهایی‌سازی به پایان رسید (موجودی فعلی: {$stock} عدد).");
+                    }
+
+                    $subTotal += $freshPrice->final_price * $item->quantity;
+                }
 
             $shippingCost = $subTotal >= 10000000 ? 0 : 150000;
             $discountCode = $request->input('discount_code');
@@ -115,10 +138,15 @@ class CheckoutController extends Controller
                 $item->price->decrement('inventory', $item->quantity);
             }
 
-            $cart->items()->delete();
+                $cart->items()->delete();
 
-            return redirect()->route('checkout.success', $order->tracking_code)->with('success', 'سفارش شما با موفقیت ثبت شد.');
-        });
+                return redirect()->route('checkout.success', $order->tracking_code)->with('success', 'سفارش شما با موفقیت ثبت شد.');
+            });
+        } catch (\Exception $e) {
+            return redirect()->route('cart.index')->withErrors([
+                'cart' => $e->getMessage()
+            ]);
+        }
     }
 
     public function success($trackingCode)

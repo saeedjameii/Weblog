@@ -109,11 +109,11 @@
                         @foreach ($cart->items as $item)
                             <div class="checkout-preview-row">
                                 <div class="checkout-preview-name">
-                                    <strong>{{ $item->product->name }}</strong>
+                                    <strong>{{ $item->product?->name ?? 'کالای نامشخص' }}</strong>
                                     <small>{{ $item->quantity }} عدد</small>
                                 </div>
                                 <div class="checkout-preview-price">
-                                    {{ number_format((float) ($item->price->final_price * $item->quantity)) }} ت
+                                    {{ number_format((float) (($item->price?->final_price ?? 0) * $item->quantity)) }} ت
                                 </div>
                             </div>
                         @endforeach

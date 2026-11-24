@@ -45,7 +45,7 @@ class CartController extends Controller
         $cart = $this->getCart()->load(['items.product', 'items.price.attributeValues.attribute']);
 
         $total = $cart->items->sum(function ($item){
-            return $item->price->final_price * $item->quantity;
+            return ($item->price?->final_price ?? 0) * $item->quantity;
         });
 
         return view('cart.index', compact('cart', 'total'));
@@ -86,6 +86,12 @@ class CartController extends Controller
         $cart = $this->getCart();
 
         $cartItem = $cart->items()->with('price')->findOrFail($itemId);
+
+        if (! $cartItem->price) {
+            return redirect()->back()->withErrors([
+                'quantity' => 'تنوع انتخابی برای این محصول دیگر در دسترس نیست.'
+            ]);
+        }
 
         if($request->quantity > $cartItem->price->inventory) {
             return redirect()->back()->withErrors([
