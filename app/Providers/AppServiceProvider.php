@@ -59,14 +59,18 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        if (! Schema::hasTable('permissions')) {
-            return;
-        }
-
-        foreach (Permission::query()->pluck('name') as $permissionName) {
-            Gate::define($permissionName, function($user) use ($permissionName){
-                return $user->hasPermission($permissionName);
+        try{
+            $permissions = cache()->remember('app_permission_names', 86400, function(){
+                return (Schema::hasTable('permissions')) ? Permission::pluck('name')->all() : [];
             });
+
+            foreach ($permissions as $permissionName) {
+                Gate::define($permissionName, function($user) use ($permissionName){
+                    return $user->hasPermission($permissionName);
+                });
+            } 
+        } catch(\Throwable $e){
+
         }
     }
 }
