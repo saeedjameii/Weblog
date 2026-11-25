@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -191,6 +192,12 @@ Route::prefix('panel')->middleware(['can:access-panel'])->group(function(){
             Route::post('/', [AttributeValueController::class, 'store'])->middleware('permission:create-attribute')->name('store');
             Route::put('/{attributeValue}', [AttributeValueController::class, 'update'])->middleware('permission:update-attribute')->name('update');
             Route::delete('/{attributeValue}', [AttributeValueController::class, 'destroy'])->middleware('permission:delete-attribute')->name('destroy');
+        });
+
+        Route::prefix('orders')->name('orders.')->group(function (){
+            Route::get('/', [OrderController::class, 'index'])->name('index');
+            Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+            Route::post('/{order}/status', [OrderController::class, 'updateStatus'])->name('updateStatus');
         });
 
     });

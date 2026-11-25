@@ -2711,3 +2711,312 @@ body.mobile-nav-locked {
   gap: 10px;
   animation: rise-in 0.3s ease both;
 }
+
+/* ========================================================
+   بخش مدیریت سفارش‌ها در پنل ادمین (Order Management)
+   ======================================================== */
+.tag--count {
+  font-size: 13px;
+  padding: 6px 14px;
+}
+.tag--warn {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+.tag--info {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+.tag--brand {
+  background: #ede9fe;
+  color: #5b21b6;
+  border: 1px solid #ddd6fe;
+}
+.tag--ok {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+.tag--err {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* فیلترها و سرچ سفارش‌ها */
+.order-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 18px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.order-filter-field {
+  flex: 1;
+  min-width: 250px;
+}
+.order-filter-search {
+  width: 100%;
+}
+.order-filter-selects {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* کارت‌های لیست سفارش‌ها */
+.order-admin-list {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.order-admin-card {
+  padding: 20px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  display: grid;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.order-admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+.order-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.order-tracking-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+.order-tracking-code {
+  font-family: monospace, monospace;
+  font-size: 15px;
+  color: var(--forest);
+  margin-right: 4px;
+}
+.order-admin-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.order-admin-body {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+}
+.order-admin-customer strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.order-admin-address {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.order-admin-meta {
+  display: grid;
+  gap: 8px;
+}
+.order-admin-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+.order-price-val {
+  color: var(--forest);
+  font-size: 16px;
+}
+.order-admin-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+/* صفحه جزئیات سفارش (Show Page) */
+.order-detail-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.order-detail-card {
+  padding: 22px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.order-card-title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.order-info-list {
+  display: grid;
+  gap: 12px;
+}
+.order-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  gap: 10px;
+}
+.order-info-row--full {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.order-code-font {
+  font-family: monospace, monospace;
+  font-size: 14px;
+}
+.order-address-text,
+.order-note-text {
+  margin: 4px 0 0;
+  line-height: 1.8;
+  font-size: 13.5px;
+}
+.order-note-text {
+  background: #f8fafc;
+  border: 1px dashed var(--line);
+  padding: 10px 14px;
+  border-radius: 10px;
+  width: 100%;
+}
+.order-status-form {
+  display: grid;
+  gap: 16px;
+}
+.order-full-select {
+  width: 100%;
+  padding: 10px;
+}
+.order-hint-text {
+  font-size: 12.5px;
+  line-height: 1.7;
+  margin: 0;
+}
+.order-btn-block {
+  width: 100%;
+  padding: 12px;
+}
+
+/* جدول اقلام فاکتور */
+.order-items-section {
+  padding: 24px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 30px;
+}
+.order-table-responsive {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: right;
+}
+.order-items-table th,
+.order-items-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.order-items-table th {
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--muted);
+  font-weight: 600;
+}
+.order-item-img-cell {
+  width: 64px;
+}
+.order-item-thumb {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+.order-item-thumb--empty {
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  background: #fff;
+}
+.order-product-link {
+  font-size: 12px;
+  color: var(--forest);
+  margin-right: 6px;
+}
+
+/* فاکتور و مبالغ مالی */
+.order-financial-summary {
+  max-width: 420px;
+  margin-right: auto;
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: 14px;
+}
+.order-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-summary-row--discount {
+  color: #dc2626;
+  font-weight: 600;
+}
+.order-summary-row--total {
+  padding-top: 10px;
+  border-top: 2px solid var(--line);
+  font-size: 16px;
+}
+.order-summary-row--method {
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+
+@media (max-width: 768px) {
+  .order-admin-body,
+  .order-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .order-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .order-filter-selects {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .order-filter-selects .select,
+  .order-filter-selects .button {
+    width: 100%;
+  }
+}

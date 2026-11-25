@@ -29,6 +29,10 @@
 
             <div class="invoice-meta-grid">
                 <div>
+                    <span class="invoice-meta-label">تاریخ ثبت:</span>
+                    <strong class="invoice-meta-val">{{ $order->created_at_jalali }}</strong>
+                </div>
+                <div>
                     <span class="invoice-meta-label">تحویل‌گیرنده:</span>
                     <strong class="invoice-meta-val">{{ $order->recipient_name }}</strong>
                 </div>

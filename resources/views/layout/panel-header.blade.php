@@ -121,6 +121,11 @@
                     <span>🛍️ مدیریت فروشگاه</span>
                 </div>
                 <div class="mobile-nav-links-list">
+                    <a href="{{ route('panel.orders.index') }}"
+                        class="mobile-nav-item {{ request()->routeIs('panel.orders.*') ? 'is-active' : '' }}">
+                        <span class="item-icon">📋</span>
+                        <span>مدیریت سفارش‌ها</span>
+                    </a>
                     @canany(['create-product', 'update-product', 'delete-product'])
                         <a href="{{ route('panel.products.index') }}"
                             class="mobile-nav-item {{ request()->routeIs('panel.products.*') ? 'is-active' : '' }}">
