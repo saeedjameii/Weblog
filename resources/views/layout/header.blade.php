@@ -41,6 +41,7 @@
                     @if (auth('api')->check())
                         <span class="nav-user-greeting"><x-icon name="user" />
                             {{ auth('api')->user()->first_name }}</span>
+                        <a class="btn btn-secondary btn-sm nav-desktop-only" href="{{ route('orders.myOrders') }}">سفارش‌های من</a>
                         @can('access-panel')
                             <a class="btn btn-secondary btn-sm nav-desktop-only" href="{{ route('panel') }}">پنل کاربری</a>
                         @endcan
@@ -90,6 +91,7 @@
                         </div>
                     </div>
                     <div class="mobile-user-actions">
+                        <a class="btn btn-secondary btn-block" href="{{ route('orders.myOrders') }}">سفارش‌های من</a>
                         @can('access-panel')
                             <a class="btn btn-primary btn-block" href="{{ route('panel') }}">ورود به پنل مدیریت</a>
                         @endcan

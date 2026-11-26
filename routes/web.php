@@ -77,6 +77,7 @@ Route::prefix('/checkout')->group(function () {
 
 Route::prefix('/orders')->name('orders.')->group(function (){
     Route::get('/track', [OrderTrackingController::class, 'index'])->name('track');
+    Route::get('/', [OrderController::class, 'myOrders'])->name('myOrders');
 });
 
 

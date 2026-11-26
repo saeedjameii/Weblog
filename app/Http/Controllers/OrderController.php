@@ -86,4 +86,16 @@ class OrderController extends Controller
             return redirect()->back()->withErrors(['status' => $e->getMessage()]);
         }
     }
+
+    public function myOrders(){
+        $user = auth('api')->user();
+
+        if(! $user){
+            return redirect()->route('login');
+        }
+
+        $orders = Order::where('user_id', $user->id)->with(['user', 'items.product.images', 'items.price.attributeValues.attribute'])->latest()->paginate(10)->withQueryString();
+
+        return view('orders.myOrders', compact('orders'));
+    }
 }
