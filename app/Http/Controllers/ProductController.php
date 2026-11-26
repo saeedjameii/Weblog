@@ -226,7 +226,7 @@ class ProductController extends Controller
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'سرویس هوش مصنوعی در حال حاضر با اختلال مواجه است: ' . $e->getMessage()
+                'message' => 'سرویس هوش مصنوعی در حال حاضر با اختلال مواجه است: ' 
             ], 500);
         }
     }
