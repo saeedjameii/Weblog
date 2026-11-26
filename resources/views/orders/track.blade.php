@@ -170,13 +170,19 @@
                             @foreach ($steps as $stepNum => $stepData)
                                 @php
                                     $stepState = 'is-waiting';
-                                    if ($currentStep > $stepNum) {
+                                    $lineComplete = false;
+
+                                    if ($order->status === 'delivered') {
                                         $stepState = 'is-complete';
+                                        $lineComplete = true;
+                                    } elseif ($currentStep > $stepNum) {
+                                        $stepState = 'is-complete';
+                                        $lineComplete = true;
                                     } elseif ($currentStep === $stepNum) {
                                         $stepState = 'is-current';
                                     }
                                 @endphp
-                                <div class="track-step-node {{ $stepState }}">
+                                <div class="track-step-node {{ $stepState }} {{ $lineComplete ? 'line-complete' : '' }}">
                                     <div class="track-step-marker">
                                         @if ($stepState === 'is-complete')
                                             <x-icon name="check" />
