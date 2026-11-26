@@ -119,6 +119,10 @@
 
         {{-- دکمه‌های اقدام نهایی --}}
         <div class="success-actions-row">
+            <a href="{{ route('orders.track', ['tracking_code' => $order->tracking_code, 'phone' => $order->recipient_phone]) }}" class="btn btn-primary">
+                <x-icon name="box" />
+                <span>پیگیری این سفارش</span>
+            </a>
             <a href="{{ route('products.index') }}" class="btn-glow">
                 <x-icon name="shop" />
                 <span>ادامه خرید از فروشگاه</span>

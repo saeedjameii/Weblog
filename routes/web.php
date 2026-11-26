@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -72,6 +73,10 @@ Route::prefix('/checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/success/{trackingCode}', [CheckoutController::class, 'success'])->name('checkout.success');
+});
+
+Route::prefix('/orders')->name('orders.')->group(function (){
+    Route::get('/track', [OrderTrackingController::class, 'index'])->name('track');
 });
 
 

@@ -29,6 +29,8 @@
                     href="{{ route('products.index') }}">فروشگاه</a>
                 <a class="sx-nav-link {{ request()->routeIs('cart.*') ? 'is-active' : '' }}"
                     href="{{ route('cart.index') }}">سبد خرید</a>
+                <a class="sx-nav-link {{ request()->routeIs('orders.*') ? 'is-active' : '' }}"
+                    href="{{ route('orders.track') }}">پیگیری سفارش</a>
             </div>
 
             {{-- Clean Minimal Nav Actions with Universal Hamburger Menu --}}
@@ -152,6 +154,11 @@
                         <span>مقایسه محصولات</span>
                     </a>
                     @endauth
+                    <a href="{{ route('orders.track') }}"
+                        class="mobile-nav-item {{ request()->routeIs('orders.*') ? 'is-active' : '' }}">
+                        <span class="item-icon"><x-icon name="box" /></span>
+                        <span>پیگیری آنلاین سفارش</span>
+                    </a>
                     <a href="{{ route('categories.products.index') }}"
                         class="mobile-nav-item {{ request()->routeIs('categories.*') ? 'is-active' : '' }}">
                         <span class="item-icon"><x-icon name="folder" /></span>
